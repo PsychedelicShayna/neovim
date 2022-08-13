@@ -15,9 +15,10 @@ local options = {
   smartindent = true,                      -- make indenting smarter again
   splitbelow = true,                       -- force all horizontal splits to go below current window
   splitright = true,                       -- force all vertical splits to go to the right of current window
+  spelllang = "en_us",
   swapfile = false,                        -- creates a swapfile
   termguicolors = true,                    -- set term gui colors (most terminals support this)
-  timeoutlen = 1000,                        -- time to wait for a mapped sequence to complete (in milliseconds)
+  timeoutlen = 250,                        -- time to wait for a mapped sequence to complete (in milliseconds)
   undofile = true,                         -- enable persistent undo
   updatetime = 300,                        -- faster completion (4000ms default)
   writebackup = false,                     -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
@@ -51,5 +52,12 @@ vim.cmd [[
     autocmd FileType lua setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd FileType markdown setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd FileType text setlocal wrap
   augroup user_options
 ]]
+
+vim.api.nvim_create_autocmd(
+  { "BufRead", "BufNewFile" },
+  { pattern = { "*.txt", "*.md", "*.markdown" }, command = "setlocal spell" }
+)

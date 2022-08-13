@@ -39,33 +39,31 @@ end
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 local Terminal = require("toggleterm.terminal").Terminal
+
+local pwsh1 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh2 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh3 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh4 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh5 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh6 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh7 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh8 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh9 = Terminal:new({ cmd = "pwsh", hidden = true })
+local pwsh0 = Terminal:new({ cmd = "pwsh", hidden = true })
+
+function _TERM_PWSH1_TOGGLE() pwsh1:toggle() end
+function _TERM_PWSH2_TOGGLE() pwsh2:toggle() end
+function _TERM_PWSH3_TOGGLE() pwsh3:toggle() end
+function _TERM_PWSH4_TOGGLE() pwsh4:toggle() end
+function _TERM_PWSH5_TOGGLE() pwsh5:toggle() end
+function _TERM_PWSH6_TOGGLE() pwsh6:toggle() end
+function _TERM_PWSH7_TOGGLE() pwsh7:toggle() end
+function _TERM_PWSH8_TOGGLE() pwsh8:toggle() end
+function _TERM_PWSH9_TOGGLE() pwsh9:toggle() end
+function _TERM_PWSH0_TOGGLE() pwsh0:toggle() end
+
 -- local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
 -- function _LAZYGIT_TOGGLE()
 -- 	lazygit:toggle()
 -- end
-
-local powershell = Terminal:new({ cmd = "pwsh", hidden = true })
-
-function _POWERSHELL_TOGGLE()
-	powershell:toggle()
-end
-
---
--- local ncdu = Terminal:new({ cmd = "ncdu", hidden = true })
---
--- function _NCDU_TOGGLE()
--- 	ncdu:toggle()
--- end
---
--- local htop = Terminal:new({ cmd = "htop", hidden = true })
---
--- function _HTOP_TOGGLE()
--- 	htop:toggle()
--- end
-
-local python = Terminal:new({ cmd = "ipython", hidden = true })
-
-function _PYTHON_TOGGLE()
-	python:toggle()
-end

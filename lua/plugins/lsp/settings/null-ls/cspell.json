@@ -1,0 +1,12 @@
+{
+    "dictionaries": ["user-defined"],
+
+    "dictionaryDefinitions": [
+        {
+            "name": "user-defined",
+            "path": "C:\\Users\\Fedora\\AppData\\Local\\nvim\\lua\\user\\lsp\\settings\\null-ls\\custom-dictionaries\\user-defined.txt",
+            "addWords": true
+        }
+    ]
+}
+
