@@ -204,6 +204,11 @@ local mappings = {
     c = {
       "<cmd>close<cr>",
       "Close Window"
+    },
+
+    n = {
+      "<cmd>new<cr>",
+      "New Window"
     }
   },
 
@@ -317,6 +322,11 @@ local mappings = {
 			"<cmd>lua vim.lsp.buf.rename()<cr>",
 			"Rename Symbol",
 		},
+
+    R = {
+      "<cmd>Telescope lsp_references<cr>",
+      "Find References"
+    }
 	},
 
 	p = {

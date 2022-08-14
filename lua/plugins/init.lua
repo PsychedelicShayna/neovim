@@ -234,6 +234,17 @@ return packer.startup(function(use)
   }
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+  -- Discord Rich Presence support.
+  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  use {
+    "andweeb/presence.nvim",
+    config = function()
+      require "plugins.presence"
+    end
+  }
+  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
   -- Markdown Preview
   use "davidgranstrom/nvim-markdown-preview"
 

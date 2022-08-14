@@ -1,4 +1,8 @@
 local status_ok, alpha = pcall(require, "alpha")
+local fortune_ok, fortune = pcall(require, "plugins.alpha-nvim.fortune")
+
+
+local fortune_ok = true
 
 if not status_ok then
 	return
@@ -7,31 +11,66 @@ end
 local dashboard = require "alpha.themes.dashboard"
 
 dashboard.section.header.val = {
-	[[                               __                ]],
-	[[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
-	[[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
-	[[/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
-	[[\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
-	[[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
+}
+
+dashboard.section.header.val = {
+  [[          _-^--^=-_ ]],
+  [[     _.-^^          -~_ ]],
+  [[  _--                  --_ ]],
+  [[ <                        >) ]],
+  [[ |                         | ]],
+  [[  \._                   _./ ]],
+  [[     ```--. . , ; .--''' ]],
+  [[           | |   | ]],
+  [[        .-=||  | |=-. ]],
+  [[        `-=#$%&%$#=-' ]],
+  [[           | ;  :| ]],
+  [[  _____.,-#%&$@%#&#~,._____ ]],
+}
+
+dashboard.section.header.val = {
+  [[                  ___====-_  _-====___ ]],
+  [[           _--~~~#####// '  ` \\#####~~~--_ ]],
+  [[         -~##########// (    ) \\##########~-_ ]],
+  [[        -############//  |\^^/|  \\############- ]],
+  [[      _~############//   (O||O)   \\############~_ ]],
+  [[     ~#############((     \\//     ))#############~ ]],
+  [[    -###############\\    (oo)    //###############- ]],
+  [[   -#################\\  / `' \  //#################- ]],
+  [[  -###################\\/  ()  \//###################- ]],
+  [[ _#/|##########/\######(  (())  )######/\##########|\#_ ]],
+  [[ |/ |#/\#/\#/\/  \#/\##|  \()/  |##/\#/  \/\#/\#/\#| \| ]],
+  [[ `  |/  V  V  `   V  )||  |()|  ||(  V   '  V /\  \|  ' ]],
+  [[    `   `  `      `  / |  |()|  | \  '      '<||>  ' ]],
+  [[                    (  |  |()|  |  )\        /|/ ]],
+  [[                   __\ |__|()|__| /__\______/|/ ]],
+  [[                  (vvv(vvvv)(vvvv)vvv)______|/ ]],
+	[[╔══════════════════════════════════════════════════════╗  ]],
+	[[║     ___     ___    ___   __  __ /\_\    ___ ___      ║ ]],
+	[[║    / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\    ║ ]],
+	[[║   /\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \   ║ ]],
+	[[║   \ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\  ║ ]],
+	[[║    \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/  ║ ]],
+  [[╚══════════════════════════════════════════════════════╝]]
 }
 
 dashboard.section.buttons.val = {
-	dashboard.button("f", "  Find file", ":Telescope find_files <CR>"),
-	dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
-	dashboard.button("p", "  Find project", ":Telescope projects <CR>"),
-	dashboard.button("r", "  Recently used files", ":Telescope oldfiles <CR>"),
-	dashboard.button("t", "  Find text", ":Telescope live_grep <CR>"),
-	dashboard.button("c", "  Configuration", ":e ~/.config/nvim/init.lua <CR>"),
+	dashboard.button("e", "  New File", ":ene <BAR> startinsert <CR>"),
+	dashboard.button("f", "  Find File", ":Telescope find_files <CR>"),
+	dashboard.button("r", "  Recently Used Files", ":Telescope oldfiles <CR>"),
+	dashboard.button("t", "  Live Grep", ":Telescope live_grep <CR>"),
+	dashboard.button("p", "  Find Project", ":Telescope projects <CR>"),
+	dashboard.button("c", "  Configuration", ":e ~/AppData/Local/nvim <CR>"),
 	dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
 }
 
 local function footer()
--- NOTE: requires the fortune-mod package to work
-	-- local handle = io.popen("fortune")
-	-- local fortune = handle:read("*a")
-	-- handle:close()
-	-- return fortune
-	return "chrisatmachine.com"
+  if not fortune_ok then
+    return "How unfortunate..."
+  end
+
+  local fortune_text, fortune_file = GetRandomFortune(nil, 10)
+  return "From " .. fortune_file .. ": \n" .. fortune_text
 end
 
 dashboard.section.footer.val = footer()
