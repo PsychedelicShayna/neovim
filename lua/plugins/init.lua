@@ -175,7 +175,7 @@ return packer.startup(function(use)
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   use {
     "kyazdani42/nvim-tree.lua",
-    require = {
+    requires = {
       { "kyazdani42/nvim-web-devicons" }
     },
     config = function()
@@ -188,7 +188,7 @@ return packer.startup(function(use)
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   use {
     "akinsho/bufferline.nvim",
-    require = {
+    requires = {
       { "moll/vim-bbye" }
     },
     config = function()
@@ -220,6 +220,19 @@ return packer.startup(function(use)
       require "plugins.which-key"
     end
   }
+
+  -- Alpha, a customizable greeter homepage for NeoViM.
+  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  use {
+    "goolord/alpha-nvim",
+    requires = {
+      { "antoinemadec/FixCursorHold.nvim" }
+    },
+    config = function()
+      require "plugins.alpha-nvim"
+    end
+  }
+  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   -- Markdown Preview
   use "davidgranstrom/nvim-markdown-preview"
