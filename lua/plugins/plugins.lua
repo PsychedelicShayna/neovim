@@ -38,12 +38,12 @@ packer.init {
 -- AutoCommand that reloads NeoViM when you update this init.lua file, such as
 -- when adding or removing a plugin, ensuring that any changes to the file are
 -- immediately reflected in NeoViM.
---[[ vim.cmd [[ ]]
---[[   augroup packer_user_config ]]
---[[     autocmd! ]]
---[[     autocmd BufWritePost plugins.lua source <afile> | PackerSync ]]
---[[   augroup end ]]
---[[ ]] 
+ vim.cmd [[ 
+  augroup packer_user_config 
+     autocmd! 
+     autocmd BufWritePost plugins.lua source <afile> | PackerSync 
+   augroup end 
+]]
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -53,7 +53,12 @@ packer.init {
 
 return packer.startup(function(use)
   -- Have packer manage itself.
-  use "wbthomason/packer.nvim"
+  use {
+    "wbthomason/packer.nvim",
+    config = function()
+      require "plugins.impatient"
+    end
+  }
 
   -- Impatient, speeds up statup time by using compiling Lua modules.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -68,6 +73,7 @@ return packer.startup(function(use)
 
   -- Colorschemes
   -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
+
   use "lunarvim/darkplus.nvim"
   use "lunarvim/colorschemes"
   use "folke/tokyonight.nvim"
@@ -76,6 +82,17 @@ return packer.startup(function(use)
   use "luisiacc/gruvbox-baby"
   use "sainnhe/gruvbox-material"
   use "cocopon/iceberg.vim"
+
+  use {
+    "tjdevries/colorbuddy.nvim",
+    requires = {
+      { "Yagua/nebulous.nvim",
+        config = function()
+          require "plugins.nebulous"
+        end
+      },
+    }
+  }
 
   -- Completion framework for NeoViM, with many extensions for it.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
