@@ -38,12 +38,12 @@ packer.init {
 -- AutoCommand that reloads NeoViM when you update this init.lua file, such as
 -- when adding or removing a plugin, ensuring that any changes to the file are
 -- immediately reflected in NeoViM.
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]]
+--[[ vim.cmd [[ ]]
+--[[   augroup packer_user_config ]]
+--[[     autocmd! ]]
+--[[     autocmd BufWritePost plugins.lua source <afile> | PackerSync ]]
+--[[   augroup end ]]
+--[[ ]] 
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -54,6 +54,11 @@ vim.cmd [[
 return packer.startup(function(use)
   -- Have packer manage itself.
   use "wbthomason/packer.nvim"
+
+  -- Impatient, speeds up statup time by using compiling Lua modules.
+  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  use "lewis6991/impatient.nvim"
+  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/popup.nvim"
