@@ -1,4 +1,4 @@
-local colorscheme = "iceberg"
+local colorscheme = "tokyonight"
 
 -- Don't crash the entire config if the colorscheme doesn't exist.
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)

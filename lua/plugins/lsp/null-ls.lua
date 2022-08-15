@@ -11,10 +11,12 @@ local code_actions = null_ls.builtins.code_actions
 
 null_ls.setup {
   debug = false,
+
   on_init = function(new_client, _)
     vim.notify(new_client)
-    new_client.offset_encoding = 'utf-8'
+    --[[ new_client.offset_encoding = "utf-16" ]]
   end,
+
   sources = {
     formatting.stylua,
     formatting.clang_format,

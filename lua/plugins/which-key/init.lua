@@ -85,27 +85,164 @@ local opts = {
 }
 
 local mappings = {
-	-- ["a"] = { "<cmd>Alpha<cr>", "Alpha" },
+  ["e"] = {
+    "<cmd>NvimTreeToggle<cr>",
+    "Explore File Tree (Toggle)",
+  },
 
-	-- ["b"] =
-
-	-- ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
-	["q"] = { "<cmd>q<CR>", "Quit"},
-	["Q"] = { "<cmd>q!<CR>", "Quit (Force)" },
-
-	-- ["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
-	["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
-
-  ["s"] = { "<cmd>lua require(\"telescope.builtin\").spell_suggest(require(\"telescope.themes\").get_cursor({}))<cr>", "Spelling Suggestions" },
-
-	-- ["f"] = {
-	--   "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-	--   "Find files",
-	-- },
-	--
+  --[[ ["s"] = { "<cmd>lua require(\"telescope.builtin\").spell_suggest(require(\"telescope.themes\").get_cursor({}))<cr>", "Spelling Suggestions" }, ]]
 	-- ["F"] = { "<cmd>Telescope live_grep theme=ivy<cr>", "Find Text" },
-	--
-	-- ["P"] = { "<cmd>Telescope projects<cr>", "Projects" },
+
+  -- S -- Use the power of Telescope to search for anything and everything.
+  s = {
+    name = "Search...",
+
+    f = {
+			"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
+      "Search Files"
+    },
+
+    F = {
+			"<cmd>Telescope find_files<cr>",
+      "Search Files (+ Preview)"
+    },
+
+    R = {
+      "<cmd>Telescope oldfiles<cr>",
+      "Search Recent Files"
+    },
+
+    b = {
+      "<cmd>Telescope buffers<cr>",
+      "Search Buffers"
+    },
+
+    p = {
+      "<cmd>Telescope projects<cr>",
+      "Search Projects"
+    },
+
+    g = {
+      "<cmd>Telescope live_grep<cr>",
+      "Search File Contents (Live Grep)"
+    },
+
+    m = {
+      "<cmd>Telescope media_files<cr>",
+      "Search Media Files"
+    },
+
+    r = {
+      "<cmd>Telescope lsp_references<cr>",
+      "Search References"
+    },
+
+    d = {
+      "<cmd>Telescope lsp_definitions<cr>",
+      "Search Definitions"
+    },
+
+    D = {
+      "<cmd>lua vim.lsp.buf.declaration()<cr>",
+      "Search Declarations"
+    },
+
+    i = {
+      "<cmd>Telescope diagnostics<cr>",
+      "Search Diagnostic"
+    },
+
+    h = {
+      "<cmd>Telescope search_history<cr>",
+      "Search, Search History"
+    },
+
+    H = {
+      "<cmd>Telescope command_history<cr>",
+      "Search Command History"
+    },
+
+    v = {
+      "<cmd>Telescope vim_options<cr>",
+      "Search ViM Options"
+    },
+
+    s = {
+      "<cmd>Telescope symbols<cr>",
+      "Search Symbols"
+    },
+    
+    c = {
+      "<cmd>Telescope commands<cr>",
+      "Search Commands"
+    },
+
+    C = {
+      "<cmd>Telescope autocommands<cr>",
+      "Search AutoCommands"
+    },
+
+    k = {
+      "<cmd>Telescope keymaps<cr>",
+      "Search Keybindings"
+    },
+
+    j = {
+      "<cmd>Telescope jumplist<cr>",
+      "Search Jumplist"
+    },
+  },
+
+  h = {
+		h = {
+			"<cmd>lua vim.lsp.buf.hover()<cr>",
+			"Hover Symbol",
+		},
+
+    s = {
+      "<cmd>lua require(\"telescope.builtin\").spell_suggest(require(\"telescope.themes\").get_cursor({}))<cr>",
+      "Spelling Suggestions"
+    },
+  },
+
+  g = {
+    name = "Git...",
+
+    c = {
+      "<cmd>Telescope git_commits<cr>",
+      "Search Commits"
+    },
+
+    C = {
+      "<cmd>lua vim.notify('Not Implemented')<cr>",
+      "Git Commit"
+    },
+
+    s = {
+      "<cmd>Telescope git_status<cr>",
+      "Search Git Status"
+    },
+
+    S = {
+      "<cmd>Telescope git_stash<cr>",
+      "Search Git Stash"
+    },
+
+    f = {
+      "<cmd>Telescope git_files<cr>",
+      "Search Git Files"
+    },
+
+    b = {
+      "<cmd>Telescope git_bcommits<cr>",
+      "Search Branch Commits"
+    },
+
+    B = {
+      "<cmd>Telescope git_branches<cr>",
+      "Search Git Branches"
+    }
+  },
 
 	-- File Operations
 	f = {
@@ -135,29 +272,6 @@ local mappings = {
       },
     },
 
-		-- File Finder
-		f = {
-			"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
-			"Find File",
-		},
-
-		-- File Finder With Preview
-		F = {
-			"<cmd>Telescope find_files<cr>",
-			"Find File (+ Preview)",
-		},
-
-		-- File Explorer / File Tree
-		e = {
-			"<cmd>NvimTreeToggle<cr>",
-			"Explore File Tree (Toggle)",
-		},
-
-		-- File Grep
-		g = {
-			"<cmd>Telescope live_grep<cr>",
-			"Live Grep Files",
-		},
 	},
 
 	-- Buffer Operations
@@ -182,10 +296,16 @@ local mappings = {
 			"Delete Buffer",
 		},
 
+    -- Force Delete Buffer
 		D = {
 			"<cmd>Bdelete!<cr>",
 			"Delete Buffer (Force)",
 		},
+
+    a = {
+      "<cmd>Alpha<cr>",
+      "Alpha Dashboard"
+    }
 	},
 
   w = {
@@ -209,6 +329,11 @@ local mappings = {
     n = {
       "<cmd>new<cr>",
       "New Window"
+    },
+
+    d = {
+			"<cmd>lua vim.diagnostic.setloclist()<cr>",
+      "Diagnostics Window"
     }
   },
 
@@ -338,6 +463,8 @@ local mappings = {
 		u = { "<cmd>PackerUpdate<cr>", "Update" },
 	},
 
+
+
 	-- n = {
 	--   name = "Navigate",
 	--   d = {"<cmd>Telescope lsp_definitions<CR>", "Definition"},
@@ -380,55 +507,56 @@ local mappings = {
 	--   k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
 	--   C = { "<cmd>Telescope commands<cr>", "Commands" },
 	-- },
-	--
-	t = {
-		name = "Terminals...",
-		a = {
-			"<cmd>lua _TERM_PWSH1_TOGGLE()<cr>",
-			"Terminal 1",
-		},
 
-		s = {
-			"<cmd>lua _TERM_PWSH2_TOGGLE()<cr>",
-			"Terminal 2",
-		},
 
-		d = {
-			"<cmd>lua _TERM_PWSH3_TOGGLE()<cr>",
-			"Terminal 3",
-		},
-
-		f = {
-			"<cmd>lua _TERM_PWSH4_TOGGLE()<cr>",
-			"Terminal 4",
-		},
-
-		h = {
-			"<cmd>lua _TERM_PWSH5_TOGGLE()<cr>",
-			"Terminal 5",
-		},
-
-		j = {
-			"<cmd>lua _TERM_PWSH6_TOGGLE()<cr>",
-			"Terminal 6",
-		},
-
-		k = {
-			"<cmd>lua _TERM_PWSH7_TOGGLE()<cr>",
-			"Terminal 7",
-		},
-
-		l = {
-			"<cmd>lua _TERM_PWSH8_TOGGLE()<cr>",
-			"Terminal 8",
-		},
-
-		-- t = { "<cmd>lua _NTOP_TOGGLE()<cr>", "NTOP" },
-		-- p = { "<cmd>lua _IPYTHON_TOGGLE()<cr>", "iPython" },
-		-- -- f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
-		-- h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
-		-- v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
-	},
+	--[[ t = { ]]
+	--[[ 	name = "Terminals...", ]]
+	--[[ 	a = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH1_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 1", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	s = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH2_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 2", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	d = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH3_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 3", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	f = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH4_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 4", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	h = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH5_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 5", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	j = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH6_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 6", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	k = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH7_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 7", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	l = { ]]
+	--[[ 		"<cmd>lua _TERM_PWSH8_TOGGLE()<cr>", ]]
+	--[[ 		"Terminal 8", ]]
+	--[[ 	}, ]]
+ --[[]]
+	--[[ 	-- t = { "<cmd>lua _NTOP_TOGGLE()<cr>", "NTOP" }, ]]
+	--[[ 	-- p = { "<cmd>lua _IPYTHON_TOGGLE()<cr>", "iPython" }, ]]
+	--[[ 	-- -- f = { "<cmd>ToggleTerm direction=float<cr>", "Float" }, ]]
+	--[[ 	-- h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" }, ]]
+	--[[ 	-- v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" }, ]]
+	--[[ }, ]]
 }
 
 which_key.setup(setup)
