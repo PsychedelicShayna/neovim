@@ -104,7 +104,28 @@ return packer.startup(function(use)
       { "hrsh7th/cmp-cmdline" },      -- CmdLine Completions.
       { "saadparwaiz1/cmp_luasnip" }, -- Snippet Completions.
       { "hrsh7th/cmp-nvim-lua" },     -- NVIM Lua Completion.
-      { "hrsh7th/cmp-nvim-lsp" }      -- NVIM Lua Completion.
+      { "hrsh7th/cmp-nvim-lsp" },      -- NVIM Lua Completion.
+
+      { "zbirenbaum/copilot-cmp",     -- GitHub copilot AI completion!
+        module = { "copilot_cmp" },
+        requires = {
+          -- The better, Lua version of github/copilot.vim
+          { "zbirenbaum/copilot.lua",
+            -- Recommended as it can take some time to start up.
+            event = { "VimEnter" },
+
+            -- Technically only required for authentication with GitHub,
+            -- as copilot.lua cannot generate the config files yet.
+            requires = {
+              "github/copilot.vim"
+            },
+            
+            config = function()
+              require "plugins.github-copilot"
+            end
+          }
+        }
+      },
     },
     config = function()
       require "plugins.nvim-cmp"
@@ -124,7 +145,8 @@ return packer.startup(function(use)
     "neovim/nvim-lspconfig", -- Official config for enabling LSP in NeoViM.
     requires = {
       { "williamboman/nvim-lsp-installer" }, -- LSP language installer UI.
-      { "jose-elias-alvarez/null-ls.nvim" }  -- Non-LSP language servers.
+      { "jose-elias-alvarez/null-ls.nvim" },  -- Non-LSP language servers.
+      { "ray-x/lsp_signature.nvim" }
     },
     config = function()
       require "plugins.lsp"

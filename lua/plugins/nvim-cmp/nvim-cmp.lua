@@ -42,6 +42,8 @@ local kind_icons = {
   Event = "",
   Operator = "",
   TypeParameter = "",
+  CmpItemKindCopilot = "",
+  Copilot = ""
 }
 -- find more here: https://www.nerdfonts.com/cheat-sheet
 
@@ -58,7 +60,18 @@ cmp.setup {
       ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
       ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
 
-      ["<A-i>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+      ["<C-s>"] = cmp.mapping {
+        i = cmp.mapping.complete(),
+        c = cmp.mapping.complete()
+      },
+
+      ['<C-S>'] = cmp.mapping.complete({
+        config = {
+          sources = {
+            { name = 'copilot' }
+          }
+        }
+      }),
 
       ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
       ["<C-e>"] = cmp.mapping {
@@ -68,34 +81,58 @@ cmp.setup {
 
       -- Accept currently selected item. If none selected, `select` first item.
       -- Set `select` to `false` to only confirm explicitly selected items.
-      ["<CR>"] = cmp.mapping.confirm { select = true },
-      ["<Tab>"] = cmp.mapping(
+
+      --[[ ["<CR>"] = cmp.mapping.confirm { select = true }, ]]
+      ["<C-l>"] = cmp.mapping.confirm { select = true },
+
+      ["K"] = cmp.mapping(
         function(fallback)
           if cmp.visible() then
-            cmp.select_next_item()
-          elseif luasnip.expandable() then
-            luasnip.expand()
-          elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-          elseif check_backspace() then
-            fallback()
+            cmp.scroll_docs(-1)
           else
             fallback()
           end
-        end, { "i", "s" }
+        end
       ),
 
-      ["<S-Tab>"] = cmp.mapping(
+      ["J"] = cmp.mapping(
         function(fallback)
           if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.jumpable(-1) then
-            luasnip.jump(-1)
+            cmp.scroll_docs(1)
           else
             fallback()
           end
-        end, { "i", "s" }
+        end
       )
+
+      --[[ ["<Tab>"] = cmp.mapping( ]]
+      --[[   function(fallback) ]]
+      --[[     if cmp.visible() and cmp.get_active_entry() then ]]
+      --[[       cmp.select_next_item() ]]
+      --[[     elseif luasnip.expandable() then ]]
+      --[[       luasnip.expand() ]]
+      --[[     elseif luasnip.expand_or_jumpable() then ]]
+      --[[       luasnip.expand_or_jump() ]]
+      --[[     elseif check_backspace() then ]]
+      --[[       fallback() ]]
+      --[[     else ]]
+      --[[       fallback() ]]
+      --[[     end ]]
+      --[[]]
+      --[[   end, { "i", "s" } ]]
+      --[[ ), ]]
+      --[[]]
+      --[[ ["<S-Tab>"] = cmp.mapping( ]]
+      --[[   function(fallback) ]]
+      --[[     if cmp.visible() then ]]
+      --[[       cmp.select_prev_item() ]]
+      --[[     elseif luasnip.jumpable(-1) then ]]
+      --[[       luasnip.jump(-1) ]]
+      --[[     else ]]
+      --[[       fallback() ]]
+      --[[     end ]]
+      --[[   end, { "i", "s" } ]]
+      --[[ ) ]]
   },
 
   formatting = {
@@ -105,20 +142,23 @@ cmp.setup {
       -- Kind icons
       vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
       -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+
       vim_item.menu = ({
+        copilot =  "[AI]",
         nvim_lua = "[NVL]",
         nvim_lsp = "[LSP]",
         null_ls = "[NLS]",
         luasnip = "[Snippet]",
         buffer  = "[Buffer]",
         path    = "[Path]",
-        spell   = "[Spell]"
+        spell   = "[Spell]",
       })[entry.source.name]
       return vim_item
     end,
   },
 
   sources = {
+    { name = "copilot" },
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "luasnip" },
@@ -138,7 +178,7 @@ cmp.setup {
   },
 
   -- DEPRECATED:
-  -- documentation = {
+ -- documentation = {
   --   border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   -- },
 
