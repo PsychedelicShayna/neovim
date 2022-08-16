@@ -386,7 +386,7 @@ local mappings = {
 		},
 
 		H = {
-		  "<cmd>cmp.mapping.complete()<cr>",
+		  "<cmd>lua require(\"cmp\").mapping.complete()<cr>",
 		  "Complete Here"
 		},
 

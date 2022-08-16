@@ -46,6 +46,9 @@ vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
 
+-- Places a ruler column 80 as a soft limit, and one at every line after column 120 as a hard limit.
+vim.cmd [[ let &colorcolumn="80,120" ]]
+
 vim.cmd [[
   augroup user_options
     autocmd!
