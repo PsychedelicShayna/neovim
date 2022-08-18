@@ -191,7 +191,7 @@ return packer.startup(function(use)
   }
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  -- Automatic comments.
+  -- Comment related plugins.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   use {
     "numToStr/Comment.nvim",
@@ -199,7 +199,7 @@ return packer.startup(function(use)
       { "JoosepAlviste/nvim-ts-context-commentstring" }
     },
     config = function()
-      require "plugins.comment"
+      require "plugins.comments"
     end
   }
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -264,6 +264,15 @@ return packer.startup(function(use)
       require "plugins.which-key"
     end
   }
+
+  use {
+    "AckslD/nvim-trevJ.lua",
+    config = function()
+      require "plugins.nvim-trevJ"
+    end
+  }
+
+
 
   -- Alpha, a customizable greeter homepage for NeoViM.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
