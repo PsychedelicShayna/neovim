@@ -93,7 +93,7 @@ lualine.setup({
 		lualine_b = { mode },
 		lualine_c = {},
 		-- lualine_x = { "encoding", "fileformat", "filetype" },
-		lualine_x = { diff,  "filename"  },
+		lualine_x = { diff },
 		lualine_y = { filetype, spaces, "encoding" },
 		lualine_z = { location, "progress", progress },
 	},
