@@ -14,7 +14,7 @@ project_nvim.setup {
 	---@usage set to true to disable setting the current-woriking directory
 	--- Manual mode doesn't automatically change your root directory, so you have
 	--- the option to manually do so using `:ProjectRoot` command.
-	manual_mode = false,
+	manual_mode = true,
 
 	---@usage Methods of detecting the root directory
 	--- Allowed values: **"lsp"** uses the native neovim lsp
@@ -41,6 +41,7 @@ project_nvim.setup {
   datapath = vim.fn.stdpath("data"),
 }
 
+-- Telescope
 local telescope_ok, telescope = pcall(require, "telescope")
 
 if not telescope_ok then
@@ -48,3 +49,28 @@ if not telescope_ok then
 end
 
 telescope.load_extension('projects')
+
+-- Custom Manual Mode Autocommand
+ProjectNvimAutoRoot = true
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  callback = function()
+    if ProjectNvimAutoRoot then
+      require("project_nvim.project").on_buf_enter()
+    end
+  end
+})
+
+vim.api.nvim_create_user_command("ProjectRootToggle", 
+  function(msg)
+    ProjectNvimAutoRoot = not ProjectNvimAutoRoot
+
+    if msg then
+      vim.notify("Toggled project AutoRoot " .. ({[true]="on", [false]="off"})[ProjectNvimAutoRoot])
+    end
+  end,
+
+  {} -- Optional options
+)
+
+
