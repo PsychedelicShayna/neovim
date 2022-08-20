@@ -60,9 +60,13 @@ return packer.startup(function(use)
     end
   }
 
+  -- Alright, so if you want to add some additional complexity, like for instance
+  -- if this plugin needs configuration, you can just add a config function
+
+
   -- Impatient, speeds up statup time by using compiling Lua modules.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use "lewis6991/impatient.nvim"
+  use { "lewis6991/impatient.nvim" }
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   -- An implementation of the Popup API from vim in Neovim
@@ -83,19 +87,23 @@ return packer.startup(function(use)
   use "sainnhe/gruvbox-material"
   use "cocopon/iceberg.vim"
 
+
   use {
-    "tjdevries/colorbuddy.nvim",
+    "Yagua/nebulous.nvim",
     requires = {
-      { "Yagua/nebulous.nvim",
-        config = function()
-          require "plugins.nebulous"
-        end
-      },
-    }
+      { "tjdevries/colorbuddy.nvim" },
+    },
+    config = function()
+      require "plugins.nebulous"
+    end
   }
 
+
+  -- this is my completion framework and all of the completion sources
+  -- including copilot (it's just another nvim-cmp source)
   -- Completion framework for NeoViM, with many extensions for it.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
   use {
     "hrsh7th/nvim-cmp",
     requires = {
@@ -119,7 +127,7 @@ return packer.startup(function(use)
             requires = {
               "github/copilot.vim"
             },
-            
+
             config = function()
               require "plugins.github-copilot"
             end
@@ -138,6 +146,9 @@ return packer.startup(function(use)
   use "L3MON4D3/LuaSnip" --snippet engine
   use "rafamadriz/friendly-snippets" -- a bunch of snippets to use 
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  
+  -- I forgot where the full list.. oh no wait I know where, on GitHub, one
+  -- mmoent
 
   -- Language Server(s)
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -148,6 +148,7 @@ local mappings = {
     },
 
     i = {
+      -- "<cmd>lua require'telescope.builtin'.diagnostics(require('telescope.themes').get_ivy({ previewer = false, height = 20}))<cr>",
       "<cmd>Telescope diagnostics<cr>",
       "Search Diagnostic"
     },
@@ -165,6 +166,11 @@ local mappings = {
     v = {
       "<cmd>Telescope vim_options<cr>",
       "Search ViM Options"
+    },
+
+    o = {
+      "<cmd>Telescope colorscheme",
+      "Search Colorschemes"
     },
 
     s = {
@@ -305,6 +311,16 @@ local mappings = {
     a = {
       "<cmd>Alpha<cr>",
       "Alpha Dashboard"
+    },
+
+    s ={
+      "<cmd>ClangdSwitchSourceHeader<cr>",
+      "Switch Source/Header Buffers"
+    },
+
+    p = {
+      "<cmd>ProjectRootToggle<cr>",
+      "Toggle Project AutoRoot"
     }
 	},
 
