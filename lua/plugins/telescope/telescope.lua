@@ -87,7 +87,16 @@ telescope.setup {
     -- }
     -- Now the picker_config_key will be applied every time you call this
     -- builtin picker
+
+    diagnostics = {
+      theme =  "ivy",
+      previewer = false,
+      layout_config = {
+        height = 10,
+      }
+    }
   },
+
   extensions = {
     media_files = {
         -- filetypes whitelist
