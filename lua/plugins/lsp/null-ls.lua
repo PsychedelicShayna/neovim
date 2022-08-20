@@ -18,13 +18,21 @@ null_ls.setup {
   end,
 
   sources = {
+    -- Lua
     formatting.stylua,
+
+    -- C++
     formatting.clang_format,
     diagnostics.cppcheck,
-    -- diagnostics.codespell, It's pretty bad.
+
+    -- Elixr
+    formatting.mix,
+    diagnostics.credo.with {
+      command = "mix.bat"
+    },
+
+    -- Other
     diagnostics.jsonlint,
-    -- diagnostics.cspell, And so is this.
     code_actions.gitsigns,
-    -- diagnostics.flake8,
   },
 }
