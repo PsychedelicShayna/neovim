@@ -18,9 +18,6 @@ null_ls.setup {
   end,
 
   sources = {
-    -- Lua
-    formatting.stylua,
-
     -- C++
     formatting.clang_format,
     diagnostics.cppcheck,

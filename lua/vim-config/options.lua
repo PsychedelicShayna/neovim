@@ -54,6 +54,7 @@ vim.cmd [[
     autocmd!
     autocmd FileType lua setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd FileType elixir setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd FileType markdown setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd FileType text setlocal wrap

@@ -376,6 +376,11 @@ local mappings = {
 			"Format",
 		},
 
+    F = {
+      "<cmd>:ToggleAutoFormat<cr>",
+      "Toggle AutoFormat"
+    },
+
 		i = {
 			"<cmd>lua vim.lsp.buf.implementation()<cr>",
 			"View Implementation",

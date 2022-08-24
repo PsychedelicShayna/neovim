@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   end
 })
 
-vim.api.nvim_create_user_command("ProjectRootToggle", 
+vim.api.nvim_create_user_command("ProjectRootToggle",
   function(msg)
     ProjectNvimAutoRoot = not ProjectNvimAutoRoot
 
