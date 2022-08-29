@@ -1,136 +1,136 @@
 local colorscheme = "onedark"
 local disable_background = false
 
-if(disable_background) then
+if (disable_background) then
   vim.cmd("autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE")
 end
 
 local colorscheme_overrides = {
   ["onedark"] = {
     ["BufferLineError"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineDiagnostic"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineHint"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineBuffer"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineWarning"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineWarningDiagnostic"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineWarningVisible"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineInfoDiagnosticVisible"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineInfoDiagnostic"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineInfoVisible"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineHintDiagnosticVisible"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineHintDiagnostic"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineHintVisible"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineDiagnosticVisible"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineNumbersVisible"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineNumbers"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineSeparatorVisible"] = {
-       ["fg"] = "#111215",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#111215",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineErrorVisible"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineErrorDiagnostic"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineErrorDiagnosticVisible"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLinePick"] = {
-       ["fg"] = "#ff0000",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ff0000",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineIndicatorVisible"] = {
-       ["fg"] = "#282C34",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#282C34",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineInfo"] = {
-       ["fg"] = "#ABB2BF",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ABB2BF",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLineWarningDiagnosticVisible"] = {
-       ["fg"] = "#3f4249",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#3f4249",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["BufferLinePickVisible"] = {
-       ["fg"] = "#ff0000",
-       ["bg"] = "#282C34",
-       ["enable"] = true
+      ["fg"] = "#ff0000",
+      ["bg"] = "#282C34",
+      ["enable"] = true
     },
     ["NvimTreeNormal"] = {
       ["fg"] = "#c8ccd4",

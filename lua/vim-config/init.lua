@@ -7,3 +7,6 @@ require "vim-config.keybindings"
 
 -- Where certain features of ViM can be enabled, disabled, or configured.
 require "vim-config.options"
+
+-- Neovide configuration. Will only have an effect if Neovide is loaded.
+require "vim-config.neovide"
