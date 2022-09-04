@@ -19,7 +19,7 @@ null_ls.setup {
 
   sources = {
     -- C++
-    formatting.clang_format,
+    -- formatting.clang_format,
     diagnostics.cppcheck,
 
     -- Elixr
