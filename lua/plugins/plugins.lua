@@ -240,8 +240,7 @@ return packer.startup(function(use)
 
   use { "noib3/nvim-cokeline",
     requires = 'kyazdani42/nvim-web-devicons',
-    config = function() require "plugins.nvim-cokeline" end,
-    after = "lualine.nvim"
+    config = function() require "plugins.nvim-cokeline" end
   }
 
   -- Adds the "Bdelete" and "Bwipeout" commands that can be used to delete
