@@ -71,13 +71,6 @@ end
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-
-
-
-
-
-
-
 lualine.setup({
   options = {
     icons_enabled = true,
@@ -88,25 +81,38 @@ lualine.setup({
     always_divide_middle = true,
   },
 
+  refresh = {
+    statusline = 1000,
+    tabline = 1000,
+    winbar = 1000
+  },
+
   sections = {
     lualine_a = { branch, diagnostics },
     lualine_b = { mode },
-    lualine_c = {},
+    lualine_c = { "filename" },
     -- lualine_x = { "encoding", "fileformat", "filetype" },
     lualine_x = { diff },
-    lualine_y = { filetype, spaces, "encoding" },
-    lualine_z = { location, "progress", progress },
+    -- lualine_y = { filetype, spaces, "encoding" },
+    lualine_y = { filetype, "encoding" },
+    -- lualine_z = { location, "progress", }, -- progress
+    lualine_z = { location, }, -- progress
   },
 
   inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { "filename" },
+    lualine_a = { "filename" },
+    lualine_b = { "filetype" },
+    lualine_c = {},
     lualine_x = { "location" },
     lualine_y = {},
     lualine_z = {},
   },
 
-  tabline = {},
+  tabline = nil,
+  -- tabline = {
+  --   -- lualine_a = { "buffers" },
+  --   -- lualine_b = { "branch" },
+  --   -- lualine_c = { "buffers" }
+  -- },
   extensions = {},
 })

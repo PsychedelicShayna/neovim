@@ -1,11 +1,14 @@
 if not vim.g.neovide then
-  vim.notify("Neovide not found")
+  -- vim.notify("Neovide not found")
   return
 end
 
-vim.g.gui_font_default_size = 16
+-- vim.g.gui_font_default_size = 16
+vim.g.gui_font_default_size = 14
 vim.g.gui_font_size = vim.g.gui_font_default_size
-vim.g.gui_font_face = "Hasklug NF"
+-- vim.g.gui_font_face = "Hasklug NF"
+-- vim.g.gui_font_face = "Consolas Ligaturized v3"
+vim.g.gui_font_face = "Go Mono"
 
 vim.g.neovide_cursor_vfx_mode = "wireframe"
 

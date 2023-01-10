@@ -1,12 +1,11 @@
 local status_ok, bufferline = pcall(require, "bufferline")
 if not status_ok then
+  vim.notify("Ignored bufferline config, because bufferline could not be found.")
   return
 end
 
 -- Documentation
 -- https://github.com/akinsho/bufferline.nvim
-
-
 
 bufferline.setup {
   options = {
@@ -91,13 +90,13 @@ bufferline.setup {
   highlights = {
     fill = {
       fg = { attribute = "fg", highlight = "#ff0000" },
-      bg = { attribute = "bg", highlight = "TabLine" },
+      bg = { attribute = "bg", highlight = "lualine_a_inactive" },
     },
 
-    background = {
-      fg = { attribute = "fg", highlight = "TabLine" },
-      bg = { attribute = "bg", highlight = "TabLine" },
-    },
+    -- background = {
+    --   fg = { attribute = "fg", highlight = "lualine_a_inactive" },
+    --   bg = { attribute = "bg", highlight = "lualine_a_inactive" },
+    -- },
 
     -- buffer_selected = {
     --   fg = {attribute='fg',highlight='#ff0000'},
@@ -190,6 +189,25 @@ bufferline.setup {
     indicator_selected = {
       fg = { attribute = "fg", highlight = "LspDiagnosticsDefaultHint" },
       bg = { attribute = "bg", highlight = "Normal" },
+    },
+
+    warning_diagnostic = {
+      fg = { attribute = "fg", highlight = "TabLine" },
+      bg = { attribute = "bg", highlight = "TabLine" },
+    },
+
+    warning_diagnostic_visible = {
+      fg = { attribute = "fg", highlight = "TabLine" },
+      bg = { attribute = "bg", highlight = "TabLine" },
+    },
+
+    warning = {
+      fg = { attribute = "fg", highlight = "TabLine" },
+      bg = { attribute = "bg", highlight = "TabLine" },
+    },
+    warning_visible = {
+      fg = { attribute = "fg", highlight = "TabLine" },
+      bg = { attribute = "bg", highlight = "TabLine" },
     },
   },
 }

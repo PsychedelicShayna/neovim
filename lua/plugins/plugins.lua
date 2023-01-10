@@ -27,6 +27,7 @@ end
 
 -- The packer init configuration.
 packer.init {
+  max_jobs = 5,
   display = {
     -- Use a popup window for the packer GUI.
     open_fn = function()
@@ -38,12 +39,12 @@ packer.init {
 -- AutoCommand that reloads NeoViM when you update this init.lua file, such as
 -- when adding or removing a plugin, ensuring that any changes to the file are
 -- immediately reflected in NeoViM.
- vim.cmd [[ 
-  augroup packer_user_config 
-     autocmd! 
-     autocmd BufWritePost plugins.lua source <afile> | PackerSync 
-   augroup end 
-]]
+-- vim.cmd [[
+--   augroup packer_user_config
+--      autocmd!
+--      autocmd BufWritePost plugins.lua source <afile> | PackerSync
+--    augroup end
+-- ]]
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -60,24 +61,26 @@ return packer.startup(function(use)
     end
   }
 
-  -- Alright, so if you want to add some additional complexity, like for instance
-  -- if this plugin needs configuration, you can just add a config function
-
+  -- Profile startup time.
+  use "dstein64/vim-startuptime"
 
   -- Impatient, speeds up statup time by using compiling Lua modules.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   use { "lewis6991/impatient.nvim" }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  -- -- -- -- -- --
+  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  -- An implementation of the Popup API from vim in Neovim
+  -- Hacky Profiler
+  use "stevearc/profile.nvim"
+
   use "nvim-lua/popup.nvim"
 
   -- Useful Lua functions, used by lots of plugins
   use "nvim-lua/plenary.nvim"
 
+  ------------------------------------------------------------------------------
   -- Colorschemes
-  -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
-
+  ------------------------------------------------------------------------------
   use "lunarvim/darkplus.nvim"
   use "lunarvim/colorschemes"
   use "folke/tokyonight.nvim"
@@ -86,8 +89,13 @@ return packer.startup(function(use)
   use "luisiacc/gruvbox-baby"
   use "sainnhe/gruvbox-material"
   use "cocopon/iceberg.vim"
-
-
+  use "shaunsingh/oxocarbon.nvim"
+  use "keith/parsec.vim"
+  use "RRethy/nvim-base16"
+  use "chriskempson/base16-vim"
+  use "mswift42/vim-themes"
+  use "lifepillar/vim-solarized8"
+  -- use "lunarvim/colorschemes" -- These colorschemes are mostly broken.
   use {
     "Yagua/nebulous.nvim",
     requires = {
@@ -97,165 +105,150 @@ return packer.startup(function(use)
       require "plugins.nebulous"
     end
   }
-
-
-  -- this is my completion framework and all of the completion sources
-  -- including copilot (it's just another nvim-cmp source)
-  -- Completion framework for NeoViM, with many extensions for it.
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
+  ------------------------------------------------------------------------------
+  -- Neovim Completion
+  ------------------------------------------------------------------------------
   use {
     "hrsh7th/nvim-cmp",
-    requires = {
-      { "hrsh7th/cmp-buffer" },       -- Buffer Completions.
-      { "hrsh7th/cmp-path" },         -- Path Completions.
-      { "hrsh7th/cmp-cmdline" },      -- CmdLine Completions.
-      { "saadparwaiz1/cmp_luasnip" }, -- Snippet Completions.
-      { "hrsh7th/cmp-nvim-lua" },     -- NVIM Lua Completion.
-      { "hrsh7th/cmp-nvim-lsp" },      -- NVIM Lua Completion.
 
-      { "zbirenbaum/copilot-cmp",     -- GitHub copilot AI completion!
-        module = { "copilot_cmp" },
-        requires = {
-          -- The better, Lua version of github/copilot.vim
-          { "zbirenbaum/copilot.lua",
-            -- Recommended as it can take some time to start up.
-            event = { "VimEnter" },
-
-            -- Technically only required for authentication with GitHub,
-            -- as copilot.lua cannot generate the config files yet.
-            requires = {
-              "github/copilot.vim"
-            },
-
-            config = function()
-              require "plugins.github-copilot"
-            end
-          }
-        }
-      },
-    },
     config = function()
       require "plugins.nvim-cmp"
     end
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+  use "hrsh7th/cmp-nvim-lsp" -- LSP Completion.
+  use "hrsh7th/cmp-path" -- Path Completions.
+  use "hrsh7th/cmp-buffer" -- Buffer Completions.
+  use "hrsh7th/cmp-cmdline" -- CmdLine Completions.
+  use "hrsh7th/cmp-nvim-lua" -- NVIM Lua Completion.
+  use "saadparwaiz1/cmp_luasnip" -- Snippet Completions.
+  ------------------------------------------------------------------------------
+  -- GitHub Copilot
+  ------------------------------------------------------------------------------
+  use {
+    -- The better, Lua version of github/copilot.vim
+    "zbirenbaum/copilot.lua",
+
+    -- Startup can be slow, so good to defer.
+    config = function()
+      vim.defer_fn(function()
+        require("plugins.github-copilot.copilot-lua")
+      end, 100)
+    end,
+
+    event = { "VimEnter" },
+  }
+
+
+  use {
+    "zbirenbaum/copilot-cmp",
+
+    config = function()
+      require "plugins.github-copilot.copilot-cmp"
+    end
+  }
+  ------------------------------------------------------------------------------
   -- Snippets
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use "L3MON4D3/LuaSnip" --snippet engine
-  use "rafamadriz/friendly-snippets" -- a bunch of snippets to use 
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  
-  -- I forgot where the full list.. oh no wait I know where, on GitHub, one
-  -- mmoent
+  ------------------------------------------------------------------------------
+  use "L3MON4D3/LuaSnip"
+  use "rafamadriz/friendly-snippets"
+  ---/===============================================================================================================================================================================================================================
+  --| Nvim LSP (Language Server Protocol)
+  --\================================================================================================================================================================================================================================
+  use { "williamboman/mason.nvim", opt = false }
+  use { "williamboman/mason-lspconfig.nvim", opt = false }
+  use { "neovim/nvim-lspconfig", opt = false }
+  use { "p00f/clangd_extensions.nvim", opt = false }
+  use { "kdarkhan/rust-tools.nvim", opt = false, commit = "a47f5d61ce06a433998fb5711f723773e3156f46" }
+  use { "MrcJkb/haskell-tools.nvim", opt = false }
+  use { "jose-elias-alvarez/null-ls.nvim", opt = false }
+  use { "ray-x/lsp_signature.nvim", opt = false }
 
-  -- Language Server(s)
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use {
-    "neovim/nvim-lspconfig", -- Official config for enabling LSP in NeoViM.
-    requires = {
-      { "williamboman/nvim-lsp-installer" }, -- LSP language installer UI.
-      { "jose-elias-alvarez/null-ls.nvim" },  -- Non-LSP language servers.
-      { "ray-x/lsp_signature.nvim" }
-    },
-    config = function()
-      require "plugins.lsp"
-    end
+  require("plugins.lsp")
+  --\================================================================================================================================================================================================================================
+  -- Telescope, a fuzzy finder framework.
+  ------------------------------------------------------------------------------
+  use { "nvim-telescope/telescope.nvim",
+    requires = { use "nvim-telescope/telescope-media-files.nvim" },
+    config = function() require "plugins.telescope" end
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  -- Telescope
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  ------------------------------------------------------------------------------
+  -- Treesitter, advanced language syntax engine.
+  ------------------------------------------------------------------------------
   use {
-    "nvim-telescope/telescope.nvim",
-    requires = {
-      use "nvim-telescope/telescope-media-files.nvim"
+    { "lewis6991/spellsitter.nvim",
+      config = function() require("spellsitter").setup() end
     },
-    config = function()
-      require "plugins.telescope"
-    end
-  }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  -- Treesitter, advanced language syntax tree engine.
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    requires = {
-      { "lewis6991/spellsitter.nvim" },
-      { "p00f/nvim-ts-rainbow" }
-    },
-    config = function()
-      require "plugins.nvim-treesitter"
-    end
+    { "nvim-treesitter/nvim-treesitter",
+      config = function() require("plugins.nvim-treesitter") end
+    }
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+  use { "p00f/nvim-ts-rainbow", after = "nvim-treesitter" }
+  ------------------------------------------------------------------------------
   -- Autopairs, with integration for both nvim-cmp and nvim-treesitter.
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use {
-    "windwp/nvim-autopairs",
-    config = function()
-      require "plugins.nvim-autopairs"
-    end
+  ------------------------------------------------------------------------------
+  use { "windwp/nvim-autopairs",
+    config = function() require "plugins.nvim-autopairs" end,
+    after = { "nvim-cmp", "nvim-treesitter" }
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
+  ------------------------------------------------------------------------------
   -- Comment related plugins.
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use {
-    "numToStr/Comment.nvim",
-    requires = {
-      { "JoosepAlviste/nvim-ts-context-commentstring" }
-    },
-    config = function()
-      require "plugins.comments"
-    end
+  ------------------------------------------------------------------------------
+  use { "numToStr/Comment.nvim",
+    config = function() require "plugins.comments" end
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+  use "JoosepAlviste/nvim-ts-context-commentstring"
+  ------------------------------------------------------------------------------
   -- GitHub integration.
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  -- Shows removed/inserted/changed guides on the left.
-  use {
-    'TimUntersberger/neogit',
-    requires = 'nvim-lua/plenary.nvim',
+  ------------------------------------------------------------------------------
+  use { "TimUntersberger/neogit",
+    opt = true,
+    requires = "nvim-lua/plenary.nvim",
+    config = function() require "plugins.neogit" end
   }
 
-  use {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require "plugins.gitsigns"
-    end
+  -- Shows removed/inserted/modified guides next to the line number.
+  use { "lewis6991/gitsigns.nvim",
+    config = function() require "plugins.gitsigns" end
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-  -- NvimTree, project root file explorer for NeoViM.
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use {
-    "kyazdani42/nvim-tree.lua",
-    requires = {
-      { "kyazdani42/nvim-web-devicons" }
-    },
-    config = function()
-      require "plugins.nvim-tree"
-    end
+  ------------------------------------------------------------------------------
+  -- NvimTree, project file explorer for NeoViM.
+  ------------------------------------------------------------------------------
+  use { "kyazdani42/nvim-tree.lua",
+    requires = { { "kyazdani42/nvim-web-devicons" } },
+    config   = function() require "plugins.nvim-tree" end
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+
+  ------------------------------------------------------------------------------
+  -- Lualine
+  ------------------------------------------------------------------------------
+  use {
+    "nvim-lualine/lualine.nvim",
+    config = function() require "plugins.lualine" end
+  }
+  ------------------------------------------------------------------------------
   -- Bufferline, buffer tabs for NeoViM, emulating Doom Emacs' aesthetic.
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  use {
-    "akinsho/bufferline.nvim",
-    requires = {
-      { "moll/vim-bbye" }
-    },
-    config = function()
-     require "plugins.nvim-bufferline"
-    end
+  ------------------------------------------------------------------------------
+  -- use { "akinsho/bufferline.nvim",
+  --   config = function() require "plugins.nvim-bufferline" end,
+  --   after = "lualine.nvim"
+  -- }
+
+  use { "noib3/nvim-cokeline",
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = function() require "plugins.nvim-cokeline" end,
+    after = "lualine.nvim"
   }
-  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  -- Adds the "Bdelete" and "Bwipeout" commands that can be used to delete
+  -- buffers without closing the windows that have then open.
+  use "moll/vim-bbye"
+  ------------------------------------------------------------------------------
+
 
   -- Toggleterm
   use {
@@ -265,15 +258,8 @@ return packer.startup(function(use)
     end
   }
 
-  -- Lualine
-  use {
-    "nvim-lualine/lualine.nvim",
-    config = function()
-      require "plugins.lualine"
-    end
-  }
 
-  -- WhichKey 
+  -- WhichKey
   use {
     "folke/which-key.nvim",
     config = function()
@@ -312,7 +298,7 @@ return packer.startup(function(use)
     end
   }
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  
+
   -- Indentline, vertical indent guide lines for NeoViM.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   use {

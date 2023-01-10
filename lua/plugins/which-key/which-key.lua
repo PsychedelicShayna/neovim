@@ -169,7 +169,7 @@ local mappings = {
     },
 
     o = {
-      "<cmd>Telescope colorscheme",
+      "<cmd>Telescope colorscheme<cr>",
       "Search Colorschemes"
     },
 
@@ -372,12 +372,12 @@ local mappings = {
     },
 
     D = {
-      "<cmd>lua vim.lsp.buf.declaration()<CR>",
+      "<cmd>lua vim.lsp.buf.declaration()<cr>",
       "View Declaration",
     },
 
     f = {
-      "<cmd>lua vim.lsp.buf.formatting()<cr>",
+      "<cmd>lua vim.lsp.buf.format { async = true }<cr>",
       "Format",
     },
 
@@ -450,7 +450,7 @@ local mappings = {
     },
 
     j = {
-      "<cmd>lua vim.diagnostic.goto_next()<CR>",
+      "<cmd>lua vim.diagnostic.goto_next()<cr>",
       "Next Diagnostic",
     },
 

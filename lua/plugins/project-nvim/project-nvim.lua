@@ -51,7 +51,7 @@ end
 telescope.load_extension('projects')
 
 -- Custom Manual Mode Autocommand
-ProjectNvimAutoRoot = true
+ProjectNvimAutoRoot = false
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
   callback = function()

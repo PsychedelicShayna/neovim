@@ -9,6 +9,9 @@ luac.out
 *.zip
 *.tar.gz
 
+# .luarc.json language sever spec
+.luarc.json
+
 # Object files
 *.o
 *.os

@@ -1,4 +1,4 @@
-local colorscheme = "onedark"
+local colorscheme = "gruvbox-material"
 local disable_background = false
 
 if (disable_background) then

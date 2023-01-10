@@ -4,18 +4,41 @@ if not copilot_ok then
   return
 end
 
-copilot.setup {
-  cmp = {
-    enabled = true,
-    method = "getCompletionsCycling", -- "getCompletionsCycling" recommended,
+require("copilot").setup({
+  panel = {
+    enabled = false,
+    auto_refresh = false,
+    keymap = {
+      jump_prev = "[[",
+      jump_next = "]]",
+      accept = "<CR>",
+      refresh = "gr",
+      open = "<M-CR>"
+    },
   },
-  panel = { -- no config options yet
+  suggestion = {
     enabled = true,
+    auto_trigger = false,
+    debounce = 75,
+    keymap = {
+      accept = "<M-l>",
+      next = "<M-]>",
+      prev = "<M-[>",
+      dismiss = "<C-]>",
+    },
   },
-  -- Prevent copilot from attaching to buffers with certain file extensions.
-  ft_disable = {},
+  filetypes = {
+    yaml = false,
+    markdown = false,
+    help = false,
+    gitcommit = false,
+    gitrebase = false,
+    hgcommit = false,
+    svn = false,
+    cvs = false,
+    ["."] = false,
+  },
+  copilot_node_command = 'node', -- Node version must be < 18
   plugin_manager_path = vim.fn.stdpath("data") .. "/site/pack/packer",
   server_opts_overrides = {},
-}
-
-
+})

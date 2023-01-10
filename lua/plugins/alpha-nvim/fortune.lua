@@ -52,13 +52,19 @@ local default_fortune_file_list = {
 local function count_chars(string, character)
   local char_counter = 0
 
-  for i=1, #string do
+  for i = 1, #string do
     if string:sub(i, i) == character then
-        char_counter = char_counter + 1
+      char_counter = char_counter + 1
     end
   end
 
   return char_counter
+end
+
+local read_random_fortune = function(file_path)
+  local f = io.open(file_path, "r")
+  local data = file.read(f, "*a")
+
 end
 
 function GetRandomFortune(fortune_files, maxlines)

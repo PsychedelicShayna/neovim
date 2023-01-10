@@ -1,35 +1,33 @@
-local null_ls_status_ok, null_ls = pcall(require, "null-ls")
-if not null_ls_status_ok then
-  return
-end
+-- Builtins: https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins
 
--- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
-local formatting = null_ls.builtins.formatting
--- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
-local diagnostics = null_ls.builtins.diagnostics
-local code_actions = null_ls.builtins.code_actions
+return function(null_ls)
+  local formatting = null_ls.builtins.formatting
+  local diagnostics = null_ls.builtins.diagnostics
+  local code_actions = null_ls.builtins.code_actions
+  local completion = null_ls.builtins.completion
+  local hover = null_ls.builtins.hover
 
-null_ls.setup {
-  debug = false,
+  null_ls.setup {
+    debug = false,
 
-  on_init = function(new_client, _)
-    vim.notify(new_client)
-    --[[ new_client.offset_encoding = "utf-16" ]]
-  end,
+    on_init = function(new_client, _)
+      -- vim.notify(new_client)
+      -- new_client.offset_encoding = "utf-16"
+    end,
 
-  sources = {
-    -- C++
-    -- formatting.clang_format,
-    diagnostics.cppcheck,
+    sources = {
+      -- C++
+      diagnostics.cppcheck,
 
-    -- Elixr
-    formatting.mix,
-    diagnostics.credo.with {
-      command = "mix.bat"
+      -- Elixr
+      formatting.mix,
+      diagnostics.credo.with {
+        command = "mix.bat"
+      },
+
+      -- Other
+      diagnostics.jsonlint,
+      code_actions.gitsigns,
     },
-
-    -- Other
-    diagnostics.jsonlint,
-    code_actions.gitsigns,
-  },
-}
+  }
+end

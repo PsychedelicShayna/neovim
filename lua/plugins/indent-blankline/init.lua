@@ -1,2 +1,1 @@
-require "plugins.indent-blankline.indent-blankline"
-
+-- require "plugins.indent-blankline.indent-blankline"

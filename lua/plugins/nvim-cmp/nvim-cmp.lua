@@ -16,6 +16,7 @@ local check_backspace = function()
 end
 
 --   פּ ﯟ   some other good icons
+-- Find more here: https://www.nerdfonts.com/cheat-sheet
 local kind_icons = {
   Text = "",
   Method = "m",
@@ -46,7 +47,6 @@ local kind_icons = {
   Copilot = "",
 }
 
--- find more here: https://www.nerdfonts.com/cheat-sheet
 
 cmp.setup({
   snippet = {
@@ -66,14 +66,6 @@ cmp.setup({
       c = cmp.mapping.complete(),
     }),
 
-    ["<C-S>"] = cmp.mapping.complete({
-      config = {
-        sources = {
-          { name = "copilot" },
-        },
-      },
-    }),
-
     ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
     ["<C-e>"] = cmp.mapping({
       i = cmp.mapping.abort(),
@@ -86,21 +78,25 @@ cmp.setup({
     --[[ ["<CR>"] = cmp.mapping.confirm { select = true }, ]]
     ["<C-l>"] = cmp.mapping.confirm({ select = true }),
 
-    ["K"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.scroll_docs(-1)
-      else
-        fallback()
-      end
-    end),
+    -- Used to be responsible for scrolling docs, but conflicts with uppercase
+    -- K and J! Something else needs to be found, but for now, disabled.
+    --
+    -- ["K"] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.scroll_docs(-1)
+    --   else
+    --     fallback()
+    --   end
+    -- end),
+    --
+    -- ["J"] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.scroll_docs(1)
+    --   else
+    --     fallback()
+    --   end
 
-    ["J"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.scroll_docs(1)
-      else
-        fallback()
-      end
-    end),
+
 
     --[[ ["<Tab>"] = cmp.mapping( ]]
     --[[   function(fallback) ]]
@@ -174,13 +170,30 @@ cmp.setup({
     documentation = cmp.config.window.bordered(),
   },
 
-  -- DEPRECATED:
-  -- documentation = {
-  --   border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-  -- },
-
   experimental = {
     ghost_text = true,
     native_menu = false,
   },
+})
+
+cmp.setup.filetype("gitcommit", {
+  sources = cmp.config.sources(
+    { { name = "cmp_git" } },
+    { { name = "buffer" } }
+  )
+})
+
+cmp.setup.cmdline({ "/", "?" }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = "buffer" }
+  }
+})
+
+cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources(
+    { { name = "path" } },
+    { { name = "cmdline" } }
+  )
 })
