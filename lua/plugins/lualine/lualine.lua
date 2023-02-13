@@ -86,17 +86,16 @@ lualine.setup({
     tabline = 1000,
     winbar = 1000
   },
-
   sections = {
     lualine_a = { branch, diagnostics },
     lualine_b = { mode },
     lualine_c = { "filename" },
     -- lualine_x = { "encoding", "fileformat", "filetype" },
     lualine_x = { diff },
-    -- lualine_y = { filetype, spaces, "encoding" },
-    lualine_y = { filetype, "encoding" },
-    -- lualine_z = { location, "progress", }, -- progress
-    lualine_z = { location, }, -- progress
+    lualine_y = { filetype, spaces, "encoding" },
+    -- lualine_y = { filetype, "encoding" },
+    lualine_z = { location, "progress", }, -- progress
+    -- lualine_z = { location, }, -- progress
   },
 
   inactive_sections = {

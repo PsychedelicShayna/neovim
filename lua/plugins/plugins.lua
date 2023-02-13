@@ -34,6 +34,10 @@ packer.init {
       return require("packer.util").float { border = "rounded" }
     end,
   },
+  profile = {
+    enable = true,
+    threshold = nil
+  },
 }
 
 -- AutoCommand that reloads NeoViM when you update this init.lua file, such as
@@ -158,18 +162,36 @@ return packer.startup(function(use)
   use { "williamboman/mason.nvim", opt = false }
   use { "williamboman/mason-lspconfig.nvim", opt = false }
   use { "neovim/nvim-lspconfig", opt = false }
-  use { "p00f/clangd_extensions.nvim", opt = false }
-  use { "kdarkhan/rust-tools.nvim", opt = false, commit = "a47f5d61ce06a433998fb5711f723773e3156f46" }
-  use { "MrcJkb/haskell-tools.nvim", opt = false }
+
+  use { "p00f/clangd_extensions.nvim",
+    ft = { "c", "cpp" }
+  }
+
+  use { "simrat39/rust-tools.nvim",
+    ft = "rust"
+  }
+
+  use { "MrcJkb/haskell-tools.nvim",
+    ft = "haskell"
+  }
+
   use { "jose-elias-alvarez/null-ls.nvim", opt = false }
+
   use { "ray-x/lsp_signature.nvim", opt = false }
 
+  use {
+    "hylang/vim-hy",
+    event = "BufRead *.hy"
+  }
+
   require("plugins.lsp")
-  --\================================================================================================================================================================================================================================
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   -- Telescope, a fuzzy finder framework.
   ------------------------------------------------------------------------------
   use { "nvim-telescope/telescope.nvim",
     requires = { use "nvim-telescope/telescope-media-files.nvim" },
+    cmd = "Telescope",
+    opt = true,
     config = function() require "plugins.telescope" end
   }
   ------------------------------------------------------------------------------
@@ -197,7 +219,8 @@ return packer.startup(function(use)
   -- Comment related plugins.
   ------------------------------------------------------------------------------
   use { "numToStr/Comment.nvim",
-    config = function() require "plugins.comments" end
+    config = function() require "plugins.comments" end,
+    event = "BufEnter *"
   }
 
   use "JoosepAlviste/nvim-ts-context-commentstring"
@@ -219,16 +242,18 @@ return packer.startup(function(use)
   ------------------------------------------------------------------------------
   use { "kyazdani42/nvim-tree.lua",
     requires = { { "kyazdani42/nvim-web-devicons" } },
-    config   = function() require "plugins.nvim-tree" end
+    -- commit   = "3c4958ab3dd0e5fa470fb50b6b9cc6df48229a2e",
+    config   = function() require "plugins.nvim-tree" end,
+    event    = "VimEnter"
   }
-
-
   ------------------------------------------------------------------------------
   -- Lualine
   ------------------------------------------------------------------------------
   use {
     "nvim-lualine/lualine.nvim",
-    config = function() require "plugins.lualine" end
+    config = function() require "plugins.lualine" end,
+    event = "BufEnter *",
+    after = { "nvim-base16" }
   }
   ------------------------------------------------------------------------------
   -- Bufferline, buffer tabs for NeoViM, emulating Doom Emacs' aesthetic.
@@ -240,6 +265,8 @@ return packer.startup(function(use)
 
   use { "noib3/nvim-cokeline",
     requires = 'kyazdani42/nvim-web-devicons',
+    event = "BufEnter *",
+    opt = true,
     config = function() require "plugins.nvim-cokeline" end
   }
 
@@ -248,15 +275,16 @@ return packer.startup(function(use)
   use "moll/vim-bbye"
   ------------------------------------------------------------------------------
 
-
-  -- Toggleterm
   use {
-    "akinsho/toggleterm.nvim",
-    config = function()
-      require "plugins.toggleterm"
-    end
+    "utilyre/barbecue.nvim",
+    requires = {
+      "neovim/nvim-lspconfig",
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    after = "nvim-web-devicons", -- keep this if you're using NvChad
+    config = function() require "plugins.barbecue-nvim" end,
   }
-
 
   -- WhichKey
   use {
@@ -265,15 +293,6 @@ return packer.startup(function(use)
       require "plugins.which-key"
     end
   }
-
-  use {
-    "AckslD/nvim-trevJ.lua",
-    config = function()
-      require "plugins.nvim-trevJ"
-    end
-  }
-
-
 
   -- Alpha, a customizable greeter homepage for NeoViM.
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -294,7 +313,8 @@ return packer.startup(function(use)
     "andweeb/presence.nvim",
     config = function()
       require "plugins.presence"
-    end
+    end,
+    event = "BufRead *"
   }
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -302,6 +322,7 @@ return packer.startup(function(use)
   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   use {
     "lukas-reineke/indent-blankline.nvim",
+    event = "BufRead *",
     config = function()
       require "plugins.indent-blankline"
     end
@@ -315,15 +336,19 @@ return packer.startup(function(use)
     end
   }
 
-
   -- Markdown Preview
-  use "davidgranstrom/nvim-markdown-preview"
+  use {
+    "davidgranstrom/nvim-markdown-preview",
+    ft = "markdown"
+  }
 
   -- Papyrus Language Support
-  use "sirtaj/vim-papyrus"
+  use { "sirtaj/vim-papyrus",
+    event = "BufRead *.psc"
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
+  -- should always be at the end after all plugins.
   if PACKER_BOOTSTRAP then
     require("packer").sync()
   end

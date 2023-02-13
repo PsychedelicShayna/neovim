@@ -4,8 +4,13 @@ if not cokeline_ok then
   return
 end
 
-local get_hex = require("cokeline/utils").get_hex
+local symbols_ok, symbols = pcall(require, "tables.symbols")
+if not symbols_ok then
+  vim.notify("Ignored cokeline config because tables.symbols could not be found.")
+  return
+end
 
+local get_hex = require("cokeline/utils").get_hex
 
 local bright
 local bright_text
@@ -16,13 +21,12 @@ local grey_text
 local dark
 local dark_text
 
-
 -- This table contains functions that should be called in place of setting the
 -- bright/grey/dark locals to the TablineSel/Tabline/TablineFill highlights,
 -- for colorschemes that improperly define them.
 local overrides = {
   onedark = function()
-    -- Example
+
   end,
 
   aurora = function()
@@ -59,6 +63,13 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
 --   
 
 cokeline.setup {
+  buffers = {
+    filter_valid = function(buffer)
+      local disabled_filetypes = { "dashboard", "NvimTree", "Outline", "alpha" }
+      return disabled_filetypes[buffer.filetype] == nil
+    end
+  },
+
   default_hl = {
     fg = function(buffer)
       if buffer.is_focused then
@@ -97,7 +108,7 @@ cokeline.setup {
 
   components = {
     {
-      text = "",
+      text = symbols.slant_left,
       fg = function(buffer)
         if buffer.is_focused then
           return bright
@@ -109,8 +120,10 @@ cokeline.setup {
       bg = function(buffer)
         if buffer.is_first and buffer.is_focused then
           return bright
-        else
+        elseif buffer.is_first then
           return grey
+        else
+          return dark
         end
       end
     },
@@ -133,9 +146,9 @@ cokeline.setup {
           text = text .. string.format(" %s ", errors)
         end
 
-        if string.len(text) == 0 then
-          return " "
-        end
+        -- if string.len(text) == 0 then
+        --   -- return " "
+        -- end
 
         return text
       end
@@ -147,18 +160,14 @@ cokeline.setup {
       text = function(buffer) return buffer.filename end
     },
     {
-      text = function(buffer) return ' ' .. buffer.devicon.icon end
+      text = function(buffer) return ' ' .. buffer.devicon.icon end,
     },
     {
       text = function(buffer)
-        return ""
+        return symbols.slant_left
       end,
       fg = function(buffer)
-        if buffer.is_last then
-          return dark
-        else
-          return grey
-        end
+        return dark
       end,
       bg = function(buffer)
         if buffer.is_focused then

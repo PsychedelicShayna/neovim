@@ -1,0 +1,1 @@
+-- require "plugins.barbecue-nvim.barbecue-nvim"

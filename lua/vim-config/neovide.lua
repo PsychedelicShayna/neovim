@@ -4,11 +4,15 @@ if not vim.g.neovide then
 end
 
 -- vim.g.gui_font_default_size = 16
-vim.g.gui_font_default_size = 14
+vim.g.gui_font_default_size = 16
 vim.g.gui_font_size = vim.g.gui_font_default_size
 -- vim.g.gui_font_face = "Hasklug NF"
 -- vim.g.gui_font_face = "Consolas Ligaturized v3"
-vim.g.gui_font_face = "Go Mono"
+-- vim.g.gui_font_face = "Go Mono"
+-- vim.g.gui_font_face = "UbuntuMono NF"
+-- vim.g.gui_font_face = "Ligalex Mono"
+-- vim.g.gui_font_face = "JetBrainsMono NF"
+vim.g.gui_font_face = "JetBrainsMono NF"
 
 vim.g.neovide_cursor_vfx_mode = "wireframe"
 

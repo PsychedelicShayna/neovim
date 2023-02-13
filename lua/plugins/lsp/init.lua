@@ -5,7 +5,7 @@ local lsp_server_list = {
   "pyright", -- Python,
   "elixirls", -- Elixir
   "solargraph", -- Ruby,
-  "sumneko_lua", -- Lua
+  "lua_ls", -- Lua
   "fsautocomplete", -- F#
   "kotlin_language_server", -- Kotlin
   "omnisharp", -- C# .NET Runtime

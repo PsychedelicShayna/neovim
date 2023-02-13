@@ -74,7 +74,14 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   end
 })
 
-
 -- Disable netrw (built-in file manager), as NvimTree replaces it.
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- vim.cmd [[
+--   let &shell = executable('pwsh') ? 'pwsh' : 'powershell'
+--   let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+--   let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+--   let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+--   set shellquote= shellxquote=
+-- ]]

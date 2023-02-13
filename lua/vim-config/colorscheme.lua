@@ -1,4 +1,6 @@
 local colorscheme = "gruvbox-material"
+-- local colorscheme = "tokyonight-moon"
+-- local colorscheme = "base16-gotham" -- Best with window transparency.
 local disable_background = false
 
 if (disable_background) then

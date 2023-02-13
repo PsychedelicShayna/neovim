@@ -301,14 +301,8 @@ local mappings = {
       "Select Buffer (+ Preview)",
     },
 
-    -- Delete Buffer
-    d = {
-      "<cmd>Bdelete<cr>",
-      "Delete Buffer",
-    },
-
     -- Force Delete Buffer
-    D = {
+    d = {
       "<cmd>Bdelete!<cr>",
       "Delete Buffer (Force)",
     },
@@ -423,9 +417,9 @@ local mappings = {
         "View Running LSP Information",
       },
 
-      I = {
-        "<cmd>LspInstallInfo<cr>",
-        "LSP Language Installer",
+      m = {
+        "<cmd>Mason<cr>",
+        "Run Mason LSP Install Manager",
       },
 
       s = {
@@ -488,101 +482,6 @@ local mappings = {
     S = { "<cmd>PackerStatus<cr>", "Status" },
     u = { "<cmd>PackerUpdate<cr>", "Update" },
   },
-
-
-
-  -- n = {
-  --   name = "Navigate",
-  --   d = {"<cmd>Telescope lsp_definitions<CR>", "Definition"},
-  --   D = {"<cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration"},
-  --   r = {"<cmd>Telescope lsp_references()<CR>", "References"},
-  --   i = {"<cmd>lua vim.lsp.buf.implementation()<CR>", "Implementation"},
-  --   f = {"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", "File"},
-  --   F = {"<cmd>Telescope find_files<cr>", "Find File (Preview)" },
-  --   b = {"<cmd>lua require'telescope.builtin'.buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", "Buffer"},
-  --   g = {"<cmd>Telescope live_grep<CR>", "Live Grep"},
-
-  -- j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
-  -- k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
-  -- l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
-  -- p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },
-  -- r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk" },
-  -- R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer" },
-  -- s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk" },
-  -- u = {
-  --   "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-  --   "Undo Stage Hunk",
-  -- },
-  -- o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
-  -- b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-  -- c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
-  -- d = {
-  --   "<cmd>Gitsigns diffthis HEAD<cr>",
-  --   "Diff",
-  -- },
-  -- },
-
-  -- s = {
-  --   name = "Search",
-  --   b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-  --   c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
-  --   h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
-  --   M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-  --   r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-  --   R = { "<cmd>Telescope registers<cr>", "Registers" },
-  --   k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-  --   C = { "<cmd>Telescope commands<cr>", "Commands" },
-  -- },
-
-
-  --[[ t = { ]]
-  --[[ 	name = "Terminals...", ]]
-  --[[ 	a = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH1_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 1", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	s = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH2_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 2", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	d = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH3_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 3", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	f = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH4_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 4", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	h = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH5_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 5", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	j = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH6_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 6", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	k = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH7_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 7", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	l = { ]]
-  --[[ 		"<cmd>lua _TERM_PWSH8_TOGGLE()<cr>", ]]
-  --[[ 		"Terminal 8", ]]
-  --[[ 	}, ]]
-  --[[]]
-  --[[ 	-- t = { "<cmd>lua _NTOP_TOGGLE()<cr>", "NTOP" }, ]]
-  --[[ 	-- p = { "<cmd>lua _IPYTHON_TOGGLE()<cr>", "iPython" }, ]]
-  --[[ 	-- -- f = { "<cmd>ToggleTerm direction=float<cr>", "Float" }, ]]
-  --[[ 	-- h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" }, ]]
-  --[[ 	-- v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" }, ]]
-  --[[ }, ]]
 }
 
 which_key.setup(setup)

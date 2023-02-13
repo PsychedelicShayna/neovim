@@ -1,10 +1,10 @@
 return function(lspconfig, on_attach, default_capabilities)
-  if not lspconfig.sumneko_lua then
-    vim.notify("Cannot setup sumneko_lua because lspconfig does not define it.")
+  if not lspconfig.lua_ls then
+    vim.notify("Cannot setup lua_ls because lspconfig does not define it.")
     return
   end
 
-  return lspconfig.sumneko_lua.setup {
+  return lspconfig.lua_ls.setup {
     on_attach    = on_attach,
     capabilities = default_capabilities,
     settings     = {
