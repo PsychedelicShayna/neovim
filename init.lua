@@ -1,49 +1,58 @@
--- Hacky Neovim profiler https://github.com/stevearc/profile.nvim
-local should_profile = os.getenv("NVIM_PROFILE")
+-- Bootstap the lazy.nvim plugin manager onto Neovim.
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if should_profile then
-  require("profile").instrument_autocmds()
-  if should_profile:lower():match("^start") then
-    require("profile").start("*")
-  else
-    require("profile").instrument("*")
-  end
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
 
-local function toggle_profile()
-  local prof = require("profile")
-  if prof.is_recording() then
-    prof.stop()
-    vim.ui.input({ prompt = "Save profile to:", completion = "file", default = "profile.json" }, function(filename)
-      if filename then
-        prof.export(filename)
-        vim.notify(string.format("Wrote %s", filename))
-      end
-    end)
-  else
-    prof.start("*")
-  end
+vim.opt.rtp:prepend(lazypath)
+
+local lazy_ok, lazy = pcall(require, "lazy")
+if not lazy_ok then
+  vim.notify("cannot initialize lazy.nvim yet, please restart neovim.")
+  return
 end
 
-vim.keymap.set("", "<f1>", toggle_profile)
+-- Load keybindings before plugins, since it contains leader key definition.
+pcall(require, "userconf.keybindings")
 
--- Normally, this plugin would be in the plugins folder, but this plugin
--- needs to load as soon as possible in order to yield performance benefits.
--- Impatient speeds up startup times through module compilation.
---
--- local impatient_ok, impatient = pcall(require, "impatient")
--- if not impatient_ok then
---   vim.notify("Could not import impatient from plugins/impatient/impatient.lua")
---   return
--- end
--- The vim-config.lua file, containing all of the default ViM configuration options
--- that come with ViM, and don't depend on any plugins.
-require "vim-config"
+-- Load Lazy.nvim
+require("lazy").setup {
+  change_detection = {
+    notify = false
+  },
+  spec = { import = "plugins" },
+  install = {
+    colorscheme = { "kanagawa" }
+  },
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+}
 
-
--- impatient.enable_profile()
-
--- The plugins directory, where the init.lua packer specification file is, and 
--- where all of the plugin configuration directories are.
-require "plugins"
-
+-- Load the Neovim options that should be set after plugins are loaded.
+pcall(require, "userconf.colorscheme")
+pcall(require, "userconf.neovide")
+pcall(require, "userconf.options")
+pcall(require, "userconf.lsp")
