@@ -1,14 +1,21 @@
-return {
-  { "rebelot/kanagawa.nvim", priority = 900,
-    event = "VimEnter",
-    config = function(_, _)
-      vim.cmd.colorscheme("kanagawa")
-    end
-  },
+local selected_colorscheme = "tokyonight-night"
 
-  { "sainnhe/gruvbox-material", lazy = true, priority = 900,
-    config = function(_, _)
-      vim.cmd.colorscheme("gruvbox-material") 
-    end
-  }
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    require("tokyonight")
+    vim.cmd.colorscheme(selected_colorscheme)
+
+    require("global.control.events").fire("colorscheme", "loaded", 2, {
+      name = selected_colorscheme
+    })
+  end
+})
+
+-- "base16-gotham" -- Best with window transparency.
+
+return {
+  { "rebelot/kanagawa.nvim",    lazy = true },
+  { "folke/tokyonight.nvim",    lazy = true },
+  { "NvChad/base46",            lazy = true },
+  { "sainnhe/gruvbox-material", lazy = true },
 }

@@ -1,10 +1,26 @@
-local function config(plugin_spec)
+local function which_key_mappings()
+  require("which-key").register({
+    a = { "<cmd>Alpha<cr>", "Alpha Dashboard" },
+  }, {
+    mode = "n",
+    prefix = "<leader>n"
+  })
+end
+
+local function config()
   local dashboard = require "alpha.themes.dashboard"
-  local banners = require "tables.banners"
+  local banners_ok, banners = pcall(require, "global.tables.banners")
 
-  dashboard.section.header.val = banners.hydra
+  local banner = {}
+
+  if banners_ok then
+    banner = banners.hydra
+  else
+    vim.notify("WARNING: Alpha banner defaulting because global.tables.banners could not be imported.")
+  end
+
+  dashboard.section.header.val = banner
   dashboard.section.header.opts.hl = "Include"
-
   dashboard.section.buttons.opts.hl = "Keyword"
   dashboard.section.buttons.val = {
     dashboard.button("e", "  New File", ":ene <BAR> startinsert <CR>"),
@@ -21,17 +37,24 @@ local function config(plugin_spec)
   require("alpha").setup(dashboard.opts)
 end
 
-
 return {
   "goolord/alpha-nvim",
-  dependencies = "nvim-tree/nvim-web-devicons",
-  config = config,
-  event = function(plugin_spec, event)
+  dependencies = { "nvim-web-devicons" },
+  cmd = { "AlphaRedraw", "Alpha" },
+  event = function()
     if require("utils.check_greeter_skip")() then
       return {}
     end
 
     return { "VimEnter" }
   end,
-  cmd = { "AlphaRedraw", "Alpha" }
+  config = config,
+  init = function()
+    require("global.control.events").new_cb_or_call(
+      "plugin-loaded",
+      "which-key",
+      function()
+        which_key_mappings()
+      end)
+  end,
 }

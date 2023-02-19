@@ -1,67 +1,56 @@
-config = function(plugin)
-  require("nvim-treesitter.install").compilers = { "clang" }
-
-  require("nvim-treesitter.configs").setup {
-    ensure_installed = {},
-    sync_install = false,
-
-    autopairs = {
-      enable = true,
-    },
-
-    highlight = {
-      enable = true, -- false will disable the whole extension
-      disable = { "" }, -- list of language that will be disabled
-      additional_vim_regex_highlighting = false,
-    },
-
-    indent = { enable = false },
-
-    context_commentstring = {
-      enable = true,
-      enable_autocmd = false,
-    },
-
-    rainbow = {
-      enable = false,
-      -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
-      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-      max_file_lines = nil, -- Do not enable for files with more than n lines, int
-      -- colors = {}, -- table of hex strings
-      -- termcolors = {} -- table of colour name strings
-    },
-  }
-end
-
-return { "nvim-treesitter/nvim-treesitter",
-  config = config,
-  lazy = true,
-
-  dependencies = "lukas-reineke/indent-blankline.nvim",
-
-  ft = {
-    "arduino",
-    "c_sharp",
-    "comment",
-    "cmake",
-    "cpp",
-    "elixir",
-    "c",
-    "go",
-    "haskell",
-    "html",
-    "java",
-    "javascript",
-    "julia",
-    "kotlin",
-    "lua",
-    "python",
-    "regex",
-    "ruby",
-    "rust",
-    "typescript",
-    "vim"
-  }
+local file_types = {
+  "arduino",
+  "c_sharp",
+  "comment",
+  "cmake",
+  "cpp",
+  "elixir",
+  "c",
+  "go",
+  "haskell",
+  "html",
+  "java",
+  "javascript",
+  "julia",
+  "kotlin",
+  "lua",
+  "python",
+  "regex",
+  "ruby",
+  "rust",
+  "typescript",
+  "vim"
 }
 
+local function defer_treesitter()
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = file_types,
+    callback = function(args)
+      vim.defer_fn(function()
+        require("nvim-treesitter")
+        vim.api.nvim_exec_autocmds({ "FileType" }, { pattern = args.match })
+      end, 500)
 
+      return true
+    end
+  })
+end
+
+return {
+  "nvim-treesitter/nvim-treesitter",
+  dependencies = "lukas-reineke/indent-blankline.nvim",
+  lazy = true,
+  init = defer_treesitter,
+  config = function()
+    require("nvim-treesitter.install").compilers = { "clang" }
+
+    require("nvim-treesitter.configs").setup {
+      ensure_installed      = {},
+      sync_install          = false,
+
+      highlight             = { enable = true },
+      incremental_selection = { enable = false },
+      indent                = { enable = false },
+    }
+  end,
+}

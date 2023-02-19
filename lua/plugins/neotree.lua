@@ -1,36 +1,137 @@
+local function config()
+  require("neo-tree").setup {
+    use_default_mappings = false,
+
+    default_component_configs = {
+      git_status = {
+        symbols = {
+          added     = "✚",
+          deleted   = "✖",
+          modified  = "",
+          renamed   = "",
+
+          unstaged  = "u",
+          staged    = "S",
+          unmerged  = "",
+          untracked = "U",
+          ignored   = "◌",
+        },
+      },
+      indent = {
+        with_markers = true,
+        with_expanders = true,
+        expander_collapsed = "",
+        expander_expanded = "",
+        indent_marker = "│",
+        last_indent_marker = "└",
+        indent_size = 2,
+      },
+    },
+
+    window = {
+      width = 25,
+      mappings = {
+        ["H"] = "prev_source",
+        ["L"] = "next_source",
+      }
+    },
+
+    filesystem = {
+      hijack_netrw_behavior = "open_default",
+      follow_current_file = true,
+      window = {
+        mappings = {
+          -- Navigation
+          ["l"] = "open",
+          ["K"] = "navigate_up",
+          ["t"] = "set_root",
+
+          -- Filtering
+          ["F"] = "clear_filter",
+          ["f"] = "filter_on_submit",
+          ["."] = "toggle_hidden",
+
+          -- UI
+          ["R"] = "refresh",
+          ["?"] = "show_help",
+          ["p"] = { "toggle_preview", config = { use_float = true } },
+
+          -- File Actions
+          ["v"] = "vsplit_with_window_picker",
+          ["h"] = "split_with_window_picker",
+          ["W"] = "open_with_window_picker",
+
+          ["a"] = { "add", config = { show_path = "relative" } },
+          ["d"] = "delete",
+          ["r"] = "rename",
+
+          -- Clipboard actions.
+          ["c"] = "copy_to_clipboard",
+          ["C"] = "copy",
+          ["x"] = "cut_to_clipboard",
+          ["X"] = "move",
+          ["P"] = "paste_from_clipboard",
+        },
+      }
+    },
+  }
+end
+
+local function which_key_mappings()
+  require("which-key").register({
+    ["e"] = {
+      "<cmd>Neotree toggle<cr>",
+      "NeoTree Toggle"
+    },
+    E = {
+      name = "NeoTree...",
+
+      k = {
+        "<cmd>Neotree float<cr>",
+        "Center Mode"
+      },
+
+      l = {
+        "<cmd>Neotree right<cr>",
+        "Right Mode"
+      },
+
+      j = {
+        "<cmd>Neotree left<cr>",
+        "Left Mode"
+      },
+      t = {
+        "<cmd>Neotree top<cr>",
+        "Top Mode"
+      },
+
+      f = {
+        "<cmd>Neotree focus<cr>",
+        "Focus"
+      }
+    }
+  }, {
+    mode = "n",
+    prefix = "<leader>"
+  })
+end
+
 return {
   "nvim-neo-tree/neo-tree.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    "s1n7ax/nvim-window-picker"
+    "s1n7ax/nvim-window-picker",
   },
   lazy = true,
-  cmd = { "Neotree", "NeoTreeShowToggle", "NeoTreeFloatToggle" },
-  priority = 50,
-  config = {
-    window = {
-      mappings = {
-        ["l"] = "toggle_node",
-        ["l"] = "open"
-      },
-
-      width = 25
-    }
-  }
+  cmd = "Neotree",
+  config = config,
+  init = function()
+    require("global.control.events").new_cb_or_call(
+      "plugin-loaded",
+      "which-key",
+      function()
+        which_key_mappings()
+      end)
+  end,
 }
-
--- width = 40, -- applies to left and right positions
--- height = 15, -- applies to top and bottom positions
--- auto_expand_width = false, -- expand the window when file exceeds the window width. does not work with position = "float"
--- popup = { -- settings that apply to float position only
--- size = {
---   height = "80%",
---   width = "50%",
--- },
--- position = "50%", -- 50% means center it
--- -- you can also specify border here, if you want a different setting from
--- -- the global popup_border_style.
--- },
-
-

@@ -7,7 +7,7 @@ vim.api.nvim_create_user_command(
 
     if msg then
       vim.notify("Toggled autoformat " ..
-        ({ [true] = "on", [false] = "off" })[lsp_enable_autoformat])
+      ({ [true] = "on",[false] = "off" })[lsp_enable_autoformat])
     end
   end,
   {}
@@ -23,9 +23,9 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 local diagnostic_signs = {
   { name = "DiagnosticSignError", text = "" },
-  { name = "DiagnosticSignWarn", text = "" },
-  { name = "DiagnosticSignHint", text = "" },
-  { name = "DiagnosticSignInfo", text = "" },
+  { name = "DiagnosticSignWarn",  text = "" },
+  { name = "DiagnosticSignHint",  text = "" }, -- old: 
+  { name = "DiagnosticSignInfo",  text = "" },
 }
 
 for _, sign in ipairs(diagnostic_signs) do
@@ -37,7 +37,7 @@ for _, sign in ipairs(diagnostic_signs) do
 end
 
 vim.diagnostic.config {
-  virtual_text = true,
+  virtual_text = false,
   signs = { active = diagnostic_signs },
   update_in_insert = true,
   underline = true,

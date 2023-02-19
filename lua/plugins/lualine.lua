@@ -1,4 +1,5 @@
 -- "   כּ ךּ    落   ﯽ  ﱴ"
+
 local function config(_)
   local lualine = require "lualine"
 
@@ -57,7 +58,7 @@ local function config(_)
       theme = "auto",
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
-      disabled_filetypes = { "dashboard", "NvimTree", "Outline", "alpha" },
+      disabled_filetypes = { "dashboard", "neo-tree", "Outline", "alpha" },
       always_divide_middle = true,
     },
 

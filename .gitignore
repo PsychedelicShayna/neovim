@@ -1,6 +1,12 @@
 # Backup Files
 *.bak
 
+# Notes
+*todo.*
+
+# Lazy's Lock File
+lazy-lock.json
+
 # Compiled Lua sources
 luac.out
 

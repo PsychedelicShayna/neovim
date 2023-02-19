@@ -43,8 +43,131 @@ local function get_precomputed_lsp_list()
   return file_types
 end
 
+-- addWorkspaceFolder
+-- clearReferences
+-- codeAction
+-- completion
+-- declaration
+-- definition
+-- documentHighlight
+-- documentSymbol
+-- executeCommand
+-- format
+-- hover
+-- implementation
+-- incomingCalls
+-- listWorkspaceFolders
+-- outgoingCalls
+-- references
+-- removeWorkspaceFolder
+-- rename
+-- serverReady
+-- signatureHelp
+-- typeDefinition
+-- workspaceSymbol
+
+local function which_key_map_capabilities(client, bufnr)
+  local scap = client.server_capabilities
+  local mappings = {}
+
+  if scap.codeActionProvider then
+    mappings["a"] = {
+      "<cmd>lua vim.lsp.buf.code_action()<cr>",
+      "Code Action",
+    }
+  end
+
+  if scap.declarationProvider then
+    mappings["D"] = {
+      "<cmd>lua vim.lsp.buf.declaration()<cr>",
+      "View Declaration",
+    }
+  end
+
+  if scap.definitionProvider then
+    mappings["d"] = {
+      "<cmd>Telescope lsp_definitions<cr>",
+      "View Definition",
+    }
+  end
+
+  if scap.documentSymbolProvider then
+    mappings["s"] = {}
+  end
+
+  if scap.documentFormattingProvider then
+    mappings["f"] = {
+      "<cmd>lua vim.lsp.buf.format { async = true }<cr>",
+      "Format",
+    }
+  end
+
+  if scap.hoverProvider then
+    mappings["h"] = {
+      "<cmd>lua vim.lsp.buf.hover()<cr>",
+      "Hover Over",
+    }
+  end
+
+  if scap.implementationProvider then
+    mappings["i"] = {
+      "<cmd>lua vim.lsp.buf.implementation()<cr>",
+      "View Implementation",
+    }
+  end
+
+  if scap.referencesProvider then
+    mappings["R"] = {
+      "<cmd>Telescope lsp_references<cr>",
+      "Find References"
+    }
+  end
+
+  if scap.renameProvider then
+    mappings["r"] = {
+      "<cmd>lua vim.lsp.buf.rename()<cr>",
+      "Rename Symbol",
+    }
+  end
+
+  if scap.signatureHelpProvider then
+    mappings["s"] = {
+      "<cmd>lua vim.lsp.buf.signature_help()<cr>",
+      "View Signature",
+    }
+  end
+
+  if scap.workspaceSymbolProvider then
+    mappings["W"] = {
+      "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+      "Find Workspace Symbols",
+    }
+  end
+
+  if scap.documentFormattingProvider then
+    mappings["F"] = {
+      "<cmd>:ToggleAutoFormat<cr>",
+      "Toggle AutoFormat"
+    }
+  end
+
+  require("global.control.events").new_cb_or_call(
+    "plugin-loaded",
+    "which-key",
+    function()
+      require("which-key").register(mappings, {
+        prefix = "<leader>l",
+        mode = "n",
+        buffer = bufnr
+      })
+    end)
+end
+
 local function on_attach(client, bufnr)
-  if client.server_capabilities.documentHighlightProvider then
+  which_key_map_capabilities(client, bufnr)
+  local scap = client.server_capabilities
+
+  if scap.documentHighlightProvider then
     vim.api.nvim_create_autocmd({ "CursorHold" }, {
       callback = function()
         vim.lsp.buf.document_highlight()
@@ -60,7 +183,7 @@ local function on_attach(client, bufnr)
     })
   end
 
-  if client.server_capabilities.documentFormattingProvider then
+  if scap.documentFormattingProvider then
     vim.api.nvim_create_autocmd({ "BufWritePre" }, {
       callback = function()
         if LspEnableAutoFormat then
@@ -73,11 +196,14 @@ end
 
 return {
   { "williamboman/mason.nvim",
+    lazy = true,
     priority = 2000,
     config = true
   },
 
   { "williamboman/mason-lspconfig.nvim",
+    lazy = true,
+    dependencies = "williamboman/mason.nvim",
     priority = 1999,
     config = function()
       local mason_lspconfig = require("mason-lspconfig")
@@ -85,12 +211,30 @@ return {
 
       vim.defer_fn(function()
         update_precomputed_lsp_list(mason_lspconfig)
-      end, 5000)
+      end, 5000) -- Run an update on the precumputed LSP list 5 seconds after Mason starts.
     end
   },
 
   { "neovim/nvim-lspconfig",
+    lazy = true,
+    dependencies = "williamboman/mason-lspconfig.nvim",
     priority = 1979, -- ;)
+    init = function()
+      -- Defer the configuration of lspconfig to 250ms after a file type has been set.
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          vim.defer_fn(function()
+            require("lspconfig")
+
+            vim.api.nvim_exec_autocmds({ "FileType" }, {
+              pattern = args.match
+            })
+          end, 250)
+
+          return true
+        end
+      })
+    end,
     config = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       local cmp_lsp_present, cmp_lsp = pcall(require, "cmp_nvim_lsp")
@@ -144,20 +288,17 @@ return {
   },
 
   { "p00f/clangd_extensions.nvim",
-    config = {},
+    config = true,
     lazy = true,
-    -- ft = { "c", "cpp" }
   },
 
   { "simrat39/rust-tools.nvim",
-    config = {},
+    config = true,
     lazy = true,
-    -- ft = "rust"
   },
 
   { "MrcJkb/haskell-tools.nvim",
-    config = {},
+    config = true,
     lazy = true,
-    -- ft = "haskell"
   }
 }

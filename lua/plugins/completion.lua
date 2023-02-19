@@ -28,10 +28,20 @@ local icons = {
   Copilot = "",
 }
 
-local function config(_)
+local function config()
   local cmp = require "cmp"
 
   cmp.setup {
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body)
+      end
+    },
+
+    performance = {
+      throttle = 250
+    },
+
     mapping = {
       ["<C-k>"] = cmp.mapping.select_prev_item(),
 
@@ -86,13 +96,8 @@ local function config(_)
     },
 
     window = {
-      completion = cmp.config.window.bordered(),
+      completion = cmp.config.window.bordered(), -- TODO: Change to single stroke non-rounded border:
       documentation = cmp.config.window.bordered(),
-    },
-
-    experimental = {
-      ghost_text = true,
-      native_menu = false,
     },
   }
 
@@ -108,7 +113,7 @@ return {
   { "hrsh7th/nvim-cmp",
     dependencies = {
       "cmp-path",
-      "copilot-cmp",
+      -- "copilot-cmp",
       "cmp-buffer"
     },
     event = "InsertEnter",

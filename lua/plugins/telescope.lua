@@ -1,11 +1,5 @@
-local config = function(plugin)
-  local status_ok, telescope = pcall(require, "telescope")
-  if not status_ok then
-    return
-  end
-
-  telescope.load_extension('media_files')
-
+local config = function()
+  local telescope = require "telescope"
   local actions = require "telescope.actions"
 
   telescope.setup {
@@ -13,7 +7,6 @@ local config = function(plugin)
       prompt_prefix = "  ",
       selection_caret = "  ",
       path_display = { "smart" },
-
       mappings = {
         i = {
           ["<C-n>"] = actions.cycle_history_next,
@@ -23,9 +16,6 @@ local config = function(plugin)
           ["<C-k>"] = actions.move_selection_previous,
 
           ["<C-c>"] = actions.close,
-
-          ["<Down>"] = actions.move_selection_next,
-          ["<Up>"] = actions.move_selection_previous,
 
           ["<CR>"] = actions.select_default,
           ["<C-x>"] = actions.select_horizontal,
@@ -60,6 +50,9 @@ local config = function(plugin)
 
           ["j"] = actions.move_selection_next,
           ["k"] = actions.move_selection_previous,
+          ["<C-j>"] = actions.move_selection_next,
+          ["<C-k>"] = actions.move_selection_previous,
+
           ["H"] = actions.move_to_top,
           ["M"] = actions.move_to_middle,
           ["L"] = actions.move_to_bottom,
@@ -80,43 +73,58 @@ local config = function(plugin)
       },
     },
     pickers = {
-      -- Default configuration for builtin pickers goes here:
-      -- picker_name = {
-      --   picker_config_key = value,
-      --   ...
-      -- }
-      -- Now the picker_config_key will be applied every time you call this
-      -- builtin picker
-
       diagnostics = {
-        theme =  "ivy",
+        theme = "ivy",
         previewer = false,
         layout_config = {
           height = 10,
         }
       }
     },
-
-    extensions = {
-      media_files = {
-          -- filetypes whitelist
-          -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
-          filetypes = {"png", "webp", "jpg", "jpeg"},
-          find_cmd = "rg" -- find command (defaults to `fd`)
-        }
-      -- Your extension configuration goes here:
-      -- extension_name = {
-      --   extension_config_key = value,
-      -- }
-      -- please take a look at the readme of the extension you want to configure
-    },
   }
 end
 
-return { "nvim-telescope/telescope.nvim",
-  dependencies = "nvim-telescope/telescope-media-files.nvim",
-  config = config,
-  lazy = true,
-  cmd = "Telescope"
-}
+local function which_key_mappings()
+  require("which-key").register({
+    name = "Find...",
+    f = { "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", "Files" },
+    F = { "<cmd>Telescope find_files<cr>", "Files (+ Preview)" },
+    g = { "<cmd>Telescope live_grep<cr>", "File Contents (Live Grep)" },
+    r = { "<cmd>lua require('telescope.builtin').oldfiles(require('telescope.themes').get_dropdown{previewer = false})<cr>", "Recent Files" },
+    R = { "<cmd>Telescope oldfiles<cr>", "Recent Files (+Preview)" },
+    b = { "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>", "Buffers" },
+    B = { "<cmd>Telescope buffers<cr>", "Buffers" },
+    p = { "<cmd>Telescope projects<cr>", "Projects" },
+    d = { "<cmd>Telescope diagnostics<cr>", "Diagnostic" },
+    s = { "<cmd>Telescope symbols<cr>", "Symbols" },
+    c = { "<cmd>Telescope commands<cr>", "Commands" },
+    j = { "<cmd>Telescope jumplist<cr>", "Jumplist" },
+    o = {
+      name = "Obscure...",
+      v = { "<cmd>Telescope vim_options<cr>", "ViM Options" },
+      o = { "<cmd>Telescope colorscheme<cr>", "Colorschemes" },
+      k = { "<cmd>Telescope keymaps<cr>", "Keybindings" },
+      s = { "<cmd>Telescope search_history<cr>", "Search, History" },
+      c = { "<cmd>Telescope command_history<cr>", "Command History" },
+      a = { "<cmd>Telescope autocommands<cr>", "AutoCommands" },
+    },
+  }, {
+    prefix = "<leader>f",
+    mode = "n"
+  })
+end
 
+return {
+  "nvim-telescope/telescope.nvim",
+  lazy = true,
+  cmd = "Telescope",
+  init = function()
+    require("global.control.events").new_cb_or_call(
+      "plugin-loaded",
+      "which-key",
+      function()
+        which_key_mappings()
+      end)
+  end,
+  config = config
+}

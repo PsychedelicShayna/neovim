@@ -70,5 +70,5 @@ keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
 -- Telescope
-keymap("n", "<A-x>", "<cmd>Telescope commands theme=ivy<cr>", opts)
-keymap("c", "<A-x>", "<cmd>Telescope commands theme=ivy<cr>", opts)
+-- keymap("n", "<A-x>", "<cmd>Telescope commands theme=ivy<cr>", opts)
+-- keymap("c", "<A-x>", "<cmd>Telescope commands theme=ivy<cr>", opts)
