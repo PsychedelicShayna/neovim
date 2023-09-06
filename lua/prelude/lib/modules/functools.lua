@@ -1,0 +1,55 @@
+local M = {}
+
+-- function M.tbl_all(table)
+--   if type(table) ~= 'table' then
+--     return false
+--   end
+-- 
+--   for _, e in ipairs(table) do
+--     if not e then
+--       return false
+--     end
+--   end
+-- 
+--   return true
+-- end
+-- 
+-- function M.tbl_any(tbl)
+--   if type(tbl) ~= 'table' then
+--     return false
+--   end
+-- 
+--   for _, e in ipairs(tbl) do
+--     if e then
+--       return true
+--     end
+--   end
+-- 
+--   return false
+-- end
+-- 
+-- -- Converging tree chopper
+-- --
+-- -- Paths: set[set[str]]
+-- -- Wherre each set in the main set represents a layer where
+-- -- the search should be performed relative to, e.g.
+-- --
+-- -- ['modules.foo1', 'modules.bar1'], will look for these specific
+-- -- paths in the root path, and return a new path with the matches
+-- -- chopped out of the path, i.e. ./lsp*modules*/**/*
+-- --
+-- -- Matching algorithm idea:
+-- --   - When iterating over potential matches, search 
+-- 
+-- 
+-- 
+-- -- tree = table of (leaf | container);
+-- -- 
+-- M.ctc(tree, paths) do
+--   for p in paths do
+--     
+--   end
+-- end
+
+
+return M

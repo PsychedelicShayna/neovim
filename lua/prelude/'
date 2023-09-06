@@ -1,0 +1,274 @@
+[[
+  This is the prelude module. Within the prelude folder, subfolders can be
+  created that represent "namespaces", which will, upon inclusion in the
+  _namespaces table down below, become part of the prelude module, accessible
+  by doing require('prelude').namespace1, for instance.
+
+  Each namespace has its own exports.lua file, which governs what modules will
+  be accessible through that namespace, i.e. require('prelude').name1.module
+  
+  Likewise, each module is responsible for what functions it exports, just as
+  each namespace is responsible for what modules it exports, and the prelude
+  module itself is responsible for what namespaces it exports.
+
+  Here is a hierarchy to help in visualizing this structure:
+
+ prelude
+ ├─ init.lua____________You are here.
+ └─lib/_________________This is a namespace called lib.
+   ├─export.lua_________This defines what modules will be exported.
+   └─modules/___________These are its internal modules it can export.
+      ├─events.lua
+      ├─functools.lua
+      ├─startcheck.lua
+      ├─filesystem.lua
+      └─mapkey.lua
+
+2 directories, 8 files
+
+]]
+
+
+local M = {
+  _EXPORTER_MODULE_NAME = 'exports'
+
+  -- Exporters that do not define the optional "defaults" function, and so
+  -- require manual action to work with.
+  _defaultless = {}
+erdtree (erd) is a cross-platform, multi-threaded, and general purpose filesystem and disk usage utility.
+
+Usage: erd [OPTIONS] [DIR]
+
+Arguments:
+  [DIR]
+          Directory to traverse; defaults to current working directory
+
+Options:
+  -c, --config <CONFIG>
+          Use configuration of named table rather than the top-level table in .erdtree.toml
+
+  -C, --color <COLOR>
+          Mode of coloring output
+          
+          [default: auto]
+
+          Possible values:
+          - none:  Print plainly without ANSI escapes
+          - auto:  Attempt to colorize output
+          - force: Turn on colorization always
+
+  -d, --disk-usage <DISK_USAGE>
+          Print physical or logical file size
+          
+          [default: physical]
+
+          Possible values:
+          - logical:  How many bytes does a file contain
+          - physical: How many actual bytes on disk, taking into account blocks, sparse files, and compression
+          - line:     How many total lines a file contains
+          - word:     How many total words a file contains
+
+  -f, --follow
+          Follow symlinks
+
+  -H, --human
+          Print disk usage in human-readable format
+
+  -i, --no-ignore
+          Do not respect .gitignore files
+
+  -I, --icons
+          Display file icons
+
+  -L, --level <NUM>
+          Maximum depth to display
+
+  -p, --pattern <PATTERN>
+          Regular expression (or glob if '--glob' or '--iglob' is used) used to match files
+
+      --glob
+          Enables glob based searching
+
+      --iglob
+          Enables case-insensitive glob based searching
+
+  -t, --file-type <FILE_TYPE>
+          Restrict regex or glob search to a particular file-type
+
+          Possible values:
+          - file: A regular file
+          - dir:  A directory
+          - link: A symlink
+
+  -P, --prune
+          Remove empty directories from output
+
+  -s, --sort <SORT>
+          How to sort entries
+          
+          [default: size]
+
+          Possible values:
+          - name:    Sort entries by file name in lexicographical order
+          - rname:   Sort entries by file name in reversed lexicographical order
+          - size:    Sort entries by size smallest to largest, top to bottom
+          - rsize:   Sort entries by size largest to smallest, bottom to top
+          - access:  Sort entries by newer to older Accessing Date
+          - raccess: Sort entries by older to newer Accessing Date
+          - create:  Sort entries by newer to older Creation Date
+          - rcreate: Sort entries by older to newer Creation Date
+          - mod:     Sort entries by newer to older Alteration Date
+          - rmod:    Sort entries by older to newer Alteration Date
+
+      --dir-order <DIR_ORDER>
+          Sort directories before or after all other file types
+          
+          [default: none]
+
+          Possible values:
+          - none:  Directories are ordered as if they were regular nodes
+          - first: Sort directories above files
+          - last:  Sort directories below files
+
+  -T, --threads <THREADS>
+          Number of threads to use
+          
+          [default: 12]
+
+  -u, --unit <UNIT>
+          Report disk usage in binary or SI units
+          
+          [default: bin]
+
+          Possible values:
+          - bin: Displays disk usage using binary prefixes
+          - si:  Displays disk usage using SI prefixes
+
+  -x, --one-file-system
+          Prevent traversal into directories that are on different filesystems
+
+  -y, --layout <LAYOUT>
+          Which kind of layout to use when rendering the output
+          
+          [default: regular]
+
+          Possible values:
+          - regular:  Outputs the tree with the root node at the bottom of the output
+          - inverted: Outputs the tree with the root node at the top of the output
+          - flat:     Outputs a flat layout using paths rather than an ASCII tree
+          - iflat:    Outputs an inverted flat layout with the root at the top of the output
+
+  -., --hidden
+          Show hidden files
+
+      --no-git
+          Disable traversal of .git directory when traversing hidden files
+
+      --completions <COMPLETIONS>
+          Print completions for a given shell to stdout
+          
+          [possible values: bash, elvish, fish, powershell, zsh]
+
+      --dirs-only
+          Only print directories
+
+      --no-config
+          Don't read configuration file
+
+      --no-progress
+          Hides the progress indicator
+
+      --suppress-size
+          Omit disk usage from output
+
+      --truncate
+          Truncate output to fit terminal emulator window
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+}
+
+-- Add the namespaces within the prelude folder that you wish to register.
+-- For a namespace to be valid, it must contain a Lua file with the same
+-- name as the _EXPORTER_MODULE_NAME constant. By default: exports.lua
+
+M.namespaces = { 
+  'lib'
+}
+
+
+--- Implementation Details ----------------------------------------------------
+
+
+-- Define these functions globally, so that they may be accessible down the
+-- line by any module or module namespace exporter to standardize where the
+-- definitions of these paths are located; each module should not need to
+-- re-define this, it should not be hard-coded, but defined once.
+function ExpandNamespaceModule(namespace, module_name)
+  return 'prelude.' .. namespace .. '.modules.' .. module_name
+end
+
+function ExpandNamespaceExporter(namespace)
+  return 'prelude.' .. namespace .. '.exports'
+end
+
+-- Generic function to invoke an exporter. If no table specifying specific
+-- modules that the exporter exports is provided, then the defaults()
+-- function will be called instead, and if that does not exist either,
+-- then this effectively does nothin more than return the list of 
+-- available modules that cannot be imported automatically.
+
+local function invoke_exporter(namespace)
+  local inferred_path =  'prelude.' .. M.namespace .. '.' .. M._EXPORTER_MODULE_NAME 
+  local exporter_ok, exporter = pcall(require, inferred_path)
+
+  -- ERROR HANDLING
+  -- If the exporter is not okay at all, handle the error.
+  if not exporter_ok then
+    local msg = 'The inferred path to the exporter "' .. inferred_path .. '" ' 
+    msg = msg .. 'did not import successfully. The name might be incorrect.'
+      
+    msg = msg .. vim.inspect(exporter)
+
+    return msg
+  elseif type(exporter) ~= 'table' then
+    local msg = 'Task failed successfully? The inferred path to the exporter '
+    msg = msg .. '"' .. inferred_path .. '" did import successfully, but it '
+    msg = msg .. 'returns a "' type(exporter) '" rather than a table\n\n.'
+    
+    msg = msg .. 'Ignoring the error, and printing the type inspection: \n'
+    msg = msg .. vim.inspect(exporter) .. '\n'
+
+    return msg
+  end
+
+  -- Success, exporter imported.
+  
+
+  -- Check if the exporter defines defaults. This is an optional function that
+  -- will be invoked if it does exist, but does not need to exist. Register
+  -- the exporter as defaultless if it doesn't, indicating manual action is
+  -- required to use it, and cannot be invoked automatically.
+  if not exporter.defaults then
+    table.insert(M._defaultless, { inferred_path, exporter })
+
+  elseif type(exporter.defaults) ~= 'function' then
+    local msg = 'WARNING: '
+    msg = msg .. 'The exporter "' .. inferred_path .. '" defines "defaults but'
+    msg = msg .. 'its type is incorrect. It should be a function, but is '
+    msg = msg .. '"' .. type(exporter.defaults) .. '" instead. Ignoring.'
+
+    vim.notify(msg)
+  else
+
+  end
+end
+
+for _, namespace in enumerate(M._namespaces do
+  M.invoke_exporter(namespace)
+end
+
+return M

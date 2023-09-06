@@ -1,0 +1,5 @@
+require "user.preferences.modules.editor"
+require "user.preferences.modules.diagnostic_signs"
+require "user.preferences.modules.keybindings"
+-- require "options.shell"
+-- require "options.neovide"
