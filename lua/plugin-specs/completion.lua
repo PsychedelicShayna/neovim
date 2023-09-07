@@ -1,33 +1,35 @@
 local events = require("lib.events")
 
-local icons = {
-  Text = "",
-  Method = "",
-  Function = "",
-  Constructor = "",
-  Field = "",
-  Variable = "",
-  Class = "",
-  Struct = "",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
-  CmpItemKindCopilot = "",
-  Copilot = "",
+local icons = {                      --| Alternative Icons
+---------------------------------------|-------------------
+                                     --|
+  Class                      = " ", --|
+  CmpItemKindCopilot         = "󰟶 ", --|
+  Color                      = "",  --|
+  Constant                   = "󰐀 ", --|   󰏿 󰐀
+  Constructor                = "󱊎 ", --| 
+  Copilot                    = "󰟶 ", --| 
+  Enum                       = "",  --| 
+  EnumMember                 = "",  --| 󰥣
+  Event                      = "",  --|
+  Field                      = "",  --|
+  File                       = "",  --| 
+  Folder                     = "",  --| 󰢰 󱉲
+  Function                   = "󰘧 ", --| 󰊕 󰡱
+  Interface                  = "",  --|
+  Keyword                    = "󱘖 ", --| 󰮐
+  Method                     = "󰡱 ", --| 󱄑 󱃸 .󰊕 󰥣
+  Module                     = "",  --|   󰏗  
+  Operator                   = "",  --| 󰆙
+  Property                   = "󱃘 ", --|
+  Reference                  = "󱃘 ", --|
+  Snippet                    = "",  --|
+  Struct                     = "",  --| 
+  Text                       = "",  --| 󰊄
+  TypeParameter              = "",  --| 
+  Unit                       = "󱂡 ", --| 󰆙
+  Value                      = "󱛠 ", --| 󰅪 󰝨 󰹻
+  Variable                   = "󰀫 ", --|
 }
 
 local function cmp_buffer_size_check(bufnr)
