@@ -1,4 +1,4 @@
 require "options.editor"
 require "options.diagnostic_signs"
-require "options.shell"
+-- Does not work nicely: require "options.shell"
 require "options.neovide"
