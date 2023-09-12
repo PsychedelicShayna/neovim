@@ -24,13 +24,13 @@ local function custom_on_attach(client, bufnr)
     return
   end
 
-  local mapper_ok, mapper = pcall(require, 'keybindings.lsp_client_mapper')
+  local mapper_ok, mapper = pcall(require, 'keybindings.lsp_dynmic_keymaps')
 
   if mapper_ok and type(mapper) == 'function' then
     mapper(client, bufnr)
   else
     vim.notify(
-      'No "keybindings.lsp_client_mapper" module/function exported from module needed to create buffer-local keybindings for this LSP client.')
+      'No "keybindings.lsp_dynmic_keymaps" module/function exported from module needed to create buffer-local keybindings for this LSP client.')
   end
 end
 
