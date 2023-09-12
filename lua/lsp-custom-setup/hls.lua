@@ -12,8 +12,10 @@ return function(hls, caps, on_attach)
 
   if haskell_tools_present then
     haskell_tools.setup {}
-  else
+  elseif hls and type(hls['setup']) == 'function' then
     hls.setup(config)
+  else
+    vim.notify('Custom setup for LSP received null instance of language server: ' .. hls .. = ' = ' .. type(hls))
   end
 
   return true
