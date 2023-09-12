@@ -21,17 +21,22 @@ local function config()
     vim.notify("WARNING: Alpha banner defaulting because global.tables.banners could not be imported.")
   end
 
+  local configure_command = (
+    "<cmd>lua vim.api.nvim_set_current_dir(vim.fn.stdpath('config'))<cr>:e .<cr>"
+  )
+
   dashboard.section.header.val = banner
   dashboard.section.header.opts.hl = "Include"
   dashboard.section.buttons.opts.hl = "Keyword"
   dashboard.section.buttons.val = {
-    dashboard.button("e", "  New File", "<cmd>ene <BAR> startinsert <cr>"),
-    dashboard.button("f", "  Find File", "<cmd>Telescope find_files <cr>"),
-    dashboard.button("r", "  Recently Used Files", "<cmd>Telescope oldfiles <cr>"),
-    dashboard.button("t", "  Live Grep", "<cmd>Telescope live_grep <cr>"),
-    dashboard.button("p", "  Find Project", "<cmd>Telescope projects <cr>"),
-    dashboard.button("c", "  Configuration", "<cmd>tcd ~/AppData/Local/nvim | e ~/AppData/Local/nvim/init.lua <cr>"),
-    dashboard.button("q", "  Quit Neovim", "<cmd>qa<cr>"),
+    dashboard.button("n", "󰻭 New Buffer", "<cmd>ene <bar> startinsert <cr>"),
+    dashboard.button("N", "󰝒 New File", ":cd<cr>:ene<cr>:w " .. vim.fn.getcwd() .. "\\"),
+    dashboard.button("f", "󰱼 Find File", "<cmd>Telescope find_files <cr>"),
+    dashboard.button("t", "󱩾 Live Grep", "<cmd>Telescope live_grep <cr>"),
+    dashboard.button("h", " File History", "<cmd>Telescope oldfiles <cr>"),
+    dashboard.button("H", "󰥨 Project History ", "<cmd>Telescope projects <cr>"),
+    dashboard.button("c", " Configure", configure_command),
+    dashboard.button("Q", "󰗼 Exit", "<cmd>qa!<cr>"),
   }
 
   dashboard.opts.opts.noautocmd = true
