@@ -40,7 +40,7 @@ local function config()
 
     filesystem = {
       hijack_netrw_behavior = "open_default",
-      follow_current_file = false,
+      follow_current_file = { enabled = false },
       window = {
         mappings = {
           -- Navigation
