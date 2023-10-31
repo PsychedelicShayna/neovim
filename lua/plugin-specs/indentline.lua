@@ -1,7 +1,21 @@
 return {
   "lukas-reineke/indent-blankline.nvim",
-  --= dependencies = "nvim-treesitter",
-  lazy = true,
+  main = "ibl",
+  opts = {},
   event = "BufEnter",
-  config = true
+  config = function()
+    require("ibl").setup {
+
+      indent = {
+        char = '│',
+      },
+
+      scope = {
+        enabled = true,
+        char = '┊',
+        show_start = false,
+        show_end = false
+      }
+    }
+  end
 }
