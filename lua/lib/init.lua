@@ -1,6 +1,0 @@
-require 'lib.lsp_auto_format'
-require 'lib.spellcheck'
-require 'lib.yank_highlighter'
-require 'lib.cdtracker'
-require 'lib.background_control'
-require 'lib.auto_diag_loclist'
