@@ -4,12 +4,9 @@
 --    | C | Command          | T | Terminal |
 --    |_____________________________________|
 
-local events = require('lib.events')
-local valerr = require('lib.valerr')
-
-local for_which_key = {
-
-}
+--  ! Leader Key !
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 function MapKey(binding)
   if (type(binding) ~= 'table'
@@ -32,7 +29,7 @@ function MapKey(binding)
     }
   end
 
-  vim.api.nvim_set_keymap(
+  vim.keymap.set(
     binding.in_mode,
     binding.key,
     binding.does,
@@ -45,40 +42,42 @@ function MapKey(binding)
   --   buffer = bufnr
   -- })
   --
+  local event_table = { actor = "MapKey", event = "new" }
 
-
-  if binding.with_wk and type(binding.wk) == 'table' and type(binding.wk_prefix) == 'string' then
-    if for_which_key[binding.wk_prefix] then
-      vim.tbl_deep_extend("force", for_which_key[binding.wk_prefix], binding.wk)
-    else
-      for_which_key[binding.wk_prefix] = binding.wk
-    end
+  if binding.with_wk == 'table' then
+    event_table['data'] = binding.with_wk
   end
 
-  valerr.try(function()
-    events.run_after("spec.config", "plugin.which-key", function()
-      local wk_ok, wk = pcall(require, 'which-key')
-  
-      if not wk_ok then
-        return 1
-      end
-  
-      if (wk_ok and (type(wk['register']) == 'function')) then
-        local mapping = {
-  
-        }
-  
-        wk.register(mappings, {
-          prefix = wK_leader,
-          binding.in_mode,
-        })
-      elseif type(wk.register) == 'table' then
-  
-      end
-    end)
-
-  end)
+  Events.fire_event(event_table)
 end
 
-require 'keybindings.default_keybindings'
-require 'keybindings.lsp_dynamic_keymaps'
+local M = {
+  loaded = {},
+  available = {
+    editor_navigation  = '07-keymaps.editor_navigation',
+    lsp_control        = '07-keymaps.lsp_control',
+    backend_control    = '07-keymaps.backend_control',
+    plugin_integration = '07-keymaps.plugin_integration',
+    enhancements       = '07-keymaps.enhancements',
+    lsp_control        = '07-keymaps.lsp_control'
+  }
+}
+
+M.autoload = {
+  M.available.editor_navigation,
+  M.available.lsp_control
+}
+
+for index, path in ipairs(M.autoload) do
+  local module_ok, module = pcall(require, path)
+
+  if module_ok then
+    table.insert(M.loaded, path)
+  else
+    PrintDbg(
+      'Stage #7, failed to autoload keymap module # ' .. index .. ': ' .. vim.inspect(path),
+      LL_ERROR,
+      { module_ok, module }
+    )
+  end
+end
