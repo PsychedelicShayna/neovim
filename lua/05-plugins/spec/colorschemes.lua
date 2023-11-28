@@ -1,21 +1,52 @@
 local colorschemes = {
-  { "EdenEast/nightfox.nvim",           lazy = true },
-  { "FrenzyExists/aquarium-vim",        lazy = true },
-  { "LunarVim/Colorschemes",            lazy = true },
-  { "LunarVim/horizon.nvim",            lazy = true },
-  { "LunarVim/onedarker.nvim",          lazy = true },
-  { "LunarVim/synthwave84.nvim",        lazy = true },
-  { "Mofiqul/dracula.nvim",             lazy = true },
-  { "RRethy/nvim-base16",               lazy = true },
-  { "Shatur/neovim-ayu",                lazy = true },
-  { "andersevenrud/nordic.nvim",        lazy = true },
-  { "bluz71/vim-nightfly-colors",       lazy = true },
-  { "catppuccin/nvim",                  lazy = true },
-  { "doki-theme/doki-theme-vim",        lazy = false,
+  { "EdenEast/nightfox.nvim",     lazy = true },
+  { "FrenzyExists/aquarium-vim",  lazy = true },
+  { "LunarVim/Colorschemes",      lazy = true },
+  { "LunarVim/horizon.nvim",      lazy = true },
+  { "LunarVim/onedarker.nvim",    lazy = true },
+  { "LunarVim/synthwave84.nvim",  lazy = true },
+  { "Mofiqul/dracula.nvim",       lazy = true },
+  { "RRethy/nvim-base16",         lazy = true },
+  { "Shatur/neovim-ayu",          lazy = true },
+  { "andersevenrud/nordic.nvim",  lazy = true },
+  { "bluz71/vim-nightfly-colors", lazy = true },
+  { "catppuccin/nvim",            lazy = true },
+  { "doki-theme/doki-theme-vim",  lazy = true },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    lazy = false,
     config = function()
-      vim.cmd('colorscheme megumin')
-    end
+      vim.defer_fn(function()
+        require("rose-pine").setup {
+          highlight_groups = {
+            TelescopeBorder = { fg = "highlight_high", bg = "none" },
+            TelescopeNormal = { bg = "none" },
+            TelescopePromptNormal = { bg = "base" },
+            TelescopeResultsNormal = { fg = "subtle", bg = "none" },
+            TelescopeSelection = { fg = "text", bg = "base" },
+            TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
+          },
 
+          dark_variant = 'main',
+          bold_vert_split = true,
+          -- dim_nc_background = true,
+          disable_background = true,
+          disable_float_background = true,
+          disable_italics = false,
+
+          variant = "moon",
+          disable = {
+            background = true,
+            cursor_coloring = true,
+            terminal_colors = true,
+            eob_lines = false,
+          },
+        }
+
+        vim.cmd("colorscheme rose-pine")
+      end, 250)
+    end
   },
   { "fenetikm/falcon",                  lazy = true },
   { "folke/tokyonight.nvim",            lazy = true },
@@ -23,7 +54,6 @@ local colorschemes = {
   { "kvrohit/rasmus.nvim",              lazy = true },
   { "lalitmee/cobalt2.nvim",            lazy = true },
   { "lunarvim/darkplus.nvim",           lazy = true },
-  { "neanias/everforest-nvim",          lazy = true },
   { "numToStr/Sakura.nvim",             lazy = true },
   { "nyoom-engineering/oxocarbon.nvim", lazy = true },
   { "projekt0n/github-nvim-theme",      lazy = true },
@@ -31,14 +61,9 @@ local colorschemes = {
   { "sainnhe/gruvbox-material",         lazy = true },
   { "srcery-colors/srcery-vim",         lazy = true },
   { "titanzero/zephyrium",              lazy = true },
-  {
-    "whatyouhide/vim-gotham",
-    lazy = false,
-    config = function()
-      -- vim.cmd("colorscheme gotham")
-    end
-  },
-  { "yazeed1s/minimal.nvim", lazy = true }
+  { "whatyouhide/vim-gotham",           lazy = true },
+  { "yazeed1s/minimal.nvim",            lazy = true },
+  { "neanias/everforest-nvim",          lazy = true },
 }
 
 ColorschemeNames = vim.tbl_map(function(colorscheme)
