@@ -1,7 +1,5 @@
 --Remap space as leader key
 ---|bind('', '<Space>', '<Nop>')
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
 
 --                | N | Normal           | I | Insert
 --                | V | Visual           | X | Vblock
@@ -140,6 +138,35 @@ MapKey({
   in_mode = 't',
 })
 
+MapKey({
+  key = '<A-h>',
+  does = '<CMD>lua vim.lsp.buf.hover()<CR>',
+  in_mode = 'n'
+})
+
+MapKey({
+  key = '<A-a>',
+  does = '<CMD>lua vim.lsp.buf.code_action()<CR>',
+  in_mode = 'n'
+})
+
+MapKey({
+  key = '<A-d>',
+  does = '<CMD>lua vim.lsp.buf.definition()<CR>',
+  in_mode = 'n'
+})
+
+MapKey({
+  key = '<A-r>',
+  does = '<CMD>lua vim.lsp.buf.rename()<CR>',
+  in_mode = 'n'
+})
+
+MapKey({
+  key = '<A-R>',
+  does = '<CMD>lua vim.lsp.buf.references()<CR>',
+  in_mode = 'n'
+})
 
 -- Telescope
 --
