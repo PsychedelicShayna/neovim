@@ -11,21 +11,20 @@ local load_order = {
 }
 
 require "01-prelude.events"
+UsrLib = {}
 
 for i, module_name in ipairs(load_order) do
   if type(module_name) == "string" then
-	  local module_ok, module = pcall(require, module_name)
-	  -- print(i .. ":" .. module_name)
+    local module_ok, module = pcall(require, module_name)
 
-	  if not module_ok then
-	    vim.notify("Failed to load config stage #: " .. i, LL_ERROR)
-	    vim.notify("Stage module name, type, index, and resulting value: " .. module_name .. ", " .. type(module) .. ", " .. i .. ", " .. vim.inspect(module))
-	  end
+    if not module_ok then
+      vim.notify("Failed to load config stage #: " .. i, LL_ERROR)
+      vim.notify("Stage module name, type, index, and resulting value: " ..
+        module_name .. ", " .. type(module) .. ", " .. i .. ", " .. vim.inspect(module))
+    end
   else
     vim.notify("Failed to load config stage #: " .. i, LL_ERROR)
-    vim.notify("Stage module name, type, index, and resulting value: " .. module_name .. ", " .. type(module) .. ", " .. i .. ", " .. vim.inspect(module))
+    vim.notify("Stage module name, type, index, and resulting value: " ..
+      module_name .. ", " .. type(module) .. ", " .. i .. ", " .. vim.inspect(module))
   end
 end
-
-
-
