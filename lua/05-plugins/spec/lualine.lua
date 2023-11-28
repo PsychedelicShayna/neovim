@@ -200,13 +200,14 @@ end
 
 return {
   "nvim-lualine/lualine.nvim",
-  event = function(_, _)
-    if require("lib.check_greeter_skip")() then
-      return { "VimEnter" }
-    end
-
-    return { "BufAdd" }
-  end,
+  -- event = function(_, _)
+  --   if UsrLib.check_greeter_skip() then
+  --     return { "VimEnter" }
+  --   end
+  --
+  --   return { "BufAdd" }
+  -- end,
+  lazy = true,
   config = function()
     config()
 
