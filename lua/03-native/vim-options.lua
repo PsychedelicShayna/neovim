@@ -11,6 +11,7 @@ vim.o.number         = true
 vim.o.numberwidth    = 4
 vim.o.pumheight      = 10
 vim.o.relativenumber = true
+vim.o.virtualedit    = "all"
 vim.o.scrolloff      = 8
 vim.o.shiftwidth     = 2
 vim.o.showtabline    = 0
@@ -31,6 +32,10 @@ vim.o.wrap           = false
 vim.o.writebackup    = false
 vim.o.showbreak      = '↪ '
 
+
+-- Set the leader key to space.
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 -- local function get_win_with_buf(bufnr)
 --   vim.api.nvim_buf_call(bufnr, function()
@@ -115,3 +120,4 @@ vim.o.showbreak      = '↪ '
 -- })
 
 -- vim.cmd('colorscheme murphy')
+return true
