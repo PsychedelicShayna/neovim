@@ -10,11 +10,9 @@ return {
       callback = function()
         local ok, wk = pcall(require, "which-key")
         if not ok then
-          vim.notify("Couldn't load which-key from vim-bbye", vim.log.levels.WARN)
+          vim.notify("Couldn't load which-key from vim-bbye (cannot import which-key)", vim.log.levels.ERROR)
           return
         end
-
-        vim.notify("vim-bbye received callback", vim.log.levels.WARN)
         wk.register({
           d = {
             "<cmd>Bdelete<cr>",
