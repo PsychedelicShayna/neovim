@@ -2,6 +2,7 @@ return {
   "zbirenbaum/copilot.lua",
   config = function(_)
     local copilot = require "copilot"
+
     vim.defer_fn(function()
       copilot.setup {
         panel = {
@@ -17,10 +18,10 @@ return {
         },
         suggestion = {
           enabled = true,
-          auto_trigger = false,
+          auto_trigger = true,
           debounce = 75,
           keymap = {
-            accept = "<M-l>",
+            accept = "<A-Enter>",
             next = "<M-]>",
             prev = "<M-[>",
             dismiss = "<C-]>",
