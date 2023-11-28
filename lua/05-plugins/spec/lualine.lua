@@ -2,7 +2,19 @@
 
 local function config()
   local lualine = require("lualine")
-  local symbols = require("data.symbols")
+  local symbols = Data.symbols
+
+
+  local symbols = Safe.try_catch(function() return Data.symbols end,
+    function(okv, mod)
+      PrintDbg("ERROR: Lualine cannot find Data.symbols!", LL_ERROR, { okv, mod })
+      return nil
+    end)
+
+
+  if not symbols then
+    return nil
+  end
 
   vim.o.showmode = false
 
@@ -203,10 +215,6 @@ return {
         config()
       end
     })
-
-    -- require("global.control.events").new_cb_or_call("colorscheme", "loaded", function()
-    --   -- vim.defer_fn(config, 200)
-    -- end)
   end,
   init = function()
     vim.o.laststatus = 0
