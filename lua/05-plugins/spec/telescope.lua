@@ -87,6 +87,11 @@ local config = function()
       treesitter = false
     }
   }
+
+  Events.fire_event {
+    actor = "telescope",
+    event = "configured"
+  }
 end
 
 local function which_key_mappings()
