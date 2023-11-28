@@ -1,8 +1,5 @@
-local events = require("lib.events")
-local valerr = require('lib.valerr')
-
 local function which_key_mappings()
-  valerr.ok_or_else(function()
+  Safe.ok_or_else(function()
       require("which-key").register(
         {
           a = { "<cmd>Alpha<cr>", "Alpha Dashboard" },
@@ -20,16 +17,31 @@ local function which_key_mappings()
 end
 
 local function config()
+  local banner_name = 'areee??'
+
+  local banner = Safe.ok_or_else(
+    function(name)
+      return Data.banners[name]
+    end,
+
+    function(okv, modv, name)
+      PrintDbg('WARNING [alpha.lua]: Failed to get banner "' .. name
+        .. '", defaulted to an empty table instead.',
+        LL_WARN,
+        {
+          okv,
+          modv,
+          args
+        }
+      )
+
+      return {}
+    end,
+
+    banner_name
+  )
+
   local dashboard = require "alpha.themes.dashboard"
-  local banners_ok, banners = pcall(require, "data.banners")
-
-  local banner = {}
-
-  if banners_ok then
-    banner = banners['areee??']
-  else
-    vim.notify("WARNING: Alpha banner defaulting because global.tables.banners could not be imported.")
-  end
 
   local configure_command = (
     "<cmd>lua vim.api.nvim_set_current_dir(vim.fn.stdpath('config'))<cr>:e .<cr>"
@@ -38,6 +50,7 @@ local function config()
   dashboard.section.header.val = banner
   dashboard.section.header.opts.hl = "Include"
   dashboard.section.buttons.opts.hl = "Keyword"
+
   dashboard.section.buttons.val = {
     dashboard.button("n", "󰻭 New Buffer", "<cmd>ene <bar> startinsert <cr>"),
     dashboard.button("N", "󰝒 New File", ":cd<cr>:ene<cr>:w " .. vim.fn.getcwd() .. "\\"),
@@ -58,21 +71,28 @@ return {
   "goolord/alpha-nvim",
   dependencies = { "nvim-web-devicons" },
   cmd = { "AlphaRedraw", "Alpha" },
+
   event = function()
-    if require("lib.check_greeter_skip")() then
+    if UsrLib.check_greeter_skip() then
       return {}
     end
 
     return { "VimEnter" }
   end,
+
   config = config,
   init = function()
-    events.await_event {
-      actor = "which-key",
-      event = "configured",
-      callback = function()
-        which_key_mappings()
-      end
-    }
+    Safe.try_catch(function()
+      Events.await_event {
+        actor = "which-key",
+        event = "configured",
+        callback = function()
+          Safe.try_catch(function()
+            which_key_mappings()
+          end, function()
+          end)
+        end
+      }
+    end)
   end
 }
