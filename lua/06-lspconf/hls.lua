@@ -1,5 +1,3 @@
-local events = require('lib.events')
-
 return function(hls, caps, on_attach)
   -- Attempt to use haskell-tools if available.
   local ht_present, ht = pcall(require, "haskell-tools")
