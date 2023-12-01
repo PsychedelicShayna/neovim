@@ -50,6 +50,40 @@ function M.try(fn, ...)
   return result
 end
 
+function M.import_then(name, fn, opts)
+  local ok, module = pcall(require, name)
+
+  if not opts then
+    opts =  {
+      trace = 1,
+      handle = nil
+    }
+  end
+
+  if ok then
+    fn(module)
+  else
+    if type(opts.trace) == 'number' then
+      local info = debug.getinfo((opts.trace or 1) + 1, "Sl")
+
+      local src = info.short_src
+      local line = info.currentline
+
+
+      PrintDbg(string.format('%s:%d - Failed to import module "%s", received type "%s" with value..%s',
+        src or '?', line or '?', name or '?', type(module),
+        module and vim.inspect(module) or '?'
+
+      ), LL_ERROR)
+    end
+
+    if type(opts.handle) == 'function' then
+      opts.handle(module)
+    end
+ end
+end
+
+
 function M.try_catch(fnt, fnc, ...)
   local ok, result = pcall(fnt, ...)
 
