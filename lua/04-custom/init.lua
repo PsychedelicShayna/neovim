@@ -45,6 +45,7 @@ local functionality_modules = {
   spellcheck        = "04-custom.02-fun.spellcheck",
   yank_highlighter  = "04-custom.02-fun.yank-highlighter",
   scratch_pad       = "04-custom.02-fun.scratch-pad",
+  toggle_diagnostics       = "04-custom.02-fun.toggle-diagnostics",
 }
 
 UsrFun = functionality_modules
@@ -57,6 +58,7 @@ local auto_load_functionality = {
   UsrFun.scratch_pad,
   UsrFun.spellcheck,
   UsrFun.autorunner
+  UsrFun.toggle_diagnostics
 }
 
 for name, path in pairs(auto_load_functionality) do
