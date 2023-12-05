@@ -22,10 +22,6 @@ vim.log.levels.ERROR
 
       local k = pair[1]
 
-
-
-
-
     end
   end
 
@@ -34,10 +30,26 @@ vim.log.levels.ERROR
   for index, pair in ipairs(ordered_kt_paris) do
     local key   = pair.key
     local value = pair.value
-    
-
 
   end
+end
+
+function M.t_is(value, types)
+  if type(types) ~= 'table' then
+    types = { types }
+  end
+
+  for _, t in ipairs(types) do
+    if type(value) == t then
+      return true
+    end
+  end
+
+  return false
+end
+
+function M.t_not(value, types)
+  return not M.t_is(value, types)
 end
 
 function M.try(fn, ...)
@@ -49,6 +61,24 @@ function M.try(fn, ...)
 
   return result
 end
+
+
+function M.typecheck(value)
+  return function(can_be)
+    local valid1 = M.t_is(value, can_be)
+
+    return function(cannot_be)
+      local valid2 = M.t_not(value, cannot_be)
+
+      return valid1 or false and valid2 or false
+    end
+  end
+end
+
+
+
+
+
 
 function M.import_then(name, fn, opts)
   local ok, module = pcall(require, name)
