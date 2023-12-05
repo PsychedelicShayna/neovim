@@ -6,9 +6,9 @@ function M.typecheck_tbl_path(target, ordered_kt_pairs)
       "Cannot typecheck_tbl_path without two arguments of type table, the " ..
       "being the table to type check, and thesecond being an ordered list " ..
       "of { ks: string, ts: string } string pairs, where the first is the " ..
-      "key of the next value to typecheck against the second string, t, "   ..
+      "key of the next value to typecheck against the second string, t, " ..
       "which is the expected result of calling type(tagret[ks]) == ts.",
-vim.log.levels.ERROR
+      vim.log.levels.ERROR
     )
 
     return false
@@ -21,7 +21,6 @@ vim.log.levels.ERROR
       end
 
       local k = pair[1]
-
     end
   end
 
@@ -30,7 +29,6 @@ vim.log.levels.ERROR
   for index, pair in ipairs(ordered_kt_paris) do
     local key   = pair.key
     local value = pair.value
-
   end
 end
 
@@ -62,7 +60,6 @@ function M.try(fn, ...)
   return result
 end
 
-
 function M.typecheck(value)
   return function(can_be)
     local valid1 = M.t_is(value, can_be)
@@ -75,30 +72,32 @@ function M.typecheck(value)
   end
 end
 
+function M.partial(fn, ...)
+  local args = { ... }
 
+  return function(...)
+    return fn(unpack(args), ...)
+  end
+end
 
-
-
-
-function M.import_then(name, fn, opts)
+function M.import_then(name, fn, opts, ...)
   local ok, module = pcall(require, name)
 
   if not opts then
-    opts =  {
+    opts = {
       trace = 1,
       handle = nil
     }
   end
 
   if ok then
-    fn(module)
+    return fn(module, ...), true
   else
     if type(opts.trace) == 'number' then
       local info = debug.getinfo((opts.trace or 1) + 1, "Sl")
 
       local src = info.short_src
       local line = info.currentline
-
 
       PrintDbg(string.format('%s:%d - Failed to import module "%s", received type "%s" with value..%s',
         src or '?', line or '?', name or '?', type(module),
@@ -110,9 +109,10 @@ function M.import_then(name, fn, opts)
     if type(opts.handle) == 'function' then
       opts.handle(module)
     end
- end
-end
+  end
 
+  return nil, false
+end
 
 function M.try_catch(fnt, fnc, ...)
   local ok, result = pcall(fnt, ...)
