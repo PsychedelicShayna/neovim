@@ -1,32 +1,39 @@
 return {
   "zbirenbaum/copilot.lua",
+  cmd = "Copilot",
+  event = "InsertEnter",
+
   config = function(_)
     local copilot = require "copilot"
 
     vim.defer_fn(function()
       copilot.setup {
-        panel = {
-          enabled = false,
-          auto_refresh = false,
-          keymap = {
-            jump_prev = "[[",
-            jump_next = "]]",
-            accept = "<CR>",
-            refresh = "gr",
-            open = "<M-CR>"
-          },
+        auto_refresh = false,
+        keymap = {
+          jump_prev = "[[",
+          jump_next = "]]",
+          accept = "<CR>",
+          refresh = "gr",
+          open = "<M-CR>"
         },
+
+        layout = {
+          position = "top",
+          ratio = 0.3
+        },
+
         suggestion = {
-          enabled = true,
-          auto_trigger = true,
+          enable = true,
+          auto_trigger = false,
           debounce = 75,
           keymap = {
-            accept = "<A-Enter>",
+            accept = "<A-S-Enter>",
             next = "<M-]>",
             prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
+            dismiss = "<C-]>"
+          }
         },
+
         filetypes = {
           yaml = false,
           markdown = false,
@@ -37,13 +44,16 @@ return {
           svn = false,
           cvs = false,
           ["."] = false,
+          json = false,
+          krypt = false,
+          gpg = false,
+          pgp = false,
+          cert = false,
+          crt = false,
+          pem = false,
+          txt = false
         },
-        copilot_node_command = 'node', -- Node version must be < 18
-        plugin_manager_path = vim.fn.stdpath("data") .. "/site/pack/packer",
-        server_opts_overrides = {},
       }
-    end, 500)
+    end, 1000)
   end,
-  lazy = true,
-  event = "InsertEnter",
 }
