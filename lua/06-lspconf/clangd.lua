@@ -6,7 +6,7 @@ return function(clangd, caps, on_attach)
     capabilities        = caps,
     cmd                 = {
       "clangd",
-      "--offset-encoding=utf-16",
+      -- "--offset-encoding=utf-16",
       "--background-index",
       "--pch-storage=memory",
       "--clang-tidy",
@@ -32,12 +32,13 @@ return function(clangd, caps, on_attach)
     single_file_support = true
   }
 
-  local clangd_ext_present, clangd_ext =
-    pcall(require, "clangd_extensions")
+  Safe.import_then("clangd_extensions", function(ext)
+    ext.setup { server = config }
+  end, { 
+    handle = function()
+      clangd.setup(config)
+    end,
 
-  if clangd_ext_present then
-    clangd_ext.setup { server = config }
-  else
-    clangd.setup(config)
-  end
+    trace = false
+  })
 end
