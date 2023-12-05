@@ -8,58 +8,65 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+
 function MapKey(binding)
-  if (type(binding) ~= 'table'
-        or not binding.key
-        or not binding.does
-        or type(binding.key) ~= 'string'
-        or type(binding.does) ~= 'string'
-      ) then
+  if Safe.t_not(binding, 'table') then
+    PrintDbg("MapKey: binding is not a table, was ", LL_ERROR, { binding })
     return false
   end
 
-  if not binding.in_mode or type(binding.in_mode) ~= 'string' then
-    binding.in_mode = 'n'
+  if Safe.t_not(binding, { 'string', 'table' }) then
+    PrintDbg("Cannot map key because it wasn't ", LL_ERROR, { binding })
+    return false
   end
 
-  if not binding.with_options or type(binding.with_options) ~= 'table' then
-    binding.with_options = {
+  if Safe.t_is(binding.modes, 'nil') then
+    binding.modes = 'n'
+  elseif Safe.t_not(binding.modes, { 'string', 'table' }) then
+    PrintDbg("Invalid type for mode to bind key to!", LL_ERROR, { binding })
+    return false
+  end
+
+  if Safe.t_not(binding.opts, 'table') then
+    binding.opts = {
       noremap = true,
       silent = true
     }
   end
 
-  vim.keymap.set(
-    binding.in_mode,
-    binding.key,
-    binding.does,
-    binding.with_options
-  )
-
-  -- which_key.register(mappings, {
-  --   prefix = "<leader>l",
-  --   mode = "n",
-  --   buffer = bufnr
-  -- })
-  --
-  local event_table = { actor = "MapKey", event = "new" }
-
-  if binding.with_wk == 'table' then
-    event_table['data'] = binding.with_wk
+  if Safe.t_is(binding.opts, 'overwrite') then
+    vim.unset_keymap(binding.modes, binding.key)
   end
 
-  Events.fire_event(event_table)
+  vim.keymap.set(
+    binding.modes,
+    binding.key,
+    binding.does,
+    binding.opts
+  )
+
+  if Safe.t_not(binding.description, { 'nil', 'string' }) then
+    PrintDbg(
+      "Description of keybind has an invalid type.", LL_WARN, {
+        binding.description
+      }
+    )
+
+    binding.description = nil
+  end
+
+  Events.fire_event {
+    actor = 'MapKey',
+    event = 'mapped',
+    data  = binding.description or nil
+  }
 end
 
 local M = {
   loaded = {},
   available = {
-    editor_navigation  = '07-keymaps.editor_navigation',
-    lsp_control        = '07-keymaps.lsp_control',
-    backend_control    = '07-keymaps.backend_control',
-    plugin_integration = '07-keymaps.plugin_integration',
-    enhancements       = '07-keymaps.enhancements',
-    lsp_control        = '07-keymaps.lsp_control'
+    editor_navigation = '07-keymaps.editor_navigation',
+    lsp_control       = '07-keymaps.lsp_control',
   }
 }
 
