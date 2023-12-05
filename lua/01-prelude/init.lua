@@ -13,7 +13,6 @@ NOP      = function() end
 --- Error/Debug Printing ------------------------------------------------------
 --
 
-
 -- Setting this to true, will allow the below function to take effect.
 DEBUG_MODE = false
 
@@ -21,25 +20,39 @@ function PrintError(module_name, message, inspections)
   vim.notify('[' .. module_name .. '] ' .. message)
 end
 
-
-function PrintDbg(message, level, inspections)
+function PrintDbg(message, level, inspections, ...)
   if not level then
     level = LL_INFO
   end
 
+  if (...) then
+    message = string.format(message, ...)
+  end
+
   vim.notify(message, level)
 
+
   if type(inspections) == "table" then
+    vim.notify('These values were provided to be inspected...', level)
+
     for index, item in ipairs(inspections) do
       local item_type = type(item)
       local item_str = "nil"
 
       if item_type ~= 'nil' then
         item_str = vim.inspect(item)
+
+        if item_type == 'table' then
+          item_str = vim.inspect(item, { newline = ' ', indent = ' ' })
+        end
       end
 
-      vim.notify('I' .. index .. ";" .. item_type .. ':' .. item_str)
+
+      local output = string.format("Argument %d; of type %s: %s\n", index, item_type, item_str)
+      vim.notify(output, level)
     end
+  else
+    vim.notify('inspecttions type: ' .. type(inspections), level)
   end
 
   return level
