@@ -7,11 +7,12 @@ vim.o.conceallevel   = 0
 vim.o.expandtab      = true
 vim.o.hlsearch       = true
 vim.o.ignorecase     = true
+vim.o.nobuflisted    = true 
 vim.o.number         = true
 vim.o.numberwidth    = 4
 vim.o.pumheight      = 10
 vim.o.relativenumber = true
-vim.o.virtualedit    = "all"
+vim.o.virtualedit    = "none"
 vim.o.scrolloff      = 8
 vim.o.shiftwidth     = 2
 vim.o.showtabline    = 0
@@ -31,6 +32,7 @@ vim.o.updatetime     = 300
 vim.o.wrap           = false
 vim.o.writebackup    = false
 vim.o.showbreak      = '↪ '
+vim.o.winbar         = '%y %t %m > %L > %l:%c > %b @ 0x%O (%o) > %F'
 
 
 -- Set the leader key to space.
