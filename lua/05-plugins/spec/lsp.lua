@@ -50,10 +50,10 @@ return {
 -- Optional plugins that enhance the LSP experience, or provide their own.
 -------------------------------------------------------------------------------
   {
-    -- "simrat39/rust-tools.nvim" -- No longer maintained.
-    "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
-    version = '^3',        -- Pin to version 3.x.x.
-    ft = { 'rust' },       -- Lazy load on Rust files.
+    "simrat39/rust-tools.nvim" -- No longer maintained.
+    -- "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
+    -- version = '^3',        -- Pin to version 3.x.x.
+    -- ft = { 'rust' },       -- Lazy load on Rust files.
   },
 
   { "MrcJkb/haskell-tools.nvim", version = '^3',
