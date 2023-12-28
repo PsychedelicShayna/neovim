@@ -26,39 +26,42 @@ local lib_modules = {
   typecheck          = '04-custom.01-lib.typecheck',
   window_sizer       = '04-custom.01-lib.window-sizer',
   error_handler      = '04-custom.01-lib.error-handler',
+  map_key            = '04-custom.01-lib.mapkey',
 }
 
 UsrLib = export({
   check_greeter_skip = lib_modules.check_greeter_skip,
-  keymap_nx = lib_modules.keymap_nx,
-  error_handler = lib_modules.error_handler,
+  map_key = lib_modules.map_key,
+  error_handler = lib_modules.error_handler
 })
 
 
 local functionality_modules = {
   -- background_control = '04-custom.02-fun.background-control',
-  autocomment       = "04-custom.02-fun.autocomment",
-  auto_diag_loclist = "04-custom.02-fun.auto-diag-loclist",
-  autorunner        = "04-custom.02-fun.autorunner",
-  cdtracker         = "04-custom.02-fun.cdtracker",
-  lsp_auto_format   = "04-custom.02-fun.lsp-auto-format",
-  spellcheck        = "04-custom.02-fun.spellcheck",
-  yank_highlighter  = "04-custom.02-fun.yank-highlighter",
-  scratch_pad       = "04-custom.02-fun.scratch-pad",
-  toggle_diagnostics       = "04-custom.02-fun.toggle-diagnostics",
+  autocomment        = "04-custom.02-fun.autocomment",
+  auto_diag_loclist  = "04-custom.02-fun.auto-diag-loclist",
+  autorunner         = "04-custom.02-fun.autorunner",
+  cdtracker          = "04-custom.02-fun.cdtracker",
+  lsp_auto_format    = "04-custom.02-fun.lsp-auto-format",
+  spellcheck         = "04-custom.02-fun.spellcheck",
+  yank_highlighter   = "04-custom.02-fun.yank-highlighter",
+  scratch_pad        = "04-custom.02-fun.scratch-pad",
+  toggle_diagnostics = "04-custom.02-fun.toggle-diagnostics",
+  switch_header_source = "04-custom.02-fun.switch_header_source",
 }
 
 UsrFun = functionality_modules
 
 local auto_load_functionality = {
-  UsrFun.lsp_auto_format,
+  -- UsrFun.lsp_auto_format,
   UsrFun.yank_highlighter,
   UsrFun.auto_diag_loclist,
   UsrFun.background_control,
   UsrFun.scratch_pad,
   UsrFun.spellcheck,
-  UsrFun.autorunner
-  UsrFun.toggle_diagnostics
+  UsrFun.autorunner,
+  UsrFun.toggle_diagnostics,
+  UsrFun.switch_header_source,
 }
 
 for name, path in pairs(auto_load_functionality) do
