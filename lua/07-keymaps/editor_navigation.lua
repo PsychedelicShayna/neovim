@@ -73,7 +73,11 @@ MapKey { key = '<A-;><A-W>', does = '<C-o>:w!<cr>', modes = 'i' }
 -- Reload the file with Alt-; Alt-e
 MapKey { key = '<A-;><A-e>', does = '<C-o>:e!<cr>', modes = 'i' }
 
+MapKey { key = '<A-u>', does = '<C-o>u', modes = 'i' }
+MapKey { key = '<A-U>', does = '<C-o>', modes = 'i' }
+
 -- Move around in insert mode with Alt-hjkl
+--
 MapKey { key = '<A-h>', does = '<Left>', modes = 'i' }
 MapKey { key = '<A-l>', does = '<Right>', modes = 'i' }
 MapKey { key = '<A-k>', does = '<Up>', modes = 'i' }
@@ -106,6 +110,9 @@ MapKey { key = '<A-W>', does = ':w!<cr>', modes = 'n' }
 MapKey { key = '<A-u>', does = '<C-r>', modes = 'n' }
 
 
+
+
+
 -- Evaluate the current line a number of different ways, through internal and
 -- external command invocations. Visual mode has its own version as well.
 
@@ -130,6 +137,28 @@ MapKey { key = '<A-;><A-h>s51', does = 'V!sha512sum<cr>', modes = 'n' }
 MapKey { key = '<A-;><A-p>', does = 'V!python - <cr>', modes = 'n' }
 MapKey { key = '<A-;><A-q>', does = 'yyV:!qpe \'<C-r>+\'<cr>', modes = 'n' }
 
+-- Insert mode variants 
+MapKey { key = '<A-;><A-L>', does = '<C-o>:luafile%<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-l>', does = '<C-o>V"+y:lua <C-r>+<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-;>', does = '<C-o>V"my<esc>:<C-r>m<cr>gv', modes = 'i' }
+
+MapKey { key = '<A-;><A-s>', does = '<C-o>V!fish <cr>', modes = 'i' }
+MapKey { key = '<A-;><A-x>', does = '<C-o>V!xxd <cr>', modes = 'i' }
+MapKey { key = '<A-;><A-X>', does = '<C-o>V!xxd -r <cr>', modes = 'i' }
+
+MapKey { key = '<A-;><A-b>', does = '<C-o>V!base64<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-B>', does = '<C-o>V!base64 -d<cr>', modes = 'i' }
+
+MapKey { key = '<A-;><A-h>m5', does = '<C-o>V!sha512sum<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-h>s1', does = '<C-o>V!sha1sum<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-h>s24', does = '<C-o>V!sha224sum<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-h>s25', does = '<C-o>V!sha256sum<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-h>s38', does = '<C-o>V!sha384sum<cr>', modes = 'i' }
+MapKey { key = '<A-;><A-h>s51', does = '<C-o>V!sha512sum<cr>', modes = 'i' }
+
+MapKey { key = '<A-;><A-p>', does = '<C-o>V!python - <cr>', modes = 'i' }
+MapKey { key = '<A-;><A-q>', does = '<C-o>yy<C-o>V:!qpe \'<C-r>+\'<cr>', modes = 'i' }
+
 --
 --
 -------------------------------------------------------------------------------
@@ -153,7 +182,7 @@ MapKey { key = '<A-;><A-h>s38', does = '!sha384sum<cr>', modes = 'v' }
 MapKey { key = '<A-;><A-h>s51', does = '!sha512sum<cr>', modes = 'v' }
 
 MapKey { key = '<A-;><A-p>', does = '!python - <cr>', modes = 'v' }
-MapKey { key = '<A-;><A-q>', does = 'y:!qpe \'<C-r>+\'<cr>', modes = 'v' }
+MapKey { key = '<A-;><A-q>', does = "y:'<,'>!qpe \'<C-r>+\'<cr>", modes = 'v' }
 
 -- Allow Alt-vbl to cycle through visual, visual-line and visual-block
 -- without leaving visual mode when hitting it twice. Also, allow for

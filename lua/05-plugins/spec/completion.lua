@@ -29,6 +29,10 @@ local icons = { --| Alternative Icons -------------------------------------|----
   Variable           = "󰀫 ", --|
 }
 
+
+
+
+
 local function cmp_buffer_size_check(bufnr)
   if type(bufnr) ~= 'number' then
     return {}
@@ -46,28 +50,136 @@ local function cmp_buffer_size_check(bufnr)
   end
 end
 
--- Alt+hjkl Alt+Shift hjkl 
-local function mappings(cmp)
+local entered_completion = false
+local navigation_toggle = false
+
+-- Alt+hjkl Alt+Shift hjkl
+local function mappings(_)
+  local cmp = require 'cmp'
+
   return {
-    ["<A-L>"] = function(_)
-      if not cmp.visible() then return cmp.complete() end
-      return cmp.confirm()
+    ["<A-i>"] = function(fallback)
+      if not cmp.visible() then
+        cmp.complete()
+        return
+      elseif not navigation_toggle then
+        navigation_toggle = true
+      end
     end,
 
-    ["<A-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-    ["<A-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+    ["i"] = function(fallback)
+      if not cmp.visible() or not navigation_toggle then
+        fallback()
+      else
+        navigation_toggle = false
+      end
+    end,
 
-    ["<A-H>"] = cmp.mapping.close(),
+    ["<A-l>"] = function(fallback)
+      if not cmp.visible() or navigation_toggle then
+        return fallback()
+      end
+      
+      return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }))
+    end,
 
-    ["<A-J>"] = function(_)
+    ["<A-h>"] = function(fallback)
+      if cmp.visible() and not navigation_toggle then
+        navigation_toggle = false
+        cmp.close()
+        return
+      end
+
+      fallback()
+    end,
+
+    ["<A-k>"] = function(fallback)
+      if not cmp.visible() or navigation_toggle then
+        return fallback()
+      end
+
+      return cmp.mapping(cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select }))
+    end,
+
+    ["<A-j>"] = function(fallback)
+      if not cmp.visible() or navigation_toggle then
+        return fallback()
+      end
+
+        return cmp.mapping(cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }))
+    end,
+
+    ["l"] = function(fallback)
+      if cmp.visible() and navigation_toggle then
+        navigation_toggle = false
+        return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }))
+      end
+
+      fallback()
+    end,
+
+    ["h"] = function(fallback)
+      if cmp.visible() and navigation_toggle then
+        navigation_toggle = false
+        cmp.close()
+        return
+      end
+
+      fallback()
+    end,
+
+    ["k"] = function(fallback)
+      if cmp.visible() and navigation_toggle then
+        return cmp.mapping(cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select }))
+      end
+
+      fallback()
+    end,
+
+    ["j"] = function(fallback)
+      if cmp.visible() and navigation_toggle then
+        return cmp.mapping(cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }))
+      end
+
+      fallback()
+    end,
+    ["J"] = function(fallback)
+      if not cmp.visible() or not navigation_toggle then
+        return fallback()
+      end
+
       if not cmp.visible_docs() then cmp.open_docs() end
       return cmp.mapping(cmp.scroll_docs(1), { "i", "c" })
     end,
 
-    ["<A-K>"] = function(_)
+    ["H"] = function(fallback)
+      if not cmp.visible() or not navigation_toggle then
+        return fallback()
+      end
+
       if not cmp.visible_docs() then cmp.open_docs() end
       return cmp.mapping(cmp.scroll_docs(-1), { "i", "c" })
     end,
+
+    ["<A-J>"] = function(fallback)
+      if not cmp.visible() or navigation_toggle then
+        return fallback()
+      end
+
+      if not cmp.visible_docs() then cmp.open_docs() end
+      return cmp.mapping(cmp.scroll_docs(1), { "i", "c" })
+    end,
+
+    ["<A-H>"] = function(fallback)
+      if not cmp.visible() or navigation_toggle then
+        return fallback()
+      end
+
+      if not cmp.visible_docs() then cmp.open_docs() end
+      return cmp.mapping(cmp.scroll_docs(-1), { "i", "c" })
+    end,
+
+
   }
 end
 
@@ -99,12 +211,16 @@ return {
             end
           },
 
+          view = { entries = { name = 'custom', selection_order = 'top_down' },
+            docs = { auto_open = false, },
+          },
+
           sources = {
             { name = "path",     option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             { name = "nvim_lsp", option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             { name = "nvim_lua", option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             -- { name = "null_ls",  option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
-            { name = "copilot",  option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
+            -- { name = "copilot",  option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             -- { name = "buffer",   option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
           },
 
@@ -133,7 +249,7 @@ return {
         }
 
         cmp.setup.cmdline(":", {
-          mapping = cmp.mapping.preset.cmdline(),    -- mapping = mappings(cmp),
+          mapping = cmp.mapping.preset.cmdline(), -- mapping = mappings(cmp),
 
           sources = cmp.config.sources {
             { name = "cmdline" },

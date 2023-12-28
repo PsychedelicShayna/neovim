@@ -20,7 +20,7 @@ function Map_lsp_which_key(wk)
     "View Definition",
   }
 
-  mappings["s"] = {}
+  -- mappings["s"] = {}
 
   mappings["f"] = {
     "<cmd>lua vim.lsp.buf.format { async = true }<cr>",
@@ -54,7 +54,7 @@ function Map_lsp_which_key(wk)
     "Rename Symbol",
   }
 
-  mappings["s"] = {
+  mappings["S"] = {
     "<cmd>lua vim.lsp.buf.signature_help()<cr>",
     "View Signature",
   }
