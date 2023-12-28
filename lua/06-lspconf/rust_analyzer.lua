@@ -2,9 +2,9 @@ return function(rust_analyzer, caps, on_attach)
 	local root_pattern = require("lspconfig.util").root_pattern
 
   -- Disable temporarily.
-  if true then
-    return true
-  end
+  -- if true then
+  --   return true
+  -- end
 
 	local config = {
 		on_attach = on_attach,
