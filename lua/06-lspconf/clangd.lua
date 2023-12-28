@@ -33,8 +33,23 @@ return function(clangd, caps, on_attach)
   }
 
   Safe.import_then("clangd_extensions", function(ext)
+    Events.await_event {
+      actor = "which-key",
+      event = "configured",
+      callback = function()
+        Safe.import_then('which-key', function(wk)
+          wk.register({
+            s = { "<cmd>ClangdSwitchSourceHeader<cr>", "Switch Source/Header" }
+          }, {
+            prefix = "<leader>l",
+            mode = "n",
+          })
+        end)
+      end
+    }
+
     ext.setup { server = config }
-  end, { 
+  end, {
     handle = function()
       clangd.setup(config)
     end,
