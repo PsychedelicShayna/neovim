@@ -38,16 +38,17 @@ UsrLib = export({
 
 local functionality_modules = {
   -- background_control = '04-custom.02-fun.background-control',
-  autocomment        = "04-custom.02-fun.autocomment",
-  auto_diag_loclist  = "04-custom.02-fun.auto-diag-loclist",
-  autorunner         = "04-custom.02-fun.autorunner",
-  cdtracker          = "04-custom.02-fun.cdtracker",
-  lsp_auto_format    = "04-custom.02-fun.lsp-auto-format",
-  spellcheck         = "04-custom.02-fun.spellcheck",
-  yank_highlighter   = "04-custom.02-fun.yank-highlighter",
-  scratch_pad        = "04-custom.02-fun.scratch-pad",
-  toggle_diagnostics = "04-custom.02-fun.toggle-diagnostics",
+  autocomment          = "04-custom.02-fun.autocomment",
+  auto_diag_loclist    = "04-custom.02-fun.auto-diag-loclist",
+  autorunner           = "04-custom.02-fun.autorunner",
+  cdtracker            = "04-custom.02-fun.cdtracker",
+  lsp_auto_format      = "04-custom.02-fun.lsp-auto-format",
+  spellcheck           = "04-custom.02-fun.spellcheck",
+  yank_highlighter     = "04-custom.02-fun.yank-highlighter",
+  scratch_pad          = "04-custom.02-fun.scratch-pad",
+  toggle_diagnostics   = "04-custom.02-fun.toggle-diagnostics",
   switch_header_source = "04-custom.02-fun.switch_header_source",
+  flashbang            = "04-custom.02-fun.flashbang"
 }
 
 UsrFun = functionality_modules
@@ -62,6 +63,7 @@ local auto_load_functionality = {
   UsrFun.autorunner,
   UsrFun.toggle_diagnostics,
   UsrFun.switch_header_source,
+  UsrFun.flashbang,
 }
 
 for name, path in pairs(auto_load_functionality) do

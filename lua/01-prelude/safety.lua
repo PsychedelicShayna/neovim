@@ -32,6 +32,17 @@ function M.typecheck_tbl_path(target, ordered_kt_pairs)
   end
 end
 
+-- Check if the value is in the table
+function M.v_in(value, table)
+  for _, v in ipairs(table) do
+    if v == value then
+      return true
+    end
+  end
+
+  return false
+end
+
 function M.t_is(value, types)
   if type(types) ~= 'table' then
     types = { types }
