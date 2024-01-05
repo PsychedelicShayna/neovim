@@ -32,6 +32,7 @@ vim.o.updatetime     = 300
 vim.o.wrap           = false
 vim.o.writebackup    = false
 vim.o.showbreak      = '↪ '
+vim.o.laststatus     = 3
 vim.o.winbar         = '%y %t %m > %L > %l:%c > %b @ 0x%O (%o) > %F'
 
 

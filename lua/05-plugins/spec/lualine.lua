@@ -218,6 +218,6 @@ return {
     })
   end,
   init = function()
-    vim.o.laststatus = 0
+    -- vim.o.laststatus = 0
   end,
 }
