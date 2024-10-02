@@ -1,14 +1,14 @@
 --- Magic Numbers/Values ------------------------------------------------------
 --
 
-LL_TRACE = vim.log.levels.TRACE -- 0
-LL_DEBUG = vim.log.levels.DEBUG -- 1
-LL_INFO  = vim.log.levels.INFO  -- 2
-LL_WARN  = vim.log.levels.WARN  -- 3
-LL_ERROR = vim.log.levels.ERROR -- 4
-LL_OFF   = vim.log.levels.OFF   -- 5
+LL_TRACE   = vim.log.levels.TRACE -- 0
+LL_DEBUG   = vim.log.levels.DEBUG -- 1
+LL_INFO    = vim.log.levels.INFO  -- 2
+LL_WARN    = vim.log.levels.WARN  -- 3
+LL_ERROR   = vim.log.levels.ERROR -- 4
+LL_OFF     = vim.log.levels.OFF   -- 5
 
-NOP      = function() end
+NOP        = function() end
 
 --- Error/Debug Printing ------------------------------------------------------
 --
@@ -20,6 +20,10 @@ function PrintError(module_name, message, inspections)
   vim.notify('[' .. module_name .. '] ' .. message)
 end
 
+---@param message string The message to be printed. Can contain string.format parameters.
+---@param level number One of LL_TRACE, LL_DEBUG, LL_INFO, LL_WARN, LL_ERROR, LL_OFF
+---@param inspections table | nil  Optional list of values to dump information about.
+---@param ... any If the message contains formatting arameters, these are their values.
 function PrintDbg(message, level, inspections, ...)
   if not level then
     level = LL_INFO
@@ -51,8 +55,6 @@ function PrintDbg(message, level, inspections, ...)
       local output = string.format("Argument %d; of type %s: %s\n", index, item_type, item_str)
       vim.notify(output, level)
     end
-  else
-    vim.notify('inspecttions type: ' .. type(inspections), level)
   end
 
   return level

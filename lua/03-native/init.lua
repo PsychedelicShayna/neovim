@@ -3,7 +3,7 @@ local M = {
   available = {
     vim_options = "03-native.vim-options",
     vim_lsp_diagnostics = "03-native.vim-lsp-diagnostics",
-    vim_highlights =  "03-native.vim-highlights"
+    vim_highlights = "03-native.vim-highlights"
   }
 }
 

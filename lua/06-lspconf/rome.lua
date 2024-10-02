@@ -9,8 +9,6 @@ return function(rome, capabilities, on_attach)
   -- )
 
 
-  vim.notify(vim.inspect(lspconfig.rome))
-
   local config = {
     on_attach    = on_attach,
     capabilities = extended_caps,

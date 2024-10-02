@@ -7,7 +7,8 @@ local load_order = {
   "04-custom",
   "05-plugins",
   "06-lspconf",
-  "07-keymaps"
+  "07-keymaps",
+  "08-lspextern",
 }
 
 require "01-prelude.events"

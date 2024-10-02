@@ -8,7 +8,7 @@
 -- invoke a function that checks the cache and removes any schemes that aren't
 -- installed anymore. This is a bit of a pain, but it's better than nothing.
 
-local M      = {
+local M = {
   cache = {
     dir = nil,
     file = nil,
@@ -21,7 +21,7 @@ local M      = {
   }
 }
 
-vim.defer_fn(function() 
+vim.defer_fn(function()
   local _, _ = pcall(M.load_cache_file, M.cache.file)
 end, 1500)
 

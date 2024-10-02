@@ -20,8 +20,6 @@ function M.str_split(str, delimiter)
   return entries
 end
 
-
-
 function M.zip(...)
   local args = { ... }
 
@@ -39,7 +37,6 @@ function M.zip(...)
 
   return zipped
 end
-
 
 function M.path_basename(path)
   if not path then
@@ -87,7 +84,6 @@ function M.path_extension(path)
   local parts = M.str_split(path, ".")
   return parts[#parts]
 end
-
 
 function M.tbl_all(table)
   if type(table) ~= 'table' then

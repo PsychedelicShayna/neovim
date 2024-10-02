@@ -7,24 +7,31 @@ return {
     Events.await_event {
       actor = "which-key",
       event = "configured",
+      retroactive = true,
       callback = function()
         local ok, wk = pcall(require, "which-key")
+
         if not ok then
           vim.notify("Couldn't load which-key from vim-bbye (cannot import which-key)", vim.log.levels.ERROR)
           return
         end
-        wk.register({
-          d = {
-            "<cmd>Bdelete<cr>",
-            "Delete Buffer (Force)",
-          },
-          D = {
-            "<cmd>Bdelete!<cr>",
-            "Delete Buffer (Force)",
-          }
-        }, {
-          prefix = "<leader>b"
-        })
+
+        wk.add {
+          { "<leader>bD", "<cmd>Bdelete!<cr>", desc = "Delete Buffer (Force)" },
+          { "<leader>bd", "<cmd>Bdelete<cr>",  desc = "Delete Buffer (Force)" },
+          --
+          -- d = {
+          --   "<cmd>Bdelete<cr>",
+          --   "Delete Buffer (Force)",
+          -- },
+          -- D = {
+          --   "<cmd>Bdelete!<cr>",
+          --   "Delete Buffer (Force)",
+          -- }
+        }
+        -- }, {
+        --   prefix = "<leader>b"
+        -- })
       end
     }
   end

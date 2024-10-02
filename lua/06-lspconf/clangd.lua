@@ -36,14 +36,17 @@ return function(clangd, caps, on_attach)
     Events.await_event {
       actor = "which-key",
       event = "configured",
+      retroactive = true,
       callback = function()
         Safe.import_then('which-key', function(wk)
-          wk.register({
-            s = { "<cmd>ClangdSwitchSourceHeader<cr>", "Switch Source/Header" }
-          }, {
-            prefix = "<leader>l",
-            mode = "n",
-          })
+          wk.add{
+            { "<leader>ls", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header" },
+            -- s = { "<cmd>ClangdSwitchSourceHeader<cr>", "Switch Source/Header" }
+          }
+          -- }, {
+          --   prefix = "<leader>l",
+          --   mode = "n",
+          -- })
         end)
       end
     }

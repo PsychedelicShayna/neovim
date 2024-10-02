@@ -1,5 +1,7 @@
 local autocmd_id = nil
 
+
+
 vim.api.nvim_create_user_command("ToggleAutoDiagLocList", function()
   if type(_G.autocmd_id_toggle_auto_diagnostic_llist) == "number" then
     vim.api.nvim_del_autocmd(_G.autocmd_id_toggle_auto_diagnostic_llist)
@@ -9,6 +11,8 @@ vim.api.nvim_create_user_command("ToggleAutoDiagLocList", function()
     _G.autocmd_id_toggle_auto_diagnostic_llist = vim.api.nvim_create_autocmd({ "BufWrite" }, {
       callback = function()
         vim.diagnostic.setloclist()
+        -- vim.api.nvim_win_set_cursor
+        -- vim.api.nvim_buf_get_lines
       end,
     })
 

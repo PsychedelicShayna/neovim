@@ -37,7 +37,7 @@ UsrLib = export({
 
 
 local functionality_modules = {
-  -- background_control = '04-custom.02-fun.background-control',
+  background_control   = '04-custom.02-fun.background-control',
   autocomment          = "04-custom.02-fun.autocomment",
   auto_diag_loclist    = "04-custom.02-fun.auto-diag-loclist",
   autorunner           = "04-custom.02-fun.autorunner",
@@ -45,6 +45,7 @@ local functionality_modules = {
   lsp_auto_format      = "04-custom.02-fun.lsp-auto-format",
   spellcheck           = "04-custom.02-fun.spellcheck",
   yank_highlighter     = "04-custom.02-fun.yank-highlighter",
+  cursorhold_highlight = "04-custom.02-fun.cursorhold-highlight",
   scratch_pad          = "04-custom.02-fun.scratch-pad",
   toggle_diagnostics   = "04-custom.02-fun.toggle-diagnostics",
   switch_header_source = "04-custom.02-fun.switch_header_source",

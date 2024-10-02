@@ -23,8 +23,11 @@ end
 
 -------------------------------------------------------------------------------
 
+--- Options: 
+--- { actor:string, event:string, callback:function, retroactive:boolean=false, data:table? } 
 function M.await_event(opts)
   if type(opts) ~= 'table' then
+    vim.notify("Incorrect use of Events.await_event, expected table.", vim.log.levels.ERROR)
     return nil
   end
 
@@ -96,9 +99,11 @@ function M.await_event(opts)
 
   -- If true, don't schedule the event, just bypass and invoke the callback
   -- immediatlely when this funciton is called.
+  --
+  --
 
   local dont_wait = (
-    opts['or_never'] and (
+    opts['must_exist'] and (
     -- Table has never been defined.
       (not event_exists)
 
@@ -107,7 +112,7 @@ function M.await_event(opts)
         and M.database[id].times_fired == 0)
     )
   ) or (
-    opts['or_previously'] and (
+    opts['retroactive'] and (
     -- Table is defined, has a times_fired int, and fired at least once.
       (type(M.database[id]) == 'table' and
         type(M.database[id].times_fired) == 'number' and

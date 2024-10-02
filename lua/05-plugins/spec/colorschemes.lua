@@ -17,35 +17,35 @@ local colorschemes = {
     name = "rose-pine",
     lazy = true,
     config = function()
-      vim.defer_fn(function()
-        require("rose-pine").setup {
-          highlight_groups = {
-            TelescopeBorder = { fg = "highlight_high", bg = "none" },
-            TelescopeNormal = { bg = "none" },
-            TelescopePromptNormal = { bg = "base" },
-            TelescopeResultsNormal = { fg = "subtle", bg = "none" },
-            TelescopeSelection = { fg = "text", bg = "base" },
-            TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
-          },
+      -- vim.defer_fn(function()
+      require("rose-pine").setup {
+        highlight_groups = {
+          TelescopeBorder = { fg = "highlight_high", bg = "none" },
+          TelescopeNormal = { bg = "none" },
+          TelescopePromptNormal = { bg = "base" },
+          TelescopeResultsNormal = { fg = "subtle", bg = "none" },
+          TelescopeSelection = { fg = "text", bg = "base" },
+          TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
+        },
 
-          dark_variant = 'main',
-          bold_vert_split = false,
-          -- dim_nc_background = false,
-          disable_background = false,
-          disable_float_background = false,
-          disable_italics = false,
+        dark_variant = 'main',
+        bold_vert_split = false,
+        -- dim_nc_background = false,
+        disable_background = false,
+        disable_float_background = false,
+        disable_italics = false,
 
-          variant = "moon",
-          disable = {
-            background = false,
-            cursor_coloring = false,
-            terminal_colors = false,
-            eob_lines = false,
-          },
-        }
+        variant = "moon",
+        disable = {
+          background = false,
+          cursor_coloring = false,
+          terminal_colors = false,
+          eob_lines = false,
+        },
+      }
+      -- end, 1)
 
-        vim.cmd("colorscheme rose-pine")
-      end, 250)
+      vim.cmd("colorscheme rose-pine")
     end
   },
   { "fenetikm/falcon",                  lazy = true },
@@ -58,12 +58,41 @@ local colorschemes = {
   { "nyoom-engineering/oxocarbon.nvim", lazy = true },
   { "projekt0n/github-nvim-theme",      lazy = true },
   { "rebelot/kanagawa.nvim",            lazy = true },
-  { "sainnhe/gruvbox-material",         lazy = true },
-  { "srcery-colors/srcery-vim",         lazy = true },
-  { "titanzero/zephyrium",              lazy = true },
-  { "whatyouhide/vim-gotham",           lazy = true },
-  { "yazeed1s/minimal.nvim",            lazy = true },
-  { "neanias/everforest-nvim",          lazy = true },
+  {
+    "sainnhe/gruvbox-material",
+    lazy = false,
+    config = function()
+
+      -- -- Enables some form of caching.
+      vim.g.gruvbox_material_better_performance = 0
+      --
+      -- -- Enable italics keywords.
+      -- vim.g.gruvbox_material_enable_italic = 2
+      --
+      -- -- Enable italic comments.
+      vim.g.gruvbox_material_disable_italic_comment = 0
+      --
+      -- Transparency: 0 = None, 1 = Some, 2 = More
+      vim.g.gruvbox_material_transparent_background = 2
+      --
+      -- -- Palette to use, can be soft, medium, or hard.
+      -- vim.g.gruvbox_material_background = 'medium'
+      -- vim.g.gruvbox_material_foreground = 'medium'
+      --
+      -- -- Can be low or high. Affects line numbers, indent lines, etc.
+      vim.g.gruvbox_material_ui_contrast = 'high'
+      --
+      -- -- How to make floating windows stand out; can be 'bright' or 'dim'
+      -- vim.g.gruvbox_material_float_style = 'dim'
+
+      vim.cmd("colorscheme gruvbox-material")
+    end
+  },
+  { "srcery-colors/srcery-vim", lazy = true },
+  { "titanzero/zephyrium",      lazy = true },
+  { "whatyouhide/vim-gotham",   lazy = true },
+  { "yazeed1s/minimal.nvim",    lazy = true },
+  { "neanias/everforest-nvim",  lazy = true },
 }
 
 ColorschemeNames = vim.tbl_map(function(colorscheme)
@@ -79,6 +108,8 @@ ColorschemeNames = vim.tbl_map(function(colorscheme)
 
   return repo_name
 end, colorschemes)
+
+table.insert(ColorschemeNames, "For base16 themes, add base16- before the theme, e.g. base16-solarized-dark")
 
 vim.api.nvim_create_user_command("ColorschemeList", function()
   local buf_before = vim.api.nvim_get_current_buf()

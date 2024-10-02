@@ -57,9 +57,13 @@ function M.t_is(value, types)
   return false
 end
 
+M.type_is = M.t_is
+
 function M.t_not(value, types)
   return not M.t_is(value, types)
 end
+
+M.type_is = M.type_isnt
 
 function M.try(fn, ...)
   local ok, result = pcall(fn, (...))
@@ -88,6 +92,16 @@ function M.partial(fn, ...)
 
   return function(...)
     return fn(unpack(args), ...)
+  end
+end
+
+function M.import_or(name, alternate, opts, ...)
+  local ok, module = pcall(require, name)
+
+  if ok then
+    return module
+  else
+    return alternate
   end
 end
 
@@ -153,6 +167,19 @@ function M.ok_or_else(fn, fnerr, ...)
   return result
 end
 
+---@param fn function
+---@param errv any
+---@
+function M.ok_or(fn, errv, ...)
+  local ok, result = pcall(fn, (...))
+
+  if not ok then
+    return errv
+  end
+
+  return result
+end
+
 function M.map_err(fn, fnerr, fnok, ...)
   local ok, result = pcall(fn, (...))
 
@@ -161,6 +188,11 @@ function M.map_err(fn, fnerr, fnok, ...)
   end
 
   return pcall(fnok, result)
+end
+
+function M.is_lib(name)
+  local ok, _ = pcall(require, name)
+  return ok
 end
 
 Safe = M

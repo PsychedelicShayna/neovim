@@ -63,7 +63,7 @@ return {
         ensure_installed      = {},
         sync_install          = false,
         highlight             = {
-          enable = true,
+          enable = false,
           -- disable = function(lang, bufnr)
           --   -- local large_buffers = require("global.control.large_buffers")
           --   -- local check = large_buffers.is_large(bufnr)

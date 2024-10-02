@@ -78,42 +78,51 @@ local function config()
 end
 
 local function which_key_mappings()
-  require("which-key").register({
-    ["e"] = {
-      "<cmd>Neotree toggle<cr>",
-      "NeoTree Toggle"
-    },
-    E = {
-      name = "NeoTree...",
-
-      k = {
-        "<cmd>Neotree float<cr>",
-        "Center Mode"
-      },
-
-      l = {
-        "<cmd>Neotree right<cr>",
-        "Right Mode"
-      },
-
-      j = {
-        "<cmd>Neotree left<cr>",
-        "Left Mode"
-      },
-      t = {
-        "<cmd>Neotree top<cr>",
-        "Top Mode"
-      },
-
-      f = {
-        "<cmd>Neotree focus<cr>",
-        "Focus"
-      }
-    }
-  }, {
-    mode = "n",
-    prefix = "<leader>"
-  })
+  require("which-key").add {
+    { "<leader>E", group = "[NeoTree]" },
+    { "<leader>Ef", "<cmd>Neotree focus<cr>", desc = "Focus" },
+    { "<leader>Ej", "<cmd>Neotree left<cr>", desc = "Left Mode" },
+    { "<leader>Ek", "<cmd>Neotree float<cr>", desc = "Center Mode" },
+    { "<leader>El", "<cmd>Neotree right<cr>", desc = "Right Mode" },
+    { "<leader>Et", "<cmd>Neotree top<cr>", desc = "Top Mode" },
+    { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle Neotree" },
+    --
+    --
+    -- ["e"] = {
+    --   "<cmd>Neotree toggle<cr>",
+    --   "NeoTree Toggle"
+    -- },
+    -- E = {
+    --   name = "[NeoTree]",
+    --
+    --   k = {
+    --     "<cmd>Neotree float<cr>",
+    --     "Center Mode"
+    --   },
+    --
+    --   l = {
+    --     "<cmd>Neotree right<cr>",
+    --     "Right Mode"
+    --   },
+    --
+    --   j = {
+    --     "<cmd>Neotree left<cr>",
+    --     "Left Mode"
+    --   },
+    --   t = {
+    --     "<cmd>Neotree top<cr>",
+    --     "Top Mode"
+    --   },
+    --
+    --   f = {
+    --     "<cmd>Neotree focus<cr>",
+    --     "Focus"
+    --   }
+    -- }
+  } -- , {
+  --   mode = "n",
+  --   prefix = "<leader>"
+  -- })
 end
 
 return {
@@ -131,6 +140,7 @@ return {
     Events.await_event {
       actor = "which-key",
       event = "configured",
+      retroactive = true,
       callback = function()
         which_key_mappings()
       end

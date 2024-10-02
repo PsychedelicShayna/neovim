@@ -52,9 +52,6 @@ vim.api.nvim_create_user_command("SwitchHeaderSource", function()
   --   vim.notify("Cannot find file: " .. new_file_name)
   -- end
   --
-
-
-
 end, {})
 
 
@@ -74,6 +71,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     Events.await_event {
       actor = "which-key",
       event = "configured",
+      retroactive = true,
       callback = function()
         Safe.import_then('which-key', function(which_key)
           which_key.register(

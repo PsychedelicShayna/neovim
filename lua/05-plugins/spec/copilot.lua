@@ -56,53 +56,24 @@ return {
         },
       }
 
-      MapKey {
-        key = "<leader>lce",
-        does = "<cmd>Copilot enable<CR>",
-        modes = "n",
-      }
-
-      MapKey {
-        key = "<leader>lcd",
-        does = "<cmd>Copilot disable<cr>",
-        modes = "n",
-      }
-
-      MapKey {
-        key = "<leader>lcp",
-        does = "<cmd>Copilot panel<cr>",
-        modes = "n",
-      }
-
-      MapKey {
-        key = "<leader>lct",
-        does = "<cmd>Copilot suggestion toggle_auto_trigger<cr>",
-        modes = "n",
-      }
-
-      MapKey {
-        key = "<leader>lcs",
-        does = "<cmd>Copilot status<cr>",
-        modes = "n",
-      }
-
       Events.await_event {
         actor = "which-key",
         event = "configured",
-        callback = function(wk)
-          wk.register {
-            ["<leader>lc"] = {
-              name = "Copilot",
-              e = { "<cmd>Copilot enable<CR>", "Enable" },
-              d = { "<cmd>Copilot disable<cr>", "Disable" },
-              p = { "<cmd>Copilot panel<cr>", "Show Panel" },
-              t = { "<cmd>Copilot toggle<cr>", "Toggle Auto Trigger" },
-              s = { "<cmd>Copilot status<cr>", "Status" },
+        retroactive = true,
+        callback = function()
+          Safe.import_then('which-key', function(wk)
+            wk.add {
+              { "<leader>lc",  group = "[Copilot]" },
+              { "<leader>lce", "<cmd>Copilot enable<cr>",  desc = "Enable" },
+              { "<leader>lcd", "<cmd>Copilot disable<cr>", desc = "Disable" },
+              { "<leader>lcp", "<cmd>Copilot panel<cr>",   desc = "Show Panel" },
+              { "<leader>lct", "<cmd>Copilot toggle<cr>",  desc = "Toggle Auto Trigger" },
+              { "<leader>lcs", "<cmd>Copilot suggestion<cr>",  desc = "Suggestions" },
+              { "<leader>lcS", "<cmd>Copilot status<cr>",  desc = "Status" },
             }
-          }
+          end)
         end
       }
-
-    end, 1000)
+    end, 500)
   end,
 }

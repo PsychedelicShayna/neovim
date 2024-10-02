@@ -29,10 +29,6 @@ local icons = { --| Alternative Icons -------------------------------------|----
   Variable           = "󰀫 ", --|
 }
 
-
-
-
-
 local function cmp_buffer_size_check(bufnr)
   if type(bufnr) ~= 'number' then
     return {}
@@ -79,9 +75,10 @@ local function mappings(_)
       if not cmp.visible() or navigation_toggle then
         return fallback()
       end
-      
-      return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }))
+
+      return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert }))
     end,
+
 
     ["<A-h>"] = function(fallback)
       if cmp.visible() and not navigation_toggle then
@@ -106,17 +103,18 @@ local function mappings(_)
         return fallback()
       end
 
-        return cmp.mapping(cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }))
+      return cmp.mapping(cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }))
     end,
 
     ["l"] = function(fallback)
       if cmp.visible() and navigation_toggle then
         navigation_toggle = false
-        return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }))
+        return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert }))
       end
 
       fallback()
     end,
+
 
     ["h"] = function(fallback)
       if cmp.visible() and navigation_toggle then
@@ -213,6 +211,11 @@ return {
 
           view = { entries = { name = 'custom', selection_order = 'top_down' },
             docs = { auto_open = false, },
+          },
+
+          performance = {
+            fetching_timeout = 100,
+            max_view_entries = 20
           },
 
           sources = {
