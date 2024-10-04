@@ -12,7 +12,7 @@ return function(rust_analyzer, caps, on_attach)
     },
   }
 
-  local use_rust_tools = false
+  local use_rust_tools = true
 
   if not use_rust_tools then
       rust_analyzer.setup(config)

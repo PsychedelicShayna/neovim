@@ -52,21 +52,22 @@ return {
   {
     "simrat39/rust-tools.nvim", -- No longer maintained.
     -- "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
-    version = '^3',        -- Pin to version 3.x.x.
-    ft = { 'rust' },       -- Lazy load on Rust files.
+    version = '^3',             -- Pin to version 3.x.x.
+    ft = { 'rust' },            -- Lazy load on Rust files.
   },
 
-  {
-    "MrcJkb/haskell-tools.nvim",
-    version = '^3',
-    ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
-  },
+  -- {
+  --   "MrcJkb/haskell-tools.nvim",
+  --   version = '^3',
+  --   lazy = true,
+  --   ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+  -- },
 
-  { "p00f/clangd_extensions.nvim", config = true,                      lazy = false },
-  { "folke/neodev.nvim",           lazy = false,                       config = true },
-  { "manicmaniac/coconut.vim",     ft = { ".coco", ".co", ".coconut" } },
-  { "j-hui/fidget.nvim",           tag = "legacy",                     config = true },
-  { "udalov/kotlin-vim",           config = false,                     lazy = false },
+  { "p00f/clangd_extensions.nvim", lazy = true, ft = 'cpp', config = true },
+  { "folke/neodev.nvim",           lazy = true, ft = 'lua', config = true },
+  -- { "manicmaniac/coconut.vim",     ft = { ".coco", ".co", ".coconut" } },
+  -- { "j-hui/fidget.nvim",           tag = "legacy",                     config = true, lazy = true },
+  -- { "udalov/kotlin-vim",           config = false,                     lazy = true, ft = 'kotlin' },
 
 
   -- The meat of the LSP setup..
@@ -93,6 +94,7 @@ return {
     lazy = false,
     dependencies = 'williamboman/mason-lspconfig.nvim',
     event = 'FileType',
+
     config = function()
       local neodev_ok, neodev = pcall(require, 'neodev')
       if not neodev_ok then

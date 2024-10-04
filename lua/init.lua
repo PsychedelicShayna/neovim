@@ -1,5 +1,8 @@
 -- This file determines the load order of the rest of the module folders.
 
+
+require "01-prelude.disabled_plugins"
+
 local load_order = {
   "01-prelude",
   "02-storage",
@@ -10,6 +13,7 @@ local load_order = {
   "07-keymaps",
   "08-lspextern",
 }
+
 
 require "01-prelude.events"
 UsrLib = {}

@@ -8,8 +8,17 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+---@class MapKeySpec
+---@field modes table | string | nil Same as vim.keymap.set modes
+---@default modes "Nil"
+local MapKeySpec = {}
+
+
+---@param binding table
+---@return boolean
+--- More convenient way to set keybinds.
 function MapKey(binding)
-  if Safe.t_not(binding, 'table') then
+  if type(binding) ~= 'table' then
     PrintDbg("MapKey: binding is not a table, was ", LL_ERROR, { binding })
     return false
   end
@@ -19,22 +28,35 @@ function MapKey(binding)
     return false
   end
 
-  if Safe.t_is(binding.modes, 'nil') then
+  if binding.modes == nil then
     binding.modes = 'n'
   elseif Safe.t_not(binding.modes, { 'string', 'table' }) then
     PrintDbg("Invalid type for mode to bind key to!", LL_ERROR, { binding })
     return false
   end
 
-  if Safe.t_not(binding.opts, 'table') then
+  if type(binding.opts) ~= 'table' then
     binding.opts = {
       noremap = true,
       silent = true
     }
   end
 
-  if Safe.t_not(binding.unset, 'nil') then
+  if binding.unset ~= nil then
     vim.unset_keymap(binding.modes, binding.key)
+  end
+
+  if binding.desc ~= nil and type(binding.desc) ~= 'string' then
+    PrintDbg(
+      "Description of keybind has an invalid type.", LL_WARN, {
+        binding,
+        binding.desc
+      }
+    )
+
+    binding.desc = nil
+  elseif binding.desc ~= nil then
+    binding.opts.desc = binding.desc
   end
 
   vim.keymap.set(
@@ -44,19 +66,9 @@ function MapKey(binding)
     binding.opts
   )
 
-  if Safe.t_not(binding.description, { 'nil', 'string' }) then
-    PrintDbg(
-      "Description of keybind has an invalid type.", LL_WARN, {
-        binding.description
-      }
-    )
-
-    binding.description = nil
-  end
-
   Events.fire_event {
     actor = 'MapKey',
     event = 'mapped',
-    data  = binding.description or nil
+    data  = binding.desc
   }
 end

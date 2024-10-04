@@ -16,7 +16,7 @@ return function(clangd, caps, on_attach)
     },
     root_dir            = root_pattern(
       ".clangd",
-      ".clang-tidy",
+
       ".clang-format",
       "compile_commands.json",
       "compile_flags.txt",

@@ -18,6 +18,9 @@ vim.o.shiftwidth     = 2
 vim.o.showtabline    = 0
 vim.o.sidescrolloff  = 8
 vim.o.signcolumn     = "yes"
+vim.o.showmatch      = true
+vim.o.matchtime      = 1
+vim.o.showfulltag    = true
 vim.o.smartcase      = true
 vim.o.softtabstop    = 2
 vim.o.spelllang      = "en_us"
@@ -31,10 +34,11 @@ vim.o.undofile       = true
 vim.o.updatetime     = 300
 vim.o.wrap           = false
 vim.o.writebackup    = false
-vim.o.showbreak      = '↪ '
+vim.o.showbreak      = '++' -- '↪ '
 vim.o.laststatus     = 3
 vim.o.winbar         = '%y %t %m > %L > %l:%c > %b @ 0x%O (%o) > %F'
-
+vim.o.shortmess      = "ltToOFIrC"
+vim.o.showtabline    = 2
 
 -- Set the leader key to space.
 vim.g.mapleader = ' '
@@ -122,5 +126,50 @@ vim.g.maplocalleader = ' '
 --   end
 -- })
 
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   once = true,
+--   callback = function()
+--     -- Set up a scratch buffer for the greeter
+--     vim.cmd "enew"  -- equivalent to :new, opens an empty buffer
+--     vim.bo.buftype = "nofile"
+--     vim.bo.bufhidden = "wipe"
+--     vim.bo.swapfile = false
+--     vim.cmd "setlocal nobuflisted"
+--
+--     -- Put your ASCII art here (or load from a file)
+--     local ascii_art = [[
+--       ░█▀▀█ ░█▀▀█ ░█─── 
+--       ░█▀▀▄ ░█─── ░█─── 
+--       ░█▄▄█ ░█▄▄█ ░█▄▄█
+--     ]]
+--
+--     local bufnr = vim.api.nvim_get_current_buf()
+--    local lines = vim.split(ascii_art, "\n")
+--    vim.notify(tostring(#lines))
+--
+--     -- Use extmarks to display the ASCII art as virtual text
+--     local ns_id = vim.api.nvim_create_namespace("greeter")
+--
+--   -- • virt_text_win_col : position the virtual text at a fixed
+--   --   window column (starting from the first text column of the
+--   --   screen line) instead of "virt_text_pos".
+--     for i, line in ipairs(lines) do
+--       vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 0, {
+--         virt_text = {{ line, "Comment" }},  -- You can choose a different highlight group
+--         virt_text_pos = "overlay",           -- Centers the virtual text
+--         -- virt_text_win_col = 50,
+--         strict = false
+--       })
+--     end
+--
+--     -- Hide the greeter once you interact with the buffer
+--     vim.api.nvim_create_autocmd({"CursorMoved", "CursorMovedI", "ModeChanged", "BufNew", "BufEnter"}, {
+--       once = true,
+--       callback = function()
+--         vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
+--       end
+--     })
+--   end
+-- })
 -- vim.cmd('colorscheme murphy')
 return true

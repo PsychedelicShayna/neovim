@@ -2,12 +2,14 @@ local M = {
   loaded = {},
   available = {
     editor_navigation = '07-keymaps.editor_navigation',
+    evaluation        = '07-keymaps.evaluation',
     lsp_control       = '07-keymaps.lsp_control',
   }
 }
 
 M.autoload = {
   M.available.editor_navigation,
+  M.available.evaluation,
   M.available.lsp_control
 }
 

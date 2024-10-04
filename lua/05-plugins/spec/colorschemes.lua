@@ -62,30 +62,31 @@ local colorschemes = {
     "sainnhe/gruvbox-material",
     lazy = false,
     config = function()
+      vim.defer_fn(function()
+        -- -- Enables some form of caching.
+        vim.g.gruvbox_material_better_performance = 0
+        --
+        -- -- Enable italics keywords.
+        -- vim.g.gruvbox_material_enable_italic = 2
+        --
+        -- -- Enable italic comments.
+        vim.g.gruvbox_material_disable_italic_comment = 0
+        --
+        -- Transparency: 0 = None, 1 = Some, 2 = More
+        vim.g.gruvbox_material_transparent_background = 2
+        --
+        -- -- Palette to use, can be soft, medium, or hard.
+        -- vim.g.gruvbox_material_background = 'medium'
+        -- vim.g.gruvbox_material_foreground = 'medium'
+        --
+        -- -- Can be low or high. Affects line numbers, indent lines, etc.
+        vim.g.gruvbox_material_ui_contrast = 'high'
+        --
+        -- -- How to make floating windows stand out; can be 'bright' or 'dim'
+        -- vim.g.gruvbox_material_float_style = 'dim'
 
-      -- -- Enables some form of caching.
-      vim.g.gruvbox_material_better_performance = 0
-      --
-      -- -- Enable italics keywords.
-      -- vim.g.gruvbox_material_enable_italic = 2
-      --
-      -- -- Enable italic comments.
-      vim.g.gruvbox_material_disable_italic_comment = 0
-      --
-      -- Transparency: 0 = None, 1 = Some, 2 = More
-      vim.g.gruvbox_material_transparent_background = 2
-      --
-      -- -- Palette to use, can be soft, medium, or hard.
-      -- vim.g.gruvbox_material_background = 'medium'
-      -- vim.g.gruvbox_material_foreground = 'medium'
-      --
-      -- -- Can be low or high. Affects line numbers, indent lines, etc.
-      vim.g.gruvbox_material_ui_contrast = 'high'
-      --
-      -- -- How to make floating windows stand out; can be 'bright' or 'dim'
-      -- vim.g.gruvbox_material_float_style = 'dim'
-
-      vim.cmd("colorscheme gruvbox-material")
+        vim.cmd("colorscheme gruvbox-material")
+      end, 1)
     end
   },
   { "srcery-colors/srcery-vim", lazy = true },

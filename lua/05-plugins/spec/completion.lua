@@ -1,32 +1,32 @@
 local icons = { --| Alternative Icons -------------------------------------|-------------------
   --|
-  Class              = "󱃸 ", --|
-  CmpItemKindCopilot = "󰟶 ", --|
-  Color              = " ", --|
-  Constant           = " ", --|   󰏿 󰐀 󰐀
-  Constructor        = "󱊎 ", --| 
-  Copilot            = "󰟶 ", --| 
-  Enum               = "󱄑 ", --| 
-  EnumMember         = "󰥣 ", --| 
-  Event              = " ", --| 
-  Field              = "󱂡 ", --| 󰝨 󰥣 󱂡 󱂡 󰮐
-  File               = " ", --|  
-  Folder             = " ", --| 󰢰 󱉲
-  Function           = "󰘧 ", --| 󰊕 󰡱
-  Interface          = " ", --| 󱄑
-  Keyword            = "󱘖 ", --| 󰮐
-  Method             = "󰡱 ", --| .󰊕
-  Module             = " ", --|   󰏗  
-  Operator           = " ", --| 󰆙
-  Property           = " ", --| 󱃘
-  Reference          = "󱃘 ", --|
-  Snippet            = " ", --|  󰢰
-  Struct             = " ", --|  
-  Text               = "󰊄 ", --| 
-  TypeParameter      = " ", --| 
-  Unit               = "󰆙 ", --| 󰆙 󱂡
-  Value              = "󱛠 ", --| 󰅪 󰝨 󰹻
-  Variable           = "󰀫 ", --|
+  -- Class              = "󱃸 ", --|
+  -- CmpItemKindCopilot = "󰟶 ", --|
+  -- Color              = " ", --|
+  -- Constant           = " ", --|   󰏿 󰐀 󰐀
+  -- Constructor        = "󱊎 ", --| 
+  -- Copilot            = "󰟶 ", --| 
+  -- Enum               = "󱄑 ", --| 
+  -- EnumMember         = "󰥣 ", --| 
+  -- Event              = " ", --| 
+  -- Field              = "󱂡 ", --| 󰝨 󰥣 󱂡 󱂡 󰮐
+  -- File               = " ", --|  
+  -- Folder             = " ", --| 󰢰 󱉲
+  -- Function           = "󰘧 ", --| 󰊕 󰡱
+  -- Interface          = " ", --| 󱄑
+  -- Keyword            = "󱘖 ", --| 󰮐
+  -- Method             = "󰡱 ", --| .󰊕
+  -- Module             = " ", --|   󰏗  
+  -- Operator           = " ", --| 󰆙
+  -- Property           = " ", --| 󱃘
+  -- Reference          = "󱃘 ", --|
+  -- Snippet            = " ", --|  󰢰
+  -- Struct             = " ", --|  
+  -- Text               = "󰊄 ", --| 
+  -- TypeParameter      = " ", --| 
+  -- Unit               = "󰆙 ", --| 󰆙 󱂡
+  -- Value              = "󱛠 ", --| 󰅪 󰝨 󰹻
+  -- Variable           = "󰀫 ", --|
 }
 
 local function cmp_buffer_size_check(bufnr)
@@ -34,7 +34,7 @@ local function cmp_buffer_size_check(bufnr)
     return {}
   end
 
-  local max_size = 1000 * 1024 -- 1MB
+  local max_size = 500 * 1024 -- 500KB
   local nbytes = vim.api.nvim_buf_get_offset(bufnr, vim.api.nvim_buf_line_count(bufnr))
 
   local is_very_large = nbytes > max_size
@@ -46,157 +46,114 @@ local function cmp_buffer_size_check(bufnr)
   end
 end
 
-local entered_completion = false
-local navigation_toggle = false
 
 -- Alt+hjkl Alt+Shift hjkl
 local function mappings(_)
   local cmp = require 'cmp'
 
   return {
-    ["<A-i>"] = function(fallback)
+    ["<A-i>"] = function(_)
       if not cmp.visible() then
-        cmp.complete()
-        return
-      elseif not navigation_toggle then
-        navigation_toggle = true
-      end
-    end,
-
-    ["i"] = function(fallback)
-      if not cmp.visible() or not navigation_toggle then
-        fallback()
+        return cmp.complete()
       else
-        navigation_toggle = false
+        return cmp.close()
       end
     end,
 
     ["<A-l>"] = function(fallback)
-      if not cmp.visible() or navigation_toggle then
-        return fallback()
-      end
-
+      if not cmp.visible() then return fallback() end
       return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert }))
     end,
 
-
     ["<A-h>"] = function(fallback)
-      if cmp.visible() and not navigation_toggle then
-        navigation_toggle = false
-        cmp.close()
-        return
-      end
-
-      fallback()
+      if not cmp.visible() then return fallback() end
+      if not cmp.visible_docs() then return cmp.open_docs() end
     end,
 
     ["<A-k>"] = function(fallback)
-      if not cmp.visible() or navigation_toggle then
-        return fallback()
-      end
-
+      if not cmp.visible() then return fallback() end
       return cmp.mapping(cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select }))
     end,
 
     ["<A-j>"] = function(fallback)
-      if not cmp.visible() or navigation_toggle then
-        return fallback()
-      end
-
+      if not cmp.visible() then return fallback() end
       return cmp.mapping(cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }))
     end,
 
-    ["l"] = function(fallback)
-      if cmp.visible() and navigation_toggle then
-        navigation_toggle = false
-        return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert }))
-      end
-
-      fallback()
-    end,
-
-
-    ["h"] = function(fallback)
-      if cmp.visible() and navigation_toggle then
-        navigation_toggle = false
-        cmp.close()
-        return
-      end
-
-      fallback()
-    end,
-
-    ["k"] = function(fallback)
-      if cmp.visible() and navigation_toggle then
-        return cmp.mapping(cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select }))
-      end
-
-      fallback()
-    end,
-
-    ["j"] = function(fallback)
-      if cmp.visible() and navigation_toggle then
-        return cmp.mapping(cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }))
-      end
-
-      fallback()
-    end,
-    ["J"] = function(fallback)
-      if not cmp.visible() or not navigation_toggle then
-        return fallback()
-      end
-
-      if not cmp.visible_docs() then cmp.open_docs() end
-      return cmp.mapping(cmp.scroll_docs(1), { "i", "c" })
-    end,
-
-    ["H"] = function(fallback)
-      if not cmp.visible() or not navigation_toggle then
-        return fallback()
-      end
-
-      if not cmp.visible_docs() then cmp.open_docs() end
-      return cmp.mapping(cmp.scroll_docs(-1), { "i", "c" })
-    end,
 
     ["<A-J>"] = function(fallback)
-      if not cmp.visible() or navigation_toggle then
+      if not cmp.visible() or not cmp.visible_docs() then
         return fallback()
       end
 
-      if not cmp.visible_docs() then cmp.open_docs() end
       return cmp.mapping(cmp.scroll_docs(1), { "i", "c" })
     end,
 
-    ["<A-H>"] = function(fallback)
-      if not cmp.visible() or navigation_toggle then
+    ["<A-K>"] = function(fallback)
+      if not cmp.visible() or not cmp.visible_docs() then
         return fallback()
       end
 
-      if not cmp.visible_docs() then cmp.open_docs() end
       return cmp.mapping(cmp.scroll_docs(-1), { "i", "c" })
     end,
-
-
   }
 end
 
 return {
+  {
+    "hrsh7th/cmp-nvim-lua",
+    lazy = true,
+    ft = 'lua'
+  },
 
   {
-    "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-cmdline",
+    lazy = true,
+    event = "CmdlineEnter"
+  },
+
+  {
+    "hrsh7th/cmp-path",
+    lazy = true,
+    event = { "InsertEnter", "CmdlineEnter" }
+  },
+
+  {
+    "hrsh7th/cmp-nvim-lsp",
+    lazy = true,
+    event = { "Syntax" }
+  },
+
+  -- {
+  --   "hrsh7th/cmp-buffer",
+  --   lazy = true,
+  --   event = { "InsertEnter" }
+  -- },
+
+
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   dependencies = { "zbirenbaum/copilot.lua" },
+  --   lazy = true,
+  --   init = function()
+  --     Events.await_event {
+  --       actor = "copilot",
+  --       event = "configured",
+  --       callback = function()
+  --         require('copilot_cmp')
+  --       end
+  --     }
+  --   end
+  -- },
+
+  {
+    -- "hrsh7th/nvim-cmp",
+    "yioneko/nvim-cmp", -- Fork with faster performance.
+    branch = "perf",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-nvim-lua",
-      "hrsh7th/cmp-path",
       "L3MON4D3/LuaSnip",
-      { "zbirenbaum/copilot-cmp", dependencies = { "zbirenbaum/copilot.lua" } },
     },
-
 
     config = function()
       Safe.import_then('cmp', function(cmp)
@@ -214,7 +171,7 @@ return {
           },
 
           performance = {
-            fetching_timeout = 100,
+            fetching_timeout = 50,
             max_view_entries = 20
           },
 
@@ -230,16 +187,16 @@ return {
           -- sorting = {
           --   priority_weight = 4,
           --   comparators = {
+          --     cmp.compare.exact,
           --     cmp.compare.score,
+          --     cmp.compare.recently_used,
+          --     cmp.compare.locality,
+          --     cmp.compare.scopes,
           --     cmp.compare.kind,
           --     cmp.compare.order,
-          --     cmp.compare.recently_used,
-          --     cmp.compare.exact,
           --     cmp.compare.offset,
-          --     cmp.compare.scopes,
-          --     cmp.compare.locality,
-          --     -- cmp.compare.sort_text,
           --     cmp.compare.length,
+          --     -- cmp.compare.sort_text,
           --   },
           -- },
 
