@@ -126,50 +126,20 @@ vim.g.maplocalleader = ' '
 --   end
 -- })
 
--- vim.api.nvim_create_autocmd("VimEnter", {
---   once = true,
---   callback = function()
---     -- Set up a scratch buffer for the greeter
---     vim.cmd "enew"  -- equivalent to :new, opens an empty buffer
---     vim.bo.buftype = "nofile"
---     vim.bo.bufhidden = "wipe"
---     vim.bo.swapfile = false
---     vim.cmd "setlocal nobuflisted"
+-- local function get_center(artw, arth, window)
+--   -- fullscreen = 213
+--   -- areee?? = 114 width
+--   -- 99 = delta
+--   -- 106.5
 --
---     -- Put your ASCII art here (or load from a file)
---     local ascii_art = [[
---       ░█▀▀█ ░█▀▀█ ░█─── 
---       ░█▀▀▄ ░█─── ░█─── 
---       ░█▄▄█ ░█▄▄█ ░█▄▄█
---     ]]
+--   local win_width = vim.api.nvim_win_get_width(window)
+--   local win_height = vim.api.nvim_win_get_height(window)
 --
---     local bufnr = vim.api.nvim_get_current_buf()
---    local lines = vim.split(ascii_art, "\n")
---    vim.notify(tostring(#lines))
+--   -- local center_col = math.floor((win_width - max_width) / 2)
+--   local center_col = math.floor(math.floor(win_width / 2)) + artw
+--   local center_row = math.floor((win_height ) / 2)
 --
---     -- Use extmarks to display the ASCII art as virtual text
---     local ns_id = vim.api.nvim_create_namespace("greeter")
---
---   -- • virt_text_win_col : position the virtual text at a fixed
---   --   window column (starting from the first text column of the
---   --   screen line) instead of "virt_text_pos".
---     for i, line in ipairs(lines) do
---       vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 0, {
---         virt_text = {{ line, "Comment" }},  -- You can choose a different highlight group
---         virt_text_pos = "overlay",           -- Centers the virtual text
---         -- virt_text_win_col = 50,
---         strict = false
---       })
---     end
---
---     -- Hide the greeter once you interact with the buffer
---     vim.api.nvim_create_autocmd({"CursorMoved", "CursorMovedI", "ModeChanged", "BufNew", "BufEnter"}, {
---       once = true,
---       callback = function()
---         vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
---       end
---     })
---   end
--- })
--- vim.cmd('colorscheme murphy')
+--   return center_col
+-- end
+
 return true

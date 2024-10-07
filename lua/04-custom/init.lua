@@ -49,7 +49,8 @@ local functionality_modules = {
   scratch_pad          = "04-custom.02-fun.scratch-pad",
   toggle_diagnostics   = "04-custom.02-fun.toggle-diagnostics",
   switch_header_source = "04-custom.02-fun.switch_header_source",
-  flashbang            = "04-custom.02-fun.flashbang"
+  flashbang            = "04-custom.02-fun.flashbang",
+  cat_on_fence         = "04-custom.02-fun.cat_on_fence"
 }
 
 UsrFun = functionality_modules
@@ -65,6 +66,7 @@ local auto_load_functionality = {
   UsrFun.toggle_diagnostics,
   UsrFun.switch_header_source,
   UsrFun.flashbang,
+  UsrFun.cat_on_fence,
 }
 
 for name, path in pairs(auto_load_functionality) do
