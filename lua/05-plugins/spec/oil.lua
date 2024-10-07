@@ -1,14 +1,20 @@
+local disabled = true
+
 return {
   'stevearc/oil.nvim',
-  lazy = false,
+  -- Disabled.
+  lazy = disabled,
   ---@module 'oil'
   ---@type oil.SetupOpts
   opts = {},
   -- Optional dependencies
-  dependencies = { { "echasnovski/mini.icons", opts = {} } },
+  -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
   -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 
   config = function()
+    -- In case it ever loads itself.
+    if disabled then return end
+
     require("oil").setup({
       -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
       -- Set to false if you want some other plugin (e.g. netrw) to open when you edit directories.
