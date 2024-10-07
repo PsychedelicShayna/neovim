@@ -15,7 +15,7 @@ vim.o.relativenumber = true
 vim.o.virtualedit    = "none"
 vim.o.scrolloff      = 8
 vim.o.shiftwidth     = 2
-vim.o.showtabline    = 0
+vim.o.showtabline    = 2
 vim.o.sidescrolloff  = 8
 vim.o.signcolumn     = "yes"
 vim.o.showmatch      = true
@@ -38,10 +38,9 @@ vim.o.showbreak      = '++' -- '↪ '
 vim.o.laststatus     = 3
 vim.o.winbar         = '%y %t %m > %L > %l:%c > %b @ 0x%O (%o) > %F'
 vim.o.shortmess      = "ltToOFIrC"
-vim.o.showtabline    = 2
 
 -- Set the leader key to space.
-vim.g.mapleader = ' '
+vim.g.mapleader      = ' '
 vim.g.maplocalleader = ' '
 
 -- local function get_win_with_buf(bufnr)
