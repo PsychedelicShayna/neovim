@@ -18,60 +18,60 @@ end
 -------------------------------------------------------------------------------
 
 -- Lua
-MapKey { key = '<A-;><A-L>', does = ':luafile%<cr>', modes = 'n', desc = "Eval whole file as Lua" }
-MapKey { key = '<A-;><A-l>', does = '"+y:lua <C-r>+<cr>', modes = 'v', desc = "Eval as Lua (ml)" }
-MapKey { key = '<A-;><A-l>', does = 'V"+y:lua <C-r>+<cr>', modes = 'n', desc = "Eval line as Lua" }
+MapKey { key = '<M-;><M-L>', does = ':luafile%<cr>', modes = 'n', desc = "Eval whole file as Lua" }
+MapKey { key = '<M-;><M-l>', does = '"+y:lua <C-r>+<cr>', modes = 'v', desc = "Eval as Lua (ml)" }
+MapKey { key = '<M-;><M-l>', does = 'V"+y:lua <C-r>+<cr>', modes = 'n', desc = "Eval line as Lua" }
 
 -- Ex
-MapKey { key = '<A-;><A-;>', does = '"my<esc>:<C-r>m<cr>', modes = 'v', desc = "Eval as :ex command" }
-MapKey { key = '<A-;><A-;>', does = 'V"my<esc>:<C-r>m<cr>', modes = 'n', desc = "Eval line as :ex command" }
+MapKey { key = '<M-;><M-;>', does = '"my<esc>:<C-r>m<cr>', modes = 'v', desc = "Eval as :ex command" }
+MapKey { key = '<M-;><M-;>', does = 'V"my<esc>:<C-r>m<cr>', modes = 'n', desc = "Eval line as :ex command" }
 
 -- Fish
-MapKey { key = '<A-;><A-s>', does = '!fish <cr>', modes = 'v', desc = "Eval as Fish expression and substitute (ml)" }
-MapKey { key = '<A-;><A-s>', does = 'V!fish <cr>', modes = 'n', desc = "Eval as Fish expression and substitute" }
+MapKey { key = '<M-;><M-s>', does = '!fish <cr>', modes = 'v', desc = "Eval as Fish expression and substitute (ml)" }
+MapKey { key = '<M-;><M-s>', does = 'V!fish <cr>', modes = 'n', desc = "Eval as Fish expression and substitute" }
 
 -- Python
-MapKey { key = '<A-;><A-Y>', does = '!python - <cr>', modes = 'v', desc = "Eval as Python (ml)" }
-MapKey { key = '<A-;><A-p>', does = 'V!python - <cr>', modes = 'n', desc = "Eval line as Python" }
-MapKey { key = '<A-;><A-y>', does = "y:'<,'>!qpe \'<C-r>+\'<cr>", modes = 'v', desc = "Eval as Python via QPE" }
-MapKey { key = '<A-;><A-q>', does = 'yyV:!qpe \'<C-r>+\'<cr>', modes = 'n', desc = "Eval line as Python via QPE" }
+MapKey { key = '<M-;><M-Y>', does = '!python - <cr>', modes = 'v', desc = "Eval as Python (ml)" }
+MapKey { key = '<M-;><M-p>', does = 'V!python - <cr>', modes = 'n', desc = "Eval line as Python" }
+MapKey { key = '<M-;><M-y>', does = "y:'<,'>!qpe \'<C-r>+\'<cr>", modes = 'v', desc = "Eval as Python via QPE" }
+MapKey { key = '<M-;><M-q>', does = 'yyV:!qpe \'<C-r>+\'<cr>', modes = 'n', desc = "Eval line as Python via QPE" }
 
 
 -- Base64 ---------------------------------------------------------------------
-MapKey { key = '<A-;><A-b>', does = '!base64 <cr>', modes = 'v', desc = "Encode to base64 (ml)" }
-MapKey { key = '<A-;><A-B>', does = '!base64 -d 2>&1<cr>', modes = 'v', desc = "Decode from base64 (ml)" }
-MapKey { key = '<A-;><A-b>', does = 'V!base64 <cr>', modes = 'n', desc = "Encode to base64" }
-MapKey { key = '<A-;><A-B>', does = 'V!base64 -d 2>&1<cr>', modes = 'n', desc = "Decode from base64" }
+MapKey { key = '<M-;><M-b>', does = '!base64 <cr>', modes = 'v', desc = "Encode to base64 (ml)" }
+MapKey { key = '<M-;><M-B>', does = '!base64 -d 2>&1<cr>', modes = 'v', desc = "Decode from base64 (ml)" }
+MapKey { key = '<M-;><M-b>', does = 'V!base64 <cr>', modes = 'n', desc = "Encode to base64" }
+MapKey { key = '<M-;><M-B>', does = 'V!base64 -d 2>&1<cr>', modes = 'n', desc = "Decode from base64" }
 
 -- Working with binary data through xxd and other tools
 -------------------------------------------------------------------------------
 wk_chord_grouping:add_multi {
-  { "<A-;><A-x>", group = "[XXD Dumping]", mode = { "v", "n" } }
+  { "<M-;><M-x>", group = "[XXD Dumping]", mode = { "v", "n" } }
 }
 
-MapKey { key = '<A-;><A-x><A-d>', does = '!xxd <cr>', modes = 'v', desc = "Hexdump (Standard)" }
-MapKey { key = '<A-;><A-x><A-d>', does = 'V!xxd <cr>', modes = 'n', desc = "Hexdump (Standard)" }
-MapKey { key = '<A-;><A-x><A-D>', does = '!xxd -r <cr>', modes = 'v', desc = "Reverse Hexdump (Standard)" }
-MapKey { key = '<A-;><A-x><A-D>', does = 'V!xxd -r <cr>', modes = 'n', desc = "Reverse Hexdump (Standard)" }
+MapKey { key = '<M-;><M-x><M-d>', does = '!xxd <cr>', modes = 'v', desc = "Hexdump (Standard)" }
+MapKey { key = '<M-;><M-x><M-d>', does = 'V!xxd <cr>', modes = 'n', desc = "Hexdump (Standard)" }
+MapKey { key = '<M-;><M-x><M-D>', does = '!xxd -r <cr>', modes = 'v', desc = "Reverse Hexdump (Standard)" }
+MapKey { key = '<M-;><M-x><M-D>', does = 'V!xxd -r <cr>', modes = 'n', desc = "Reverse Hexdump (Standard)" }
 
-MapKey { key = '<A-;><A-x><A-a>', does = '!xxd -a<cr>', modes = 'v', desc = "Hexdump (Autoskip Nulls)" }
-MapKey { key = '<A-;><A-x><A-a>', does = 'V!xxd -a<cr>', modes = 'n', desc = "Hexdump (Autoskip Nulls)" }
+MapKey { key = '<M-;><M-x><M-a>', does = '!xxd -a<cr>', modes = 'v', desc = "Hexdump (Autoskip Nulls)" }
+MapKey { key = '<M-;><M-x><M-a>', does = 'V!xxd -a<cr>', modes = 'n', desc = "Hexdump (Autoskip Nulls)" }
 
-MapKey { key = '<A-;><A-x><A-e>', does = '!xxd -e -g 2<cr>', modes = 'v', desc = "Hexdump (Inverted Endian)" }
-MapKey { key = '<A-;><A-x><A-e>', does = 'V!xxd -e -g 2<cr>', modes = 'n', desc = "Hexdump (Inverted Endian)" }
+MapKey { key = '<M-;><M-x><M-e>', does = '!xxd -e -g 2<cr>', modes = 'v', desc = "Hexdump (Inverted Endian)" }
+MapKey { key = '<M-;><M-x><M-e>', does = 'V!xxd -e -g 2<cr>', modes = 'n', desc = "Hexdump (Inverted Endian)" }
 
-MapKey { key = '<A-;><A-x><A-r>', does = '!xxd -c 0 -ps<cr>', modes = 'v', desc = "Hexdump (Raw)" }
-MapKey { key = '<A-;><A-x><A-r>', does = 'V!xxd -c 0 -ps<cr>', modes = 'n', desc = "Hexdump (Raw)" }
-MapKey { key = '<A-;><A-x><A-R>', does = '!xxd -ps -r<cr>', modes = 'v', desc = "Reverse Hexdump (Raw)" }
-MapKey { key = '<A-;><A-x><A-R>', does = 'V!xxd -ps -r<cr>', modes = 'n', desc = "Reverse Hexdump (Raw)" }
-MapKey { key = '<A-;><A-x><A-w>', does = '!xxd -ps<cr>', modes = 'v', desc = "Hexdump Wrapped (Raw)" }
-MapKey { key = '<A-;><A-x><A-w>', does = 'V!xxd -ps<cr>', modes = 'n', desc = "Hexdump Wrapped (Raw)" }
+MapKey { key = '<M-;><M-x><M-r>', does = '!xxd -c 0 -ps<cr>', modes = 'v', desc = "Hexdump (Raw)" }
+MapKey { key = '<M-;><M-x><M-r>', does = 'V!xxd -c 0 -ps<cr>', modes = 'n', desc = "Hexdump (Raw)" }
+MapKey { key = '<M-;><M-x><M-R>', does = '!xxd -ps -r<cr>', modes = 'v', desc = "Reverse Hexdump (Raw)" }
+MapKey { key = '<M-;><M-x><M-R>', does = 'V!xxd -ps -r<cr>', modes = 'n', desc = "Reverse Hexdump (Raw)" }
+MapKey { key = '<M-;><M-x><M-w>', does = '!xxd -ps<cr>', modes = 'v', desc = "Hexdump Wrapped (Raw)" }
+MapKey { key = '<M-;><M-x><M-w>', does = 'V!xxd -ps<cr>', modes = 'n', desc = "Hexdump Wrapped (Raw)" }
 
-MapKey { key = '<A-;><A-x><A-c>', does = '!xxd -i -n bytes<cr>', modes = 'v', desc = "Generate char[] Array" }
-MapKey { key = '<A-;><A-x><A-c>', does = 'V!xxd -i -n bytes<cr>', modes = 'n', desc = "Generate char[] Array" }
+MapKey { key = '<M-;><M-x><M-c>', does = '!xxd -i -n bytes<cr>', modes = 'v', desc = "Generate char[] Array" }
+MapKey { key = '<M-;><M-x><M-c>', does = 'V!xxd -i -n bytes<cr>', modes = 'n', desc = "Generate char[] Array" }
 
-MapKey { key = '<A-;><A-x><A-b>', does = '!xxd -b<cr>', modes = 'v', desc = "Binary Dump" }
-MapKey { key = '<A-;><A-x><A-b>', does = 'V!xxd -b<cr>', modes = 'n', desc = "Binary Dump" }
+MapKey { key = '<M-;><M-x><M-b>', does = '!xxd -b<cr>', modes = 'v', desc = "Binary Dump" }
+MapKey { key = '<M-;><M-x><M-b>', does = 'V!xxd -b<cr>', modes = 'n', desc = "Binary Dump" }
 
 
 
@@ -99,42 +99,42 @@ MapKey { key = '<A-;><A-x><A-b>', does = 'V!xxd -b<cr>', modes = 'n', desc = "Bi
 -- of knowing when to let go slows you down. Alt+;hsh is much quicker.
 
 wk_chord_grouping:add_multi {
-  { "<a-;><A-h>",      group = "[Hashing]",     mode = { "v", "n" } },
-  { "<a-;><A-h><A-s>", group = "[Sha2 Family]", mode = { "v", "n" } },
-  { "<A-;><A-h><A-m>", group = "[MD Family]",   mode = { "v", "n" } },
-  { "<a-;><A-h><A-x>", group = "[Xxh3 Family]", mode = { "v", "n" } }
+  { "<a-;><M-h>",      group = "[Hashing]",     mode = { "v", "n" } },
+  { "<a-;><M-h><M-s>", group = "[Sha2 Family]", mode = { "v", "n" } },
+  { "<M-;><M-h><M-m>", group = "[MD Family]",   mode = { "v", "n" } },
+  { "<a-;><M-h><M-x>", group = "[Xxh3 Family]", mode = { "v", "n" } }
 }
 
 -- SHA Family -----------------------------------------------------------------
-MapKey { key = '<A-;><A-h><A-s><A-g>', does = '!sha1sum<cr>', modes = 'v', desc = "sha1" }
-MapKey { key = '<A-;><A-h><A-s><A-g>', does = 'V!sha1sum<cr>', modes = 'n', desc = "sha1" }
-MapKey { key = '<A-;><A-h><A-s><A-j>', does = '!sha224sum<cr>', modes = 'v', desc = "sha224sum" }
-MapKey { key = '<A-;><A-h><A-s><A-j>', does = 'V!sha224sum<cr>', modes = 'n', desc = "sha224sum" }
-MapKey { key = '<A-;><A-h><A-s><A-s>', does = '!sha256sum<cr>', modes = 'v', desc = "sha256sum" }
-MapKey { key = '<A-;><A-h><A-s><A-s>', does = 'V!sha256sum<cr>', modes = 'n', desc = "sha256sum" }
-MapKey { key = '<A-;><A-h><A-s><A-k>', does = '!sha384sum<cr>', modes = 'v', desc = "sha384sum" }
-MapKey { key = '<A-;><A-h><A-s><A-k>', does = 'V!sha384sum<cr>', modes = 'n', desc = "sha384sum" }
-MapKey { key = '<A-;><A-h><A-s><A-l>', does = '!sha512sum<cr>', modes = 'v', desc = "sha512sum" }
-MapKey { key = '<A-;><A-h><A-s><A-l>', does = 'V!sha512sum<cr>', modes = 'n', desc = "sha512sum" }
+MapKey { key = '<M-;><M-h><M-s><M-g>', does = '!sha1sum<cr>', modes = 'v', desc = "sha1" }
+MapKey { key = '<M-;><M-h><M-s><M-g>', does = 'V!sha1sum<cr>', modes = 'n', desc = "sha1" }
+MapKey { key = '<M-;><M-h><M-s><M-j>', does = '!sha224sum<cr>', modes = 'v', desc = "sha224sum" }
+MapKey { key = '<M-;><M-h><M-s><M-j>', does = 'V!sha224sum<cr>', modes = 'n', desc = "sha224sum" }
+MapKey { key = '<M-;><M-h><M-s><M-s>', does = '!sha256sum<cr>', modes = 'v', desc = "sha256sum" }
+MapKey { key = '<M-;><M-h><M-s><M-s>', does = 'V!sha256sum<cr>', modes = 'n', desc = "sha256sum" }
+MapKey { key = '<M-;><M-h><M-s><M-k>', does = '!sha384sum<cr>', modes = 'v', desc = "sha384sum" }
+MapKey { key = '<M-;><M-h><M-s><M-k>', does = 'V!sha384sum<cr>', modes = 'n', desc = "sha384sum" }
+MapKey { key = '<M-;><M-h><M-s><M-l>', does = '!sha512sum<cr>', modes = 'v', desc = "sha512sum" }
+MapKey { key = '<M-;><M-h><M-s><M-l>', does = 'V!sha512sum<cr>', modes = 'n', desc = "sha512sum" }
 
 -- XXH Family -----------------------------------------------------------------
-MapKey { key = '<A-;><A-h><A-x><A-x>', does = '!xxhsum<cr>', modes = 'v', desc = "xxhsum(64)" }
-MapKey { key = '<A-;><A-h><A-x><A-x>', does = 'V!xxhsum<cr>', modes = 'n', desc = "xxhsum(64)" }
-MapKey { key = '<A-;><A-h><A-x><A-j>', does = '!xxh32sum<cr>', modes = 'v', desc = "xxh32sum" }
-MapKey { key = '<A-;><A-h><A-x><A-j>', does = 'V!xxh32sum<cr>', modes = 'n', desc = "xxh32sum" }
-MapKey { key = '<A-;><A-h><A-x><A-k>', does = '!xxh64sum<cr>', modes = 'v', desc = "xxh64sum" }
-MapKey { key = '<A-;><A-h><A-x><A-k>', does = 'V!xxh64sum<cr>', modes = 'n', desc = "xxh64sum" }
-MapKey { key = '<A-;><A-h><A-x><A-l>', does = '!xxh128sum<cr>', modes = 'v', desc = "xxh128sum" }
-MapKey { key = '<A-;><A-h><A-x><A-l>', does = 'V!xxh128sum<cr>', modes = 'n', desc = "xxh128sum" }
+MapKey { key = '<M-;><M-h><M-x><M-x>', does = '!xxhsum<cr>', modes = 'v', desc = "xxhsum(64)" }
+MapKey { key = '<M-;><M-h><M-x><M-x>', does = 'V!xxhsum<cr>', modes = 'n', desc = "xxhsum(64)" }
+MapKey { key = '<M-;><M-h><M-x><M-j>', does = '!xxh32sum<cr>', modes = 'v', desc = "xxh32sum" }
+MapKey { key = '<M-;><M-h><M-x><M-j>', does = 'V!xxh32sum<cr>', modes = 'n', desc = "xxh32sum" }
+MapKey { key = '<M-;><M-h><M-x><M-k>', does = '!xxh64sum<cr>', modes = 'v', desc = "xxh64sum" }
+MapKey { key = '<M-;><M-h><M-x><M-k>', does = 'V!xxh64sum<cr>', modes = 'n', desc = "xxh64sum" }
+MapKey { key = '<M-;><M-h><M-x><M-l>', does = '!xxh128sum<cr>', modes = 'v', desc = "xxh128sum" }
+MapKey { key = '<M-;><M-h><M-x><M-l>', does = 'V!xxh128sum<cr>', modes = 'n', desc = "xxh128sum" }
 
 -- MD Family ------------------------------------------------------------------
-MapKey { key = '<A-;><A-h><A-m><A-m>', does = '!md5sum<cr>', modes = 'v', desc = "md5sum" }
-MapKey { key = '<A-;><A-h><A-m><A-m>', does = 'V!md5sum<cr>', modes = 'n', desc = "md5sum" }
-MapKey { key = '<A-;><A-h><A-m><A-h>', does = '!md4sum<cr>', modes = 'v', desc = "md4sum" }
-MapKey { key = '<A-;><A-h><A-m><A-h>', does = 'V!md4sum<cr>', modes = 'n', desc = "md4sum" }
+MapKey { key = '<M-;><M-h><M-m><M-m>', does = '!md5sum<cr>', modes = 'v', desc = "md5sum" }
+MapKey { key = '<M-;><M-h><M-m><M-m>', does = 'V!md5sum<cr>', modes = 'n', desc = "md5sum" }
+MapKey { key = '<M-;><M-h><M-m><M-h>', does = '!md4sum<cr>', modes = 'v', desc = "md4sum" }
+MapKey { key = '<M-;><M-h><M-m><M-h>', does = 'V!md4sum<cr>', modes = 'n', desc = "md4sum" }
 
 -- CRC Family -----------------------------------------------------------------
-MapKey { key = '<A-;><A-h>cc', does = '<C-o>V!crc32sum<cr>', modes = 'i' }
+MapKey { key = '<M-;><M-h>cc', does = '<C-o>V!crc32sum<cr>', modes = 'i' }
 
 Events.await_event {
   actor = "which-key",
