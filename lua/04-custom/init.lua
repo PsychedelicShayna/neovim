@@ -57,6 +57,7 @@ UsrFun = functionality_modules
 
 local auto_load_functionality = {
   -- UsrFun.lsp_auto_format,
+  UsrFun.cat_on_fence,
   UsrFun.yank_highlighter,
   UsrFun.auto_diag_loclist,
   UsrFun.background_control,
@@ -66,7 +67,6 @@ local auto_load_functionality = {
   UsrFun.toggle_diagnostics,
   UsrFun.switch_header_source,
   UsrFun.flashbang,
-  UsrFun.cat_on_fence,
 }
 
 for name, path in pairs(auto_load_functionality) do
