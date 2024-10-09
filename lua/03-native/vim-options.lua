@@ -2,11 +2,9 @@
 vim.o.cindent        = true
 vim.o.clipboard      = 'unnamedplus'
 vim.o.cmdheight      = 2
-vim.o.colorcolumn    = "80,120"
+-- vim.o.colorcolumn    = "80,120"
 vim.o.conceallevel   = 0
-vim.o.expandtab      = true
 vim.o.hlsearch       = true
-vim.o.ignorecase     = true
 -- vim.o.nobuflisted    = true
 vim.o.number         = true
 vim.o.numberwidth    = 4
@@ -14,20 +12,30 @@ vim.o.pumheight      = 10
 vim.o.relativenumber = true
 vim.o.virtualedit    = "none"
 vim.o.scrolloff      = 8
-vim.o.shiftwidth     = 2
-vim.o.showtabline    = 2
+vim.o.showtabline    = 1
 vim.o.sidescrolloff  = 8
 vim.o.signcolumn     = "yes"
+-- Briefly jumps to the matching brace/bracket/etc, when completing a pair.
+-- Basically it's almost like the default matchparen plugin but less laggy.
+-- matchtime=How long to linger at the match. The lower the better.
 vim.o.showmatch      = true
 vim.o.matchtime      = 1
+-- Shows more info about matches when doing insert mode completion via Ctrl+n
 vim.o.showfulltag    = true
+-- Ignore+Smart Case will make any pattern matching case insensitive, unless
+-- an uppercase character is deliberately put in the pattern.
+vim.o.ignorecase     = true
 vim.o.smartcase      = true
-vim.o.softtabstop    = 2
+-- Expands tabs into the approprite number of spaces.
+vim.o.expandtab      = true
+vim.o.shiftwidth     = 4  -- How many spaces per layer of indentation.
+vim.o.softtabstop    = -1 -- How many spaces does one <tab> count for.
+vim.o.tabstop        = 8  -- How many spaces does a <Tab> count for.
+
 vim.o.spelllang      = "en_us"
 vim.o.splitbelow     = true
 vim.o.splitright     = true
 vim.o.swapfile       = false
-vim.o.tabstop        = 2
 vim.o.termguicolors  = true
 vim.o.timeoutlen     = 250
 vim.o.undofile       = true
@@ -43,6 +51,14 @@ vim.o.shortmess      = "ltToOFIrC"
 vim.g.mapleader      = ' '
 vim.g.maplocalleader = ' '
 
+-- Don't draw color columns unless a file type has been set.
+vim.api.nvim_create_autocmd("FileType", {
+    once = true,
+    callback = function()
+        vim.o.colorcolumn = "80,120"
+    end
+})
+
 -- local function get_win_with_buf(bufnr)
 --   vim.api.nvim_buf_call(bufnr, function()
 --     return vim.api.nvim_win_get_number(0)
@@ -51,26 +67,26 @@ vim.g.maplocalleader = ' '
 
 
 -- local WhitespaceMode = {
--- 	toggled_buffers = {
--- 		number = 0,
--- 		original_syntax = "lua"
--- 	},
+--      toggled_buffers = {
+--              number = 0,
+--              original_syntax = "lua"
+--      },
 
--- 	autocmd_ids = {},
+--      autocmd_ids = {},
 
--- 	enable_whitespace = function(bufnr)
--- 		
--- 	end
+--      enable_whitespace = function(bufnr)
+--              
+--      end
 
--- 	disable_whitespace = function(bufnr)
+--      disable_whitespace = function(bufnr)
 
--- 	end
+--      end
 -- }
 
 -- local function show_whitespace(bool)
--- 	if bool then
--- 		
--- 	end
+--      if bool then
+--              
+--      end
 -- end
 
 
