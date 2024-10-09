@@ -62,7 +62,6 @@ local colorschemes = {
     "sainnhe/gruvbox-material",
     lazy = false,
     config = function()
-      vim.defer_fn(function()
         -- -- Enables some form of caching.
         vim.g.gruvbox_material_better_performance = 0
         --
@@ -86,7 +85,6 @@ local colorschemes = {
         -- vim.g.gruvbox_material_float_style = 'dim'
 
         vim.cmd("colorscheme gruvbox-material")
-      end, 1)
     end
   },
   { "srcery-colors/srcery-vim", lazy = true },
