@@ -15,17 +15,21 @@ vim.o.scrolloff      = 8
 vim.o.showtabline    = 1
 vim.o.sidescrolloff  = 8
 vim.o.signcolumn     = "yes"
+
 -- Briefly jumps to the matching brace/bracket/etc, when completing a pair.
 -- Basically it's almost like the default matchparen plugin but less laggy.
 -- matchtime=How long to linger at the match. The lower the better.
 vim.o.showmatch      = true
 vim.o.matchtime      = 1
+
 -- Shows more info about matches when doing insert mode completion via Ctrl+n
 vim.o.showfulltag    = true
+
 -- Ignore+Smart Case will make any pattern matching case insensitive, unless
 -- an uppercase character is deliberately put in the pattern.
 vim.o.ignorecase     = true
 vim.o.smartcase      = true
+
 -- Expands tabs into the approprite number of spaces.
 vim.o.expandtab      = true
 vim.o.shiftwidth     = 4  -- How many spaces per layer of indentation.
