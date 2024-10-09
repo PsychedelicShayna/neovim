@@ -175,23 +175,39 @@ vim.api.nvim_create_autocmd("VimEnter", {
     -- Create a floating window
     local cat_buf = vim.api.nvim_create_buf(false, true) -- nofile buffer, scratch
 
-    local cat_win = vim.api.nvim_open_win(cat_buf, true, {
+    vim.api.nvim_buf_set_lines(cat_buf, 0, -1, false, expand_fence(cat_on_fence, main_win))
+
+    local cat_win = vim.api.nvim_open_win(cat_buf, false, {
       relative = "editor",
       width = win_width,
       height = cat_on_fence_height,
       col = win_relative_center,
       row = win_height,
-      style = "minimal", -- No line numbers, statusline, etc.
-      border = "none"    -- You can add a border if you like
+      -- style = "minimal", -- No line numbers, statusline, etc.
+      border = "none" -- You can add a border if you like
     })
 
-    vim.api.nvim_set_current_win(main_win)
+    -- vim.api.nvim_set_current_win(main_win)
 
     -- Disable unnecessary buffer settings
     vim.bo[cat_buf].buftype = "nofile"
     vim.bo[cat_buf].bufhidden = "wipe"
     vim.bo[cat_buf].swapfile = false
-    vim.api.nvim_buf_set_lines(cat_buf, 0, -1, false, expand_fence(cat_on_fence, main_win))
+
+    -- lua =vim.api.nvim_get_hl(0, {name="Normal" })
+    -- lua =vim.api.nvim_set_hl(0, "NormalFloat", {fg = "#ffffff"})
+
+    vim.wo[cat_win].number = false
+    vim.wo[cat_win].relativenumber = false
+    vim.wo[cat_win].cursorline = false
+    vim.wo[cat_win].cursorcolumn = false
+    vim.wo[cat_win].foldcolumn = "0"
+    vim.wo[cat_win].spell = false
+    vim.wo[cat_win].list = false
+    vim.wo[cat_win].signcolumn = "auto"
+    vim.wo[cat_win].colorcolumn = ""
+    vim.wo[cat_win].statuscolumn = ""
+
 
     -- Close the floating window on interaction
     vim.api.nvim_create_autocmd(
@@ -205,7 +221,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
           end
         end
       })
-
+    --
     -- Recenter the float on window resize
     vim.api.nvim_create_autocmd("VimResized", {
       callback = function()
