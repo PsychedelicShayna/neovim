@@ -24,6 +24,7 @@ end
 ---@param level number One of LL_TRACE, LL_DEBUG, LL_INFO, LL_WARN, LL_ERROR, LL_OFF
 ---@param inspections table | nil  Optional list of values to dump information about.
 ---@param ... any If the message contains formatting arameters, these are their values.
+---@return nil
 function PrintDbg(message, level, inspections, ...)
   if not level then
     level = LL_INFO
@@ -56,8 +57,6 @@ function PrintDbg(message, level, inspections, ...)
       vim.notify(output, level)
     end
   end
-
-  return level
 end
 
 --- Export Error Handling System ----------------------------------------------

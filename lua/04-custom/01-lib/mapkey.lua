@@ -8,23 +8,12 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
----@class MapKeySpec
----@field modes table | string | nil Same as vim.keymap.set modes
----@default modes "Nil"
-local MapKeySpec = {}
-
-
 ---@param binding table
 ---@return boolean
 --- More convenient way to set keybinds.
 function MapKey(binding)
   if type(binding) ~= 'table' then
     PrintDbg("MapKey: binding is not a table, was ", LL_ERROR, { binding })
-    return false
-  end
-
-  if Safe.t_not(binding, { 'string', 'table' }) then
-    PrintDbg("Cannot map key because it wasn't ", LL_ERROR, { binding })
     return false
   end
 
@@ -42,22 +31,11 @@ function MapKey(binding)
     }
   end
 
-  if binding.unset ~= nil then
+  if binding.unset == true then
     vim.unset_keymap(binding.modes, binding.key)
   end
 
-  if binding.desc ~= nil and type(binding.desc) ~= 'string' then
-    PrintDbg(
-      "Description of keybind has an invalid type.", LL_WARN, {
-        binding,
-        binding.desc
-      }
-    )
-
-    binding.desc = nil
-  elseif binding.desc ~= nil then
-    binding.opts.desc = binding.desc
-  end
+  binding.opts.desc = (type(binding.desc) == 'string' and binding.desc) or nil
 
   vim.keymap.set(
     binding.modes,
@@ -66,9 +44,5 @@ function MapKey(binding)
     binding.opts
   )
 
-  Events.fire_event {
-    actor = 'MapKey',
-    event = 'mapped',
-    data  = binding.desc
-  }
+  return true
 end
