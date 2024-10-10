@@ -58,13 +58,14 @@ MapKey { key = '>', does = '>gv', modes = 'v', desc = "Indent lines one level" }
 MapKey { key = 'K', does = ":move '<-2<cr>gv-gv", modes = 'v', desc = "Move lines up" }
 MapKey { key = 'J', does = ":move '>+1<cr>gv-gv", modes = 'v', desc = "Move lines down" }
 
+
 -------------------------------------------------------------------------------
--- Normal Mode Convenience (Alt is best)
+-- Normal Mode Convenience
 
 MapKey { key = '<A-w>', does = ':w<cr>', modes = 'n', desc = "Write File (:w)" }
 MapKey { key = '<A-W>', does = ':w!<cr>', modes = 'n', desc = "!Write File (:w!)" }
 MapKey { key = '<A-u>', does = '<C-r>', modes = 'n', desc = "Undo (<C-r>)" }
-
+MapKey { key = '<A-r>', does = ':e!', modes = 'n', desc = "Reload file" }
 
 -- Allow Alt-vbl to cycle through visual, visual-line and visual-block
 -- without leaving visual mode when hitting it twice. Also, allow for
@@ -78,5 +79,35 @@ MapKey { key = '<A-B>', does = '<C-v>', modes = 'v' }
 MapKey { key = '<A-l>', does = '<esc>`<V`>', modes = 'v' }
 MapKey { key = '<A-L>', does = 'V', modes = 'v' }
 
---
 -------------------------------------------------------------------------------
+-- Insert Mode Convenience
+-------------------------------------------------------------------------------
+
+-- Undo and redo in insert mode.
+MapKey { key = '<A-u>', does = '<C-o>u', modes = 'i' }
+MapKey { key = '<A-U>', does = '<C-o>', modes = 'i' }
+
+-- Move around in insert mode with Alt-hjkl
+MapKey { key = '<A-h>', does = '<Left>', modes = 'i' }
+MapKey { key = '<A-l>', does = '<Right>', modes = 'i' }
+MapKey { key = '<A-k>', does = '<Up>', modes = 'i' }
+MapKey { key = '<A-j>', does = '<Down>', modes = 'i' }
+
+-- Next/previous match.
+MapKey { key = '<A-n>', does = '<C-o>n', modes = 'i' }
+MapKey { key = '<A-N>', does = '<C-o>N', modes = 'i' }
+
+-- Jump words, back words, end of word.
+MapKey { key = '<A-w>', does = '<esc>lwi', modes = 'i' }
+MapKey { key = '<A-e>', does = '<esc>llea', modes = 'i' }
+MapKey { key = '<A-b>', does = '<esc>lbi', modes = 'i' }
+
+-- Change wod in front or behind
+MapKey { key = '<A-W>', does = '<esc>lcW', modes = 'i' }
+MapKey { key = '<A-B>', does = '<esc>lcB', modes = 'i' }
+
+-- Change inner word.
+MapKey { key = '<A-a>', does = '<esc>lciw', modes = 'i' }
+
+-- Run last @q macro.
+MapKey { key = '<A-q>', does = '<esc>Qi', modes = 'i' }
