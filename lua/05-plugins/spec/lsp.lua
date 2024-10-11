@@ -4,8 +4,9 @@
 local function extend_client_capabilities(capabilities)
   local extended_capabilities = vim.deepcopy(capabilities)
 
-  local cmp_nvim_lsp_ok,
-  cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+  -- When using nvim-cmp
+  -----------------------------------------------
+  local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
 
   if cmp_nvim_lsp_ok then
     -- Add cmp_nvim_lsp capabilities to the extended client capabilities.
@@ -15,7 +16,7 @@ local function extend_client_capabilities(capabilities)
       cmp_nvim_lsp.default_capabilities()
     )
   end
-
+  -----------------------------------------------
   return extended_capabilities
 end
 
@@ -50,10 +51,10 @@ return {
   -- Optional plugins that enhance the LSP experience, or provide their own.
   -------------------------------------------------------------------------------
   {
-    "simrat39/rust-tools.nvim", -- No longer maintained.
+    "simrat39/rust-tools.nvim",     -- No longer maintained.
     -- "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
-    version = '^3',             -- Pin to version 3.x.x.
-    ft = { 'rust' },            -- Lazy load on Rust files.
+    version = '^3',                 -- Pin to version 3.x.x.
+    ft = { 'rust' },                -- Lazy load on Rust files.
   },
 
   -- {
@@ -89,11 +90,24 @@ return {
     end
   },
 
+
   {
     'neovim/nvim-lspconfig',
     lazy = false,
-    dependencies = 'williamboman/mason-lspconfig.nvim',
+    dependencies = {
+      'williamboman/mason-lspconfig.nvim',
+      { "ms-jpq/coq_nvim",       branch = "coq" },
+      { "ms-jpq/coq.artifacts",  branch = "artifacts" },
+      { 'ms-jpq/coq.thirdparty', branch = "3p" },
+    },
+
     event = 'FileType',
+
+    init = function()
+      vim.g.coq_settings = {
+        auto_start = true
+      }
+    end,
 
     config = function()
       local neodev_ok, neodev = pcall(require, 'neodev')
@@ -106,6 +120,7 @@ return {
       local lspconfig = require('lspconfig')
       local mason_lspconfig = require('mason-lspconfig')
 
+      -- local using_coq = Safe.is_lib("coq")
       -- Extend the default client capabilities.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = extend_client_capabilities(capabilities)
@@ -136,6 +151,10 @@ return {
         else
           _G.lspconf_overrides[ls_name] = custom_config_ok
         end
+
+        Safe.import_then("coq", function(coq)
+          ls_entry.setup(coq.lsp_ensure_capabilities(capabilities))
+        end)
       end
 
       -- Regsiter a user command to view the loaded custom LSP config overrides.
