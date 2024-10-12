@@ -1,79 +1,92 @@
-local M = {}
+Safe = {}
 
-function M.typecheck_tbl_path(target, ordered_kt_pairs)
-  if type(target) ~= 'table' or ordered_kt_pairs ~= 'table' then
-    vim.notify(
-      "Cannot typecheck_tbl_path without two arguments of type table, the " ..
-      "being the table to type check, and thesecond being an ordered list " ..
-      "of { ks: string, ts: string } string pairs, where the first is the " ..
-      "key of the next value to typecheck against the second string, t, " ..
-      "which is the expected result of calling type(tagret[ks]) == ts.",
-      vim.log.levels.ERROR
-    )
 
-    return false
-  end
-
-  local recurse = function(stack)
-    for _, pair in ipairs(stack) do
-      if type(pair) ~= 'table' or #pair ~= 2 then
-        return false
-      end
-
-      local k = pair[1]
+-- A more ergonomic way to typecheck multtiple values or possible valid types.
+-- The first argument can be a table of multiple values, or a single value.
+--
+-- true := typecheck('s', { 'number', 'string' })
+-- true := typecheck({ 1, 's' }, { 'number', 'string' })
+-- true := typecheck({ 1, 's' }, { 'number', { 'string', 'number' } })
+--
+---@param values any Any value or table of values to typecheck against.
+---@param types table A table of type names (or sub-tables of type names) representing the valid types for values at the corresponding indices.
+---@param report boolean? -- If true, return a detailed table of mismatches instead of false on a failed check.
+---@return boolean|table -- True if all types ok. Otherwise, either false, or a table with mismatches if report argument was given.
+function Safe.typecheck(values, types, report)
+    if type(values) ~= 'table' then
+        values = { values }
     end
-  end
 
-  local stack = target
+    local mismatches = {}
 
-  for index, pair in ipairs(ordered_kt_paris) do
-    local key   = pair.key
-    local value = pair.value
-  end
+    for index, value in ipairs(values) do
+        ---@type string|table
+        local valid_types = types[index]
+        local value_type_ok = false
+
+        if type(valid_types) == 'table' then
+            for _, valid_type in ipairs(valid_types) do
+                if type(value) == valid_type then
+                    value_type_ok = true
+                    break
+                end
+            end
+        elseif type(valid_types) == 'string' then
+            value_type_ok = type(value) == valid_types
+        end
+
+        if not value_type_ok and not report then
+            return false
+        elseif not value_type_ok then
+            table.insert(mismatches, {
+                index    = index,
+                value    = value,
+                type     = type(value),
+                expected = valid_types
+            })
+        end
+    end
+
+    if not report then
+        return #mismatches == 0
+    else
+        return mismatches
+    end
 end
+
 
 -- Check if the value is in the table
-function M.v_in(value, table)
-  for _, v in ipairs(table) do
-    if v == value then
-      return true
+function Safe.v_in(value, table)
+    for _, v in ipairs(table) do
+        if v == value then
+            return true
+        end
     end
-  end
 
-  return false
+    return false
 end
 
-function M.t_is(value, types)
-  if type(types) ~= 'table' then
-    types = { types }
-  end
-
-  for _, t in ipairs(types) do
-    if type(value) == t then
-      return true
+function Safe.t_is(value, types)
+    if type(types) ~= 'table' then
+        types = { types }
     end
-  end
 
-  return false
+    for _, t in ipairs(types) do
+        if type(value) == t then
+            return true
+        end
+    end
+
+    return false
 end
 
-M.type_is = M.t_is
+Safe.type_is = Safe.t_is
 
-function M.t_not(value, types)
-  return not M.t_is(value, types)
+function Safe.t_not(value, types)
+    return not Safe.t_is(value, types)
 end
 
-M.type_is = M.type_isnt
-
-function M.try(fn, ...)
-  local ok, result = pcall(fn, (...))
-
-  if not ok then
-    return nil
-  end
-
-  return result
-end
+Safe.type_is = Safe.type_isnt
 
 --- --------------------------------------------------------------------------
 --  Incomplete, just scribbling down an idea I had.
@@ -112,166 +125,113 @@ end
 --   ^ Incomplete, just scribbling down an idea I had.
 --- --------------------------------------------------------------------------
 
-function M.typecheck(value)
-  return function(whitelist)
-    local valid1 = M.t_is(value, whitelist)
+-- function Safe.typecheck(value)
+--     return function(whitelist)
+--         local valid1 = Safe.t_is(value, whitelist)
+--
+--         if not valid1 then
+--             return false
+--         end
+--
+--         return function(blacklist)
+--             local valid2 = Safe.t_not(value, blacklist)
+--
+--             return valid1 or false and valid2 or false
+--         end
+--     end
+-- end
 
-    if not valid1 then
-      return false
+-- Partial function application.
+--- @param fn function The function to partially apply.
+--- @param ... any The values to partially apply it with.
+function Safe.partial(fn, ...)
+    local args = { ... }
+
+    return function(...)
+        return fn(unpack(args), ...)
     end
-
-    return function(blacklist)
-      local valid2 = M.t_not(value, blacklist)
-
-      return valid1 or false and valid2 or false
-    end
-  end
 end
 
-M.typecheck { 1 } { 'table' } { 'string', 'number' }
-
-function M.partial(fn, ...)
-  local args = { ... }
-
-  return function(...)
-    return fn(unpack(args), ...)
-  end
-end
+----- Safely importing modules ------------------------------------------------
 
 ---@param name string Module name to import.
----@param default any Default value to return if cannot import.
-function M.import_or(name, default)
-  local ok, module = pcall(require, name)
+---@param default any Default return value when import unsuccessful.
+---@return any -- The module if successful, the default value if unsuccessful.
+function Safe.import_or(name, default)
+    local ok, module = pcall(require, name)
 
-  if ok then
-    return module
-  else
+    if ok then
+        return module
+    end
+
     return default
-  end
 end
 
 ---@param name string Module name to import.
----@param or_else function Function to compute the return value if import fails. Both return values of pcall are passed to or_else.
----@return any
-function M.import_or_else(name, or_else)
-  local ok, module = pcall(require, name)
+---@param fn_err function Function called with fn_err(<pcall_return_values{1}, {2}>, ...) on unsuccessful import.
+---@return any -- Module if successful, return value of fn_err(<pcall_return_values{1}, {2}>, ...) if unsuccessful.
+function Safe.import_or_else(name, fn_err, ...)
+    local ok, module = pcall(require, name)
 
-  if ok then
-    return module
-  else
-    return or_else(ok, module)
-  end
+    if ok then
+        return module
+    else
+        return fn_err(ok, module, ...)
+    end
 end
-
----@class DbgOpts
----@field trace number|nil  If 1, will print debug information upon import failure.
----@field handle function|nil  Custom function to pass the values returned by pcall to if import fails.
-local ImportThenOpts = {}
 
 ---@param name string Module name to import.
 ---@param fn function Function to pass te module to if import is successful.
----@param dbg? DbgOpts Option table with flags to aid with debugging import failures.
 ---@param ...? any Additional arguments to pass to fn, besides the module.
----@return any, any?, any?
-function M.import_then(name, fn, dbg, ...)
-  local ok, module = pcall(require, name)
+---@return any -- Return value of fn(mod, ...) on successful import, nil otherwise.
+function Safe.import_then(name, fn, ...)
+    local ok, mod = pcall(require, name)
+    if ok then return fn(mod, ...) end
+    return nil
+end
 
-  if not dbg then
-    dbg = {
-      trace = 1,
-      handle = nil
-    }
-  end
+---@param name string Module name to import.
+---@param fn function Function called with fn(module, ...) on successful import.
+---@param default any Default return value when import unsuccessful.
+---@param ...? any Additional arguments to pass to fn, besides the module.
+---@return any -- Return value of fn(mod, ...) on successful import, default otherwise.
+function Safe.import_then_or(name, fn, default, ...)
+    local ok, mod = pcall(require, name)
+    if not ok then return default end
+    return fn(mod, ...)
+end
 
-  if ok then
-    return fn(module, ...), true
-  else
-    if dbg then
-      local info = debug.getinfo((dbg.trace or 1) + 1, "Sl")
+---@param name string Module name to import.
+---@param fn_ok function Function called with fn_ok(module, ...) on successful import.
+---@param fn_err function Function called with fn_err(<pcall_return_values{1}, {2}>, ...) on unsuccessful import.
+---@param ...? any Additional arguments to pass to fn_ok or fn_err.
+---@return any -- Return value of fn(mod, ...) on successful import, default otherwise.
+function Safe.import_then_or_else(name, fn_ok, fn_err, ...)
+    local ok, mod = pcall(require, name)
+    if not ok then return fn_err(ok, mod, ...) end
+    return fn_ok(mod, ...)
+end
 
-      local src = info.short_src
-      local line = info.currentline
+-------------------------------------------------------------------------------
 
-      PrintDbg(string.format('%s:%d - Failed to import module "%s", received type "%s" with value..%s',
-        src or '?', line or '?', name or '?', type(module),
-        module and vim.inspect(module) or '?'
 
-      ), LL_ERROR)
+---- Simple try/catch system --------------------------------------------------
+---@param fn_try_block function Function to attempt calling with args (...)
+---@param fn_catch_block? function If provided, function called on error with args (<pcall_return_values{1}, {2}>, ...)
+---@param ...? any Additional parameters that get passed to either try/catch function.
+---@return any -- Return value of fn_try_block(...) or fn_catch_block(<pcall_return_values{1}, {2}>, ...) if provided, nil otherwise.
+function Safe.try(fn_try_block, fn_catch_block, ...)
+    local ok, result = pcall(fn_try_block, ...)
+
+    if ok then return result end
+
+    if fn_catch_block then
+        return fn_catch_block(ok, result, ...)
     end
 
-    if type(dbg.handle) == 'function' then
-      dbg.handle(module)
-    end
-  end
-
-  return ok, module, false
+    return nil
 end
 
-function M.import_then_or_else(name, fn_ok, fn_err, dbg, ...)
-  local rv = M.import_then(name, fn_ok, dbg, ...) or {}
-  local ok, module, problem = rv[1], rv[2], rv[3]
+-------------------------------------------------------------------------------
 
-  if problem then
-    return fn_err(ok, module), problem
-  end
-end
-
-function M.try_catch(fnt, fnc, ...)
-  local ok, result = pcall(fnt, ...)
-
-  if not ok then
-    return pcall(fnc, ok, result, ...)
-  else
-    return result
-  end
-end
-
-function M.map_nil(v, fn)
-  if type(v) ~= nil then
-    return v
-  else
-    return pcall(fn, v)
-  end
-end
-
-function M.ok_or_else(fn, fnerr, ...)
-  local ok, result = pcall(fn, (...))
-
-  if not ok then
-    return pcall(fnerr, ok, result)
-  end
-
-  return result
-end
-
----@param fn function
----@param errv any
----@
-function M.ok_or(fn, errv, ...)
-  local ok, result = pcall(fn, (...))
-
-  if not ok then
-    return errv
-  end
-
-  return result
-end
-
-function M.map_err(fn, fnerr, fnok, ...)
-  local ok, result = pcall(fn, (...))
-
-  if not ok then
-    return pcall(fnerr, result)
-  end
-
-  return pcall(fnok, result)
-end
-
-function M.is_lib(name)
-  local ok, _ = pcall(require, name)
-  return ok
-end
-
-Safe = M
-
-return M
+return Safe
