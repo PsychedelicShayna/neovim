@@ -6,7 +6,7 @@
 *.app
 *.bak
 *.def
-*.disabled
+*.disabled*
 *.dll
 *.dylib
 *.elf
