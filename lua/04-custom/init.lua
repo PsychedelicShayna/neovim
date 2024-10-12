@@ -26,15 +26,17 @@ local lib_modules = {
     window_sizer       = '04-custom.01-lib.window-sizer',
     error_handler      = '04-custom.01-lib.error-handler',
     map_key            = '04-custom.01-lib.mapkey',
+    proclib            = '04-custom.01-lib.proclib',
     string_processing  = '04-custom.01-lib.string_processing',
 }
 
-UsrLib = export({
+UsrLib = export {
     check_greeter_skip = lib_modules.check_greeter_skip,
     map_key            = lib_modules.map_key,
     error_handler      = lib_modules.error_handler,
+    proclib            = lib_modules.proclib,
     string_processing  = lib_modules.string_processing,
-})
+}
 
 
 local functionality_modules = {
