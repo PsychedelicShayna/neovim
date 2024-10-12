@@ -32,7 +32,7 @@ vim.o.smartcase      = true
 
 -- Expands tabs into the approprite number of spaces.
 vim.o.expandtab      = true
-vim.o.shiftwidth     = 4  -- How many spaces per layer of indentation.
+vim.o.shiftwidth     = 2  -- How many spaces per layer of indentation.
 vim.o.softtabstop    = -1 -- How many spaces does one <tab> count for.
 vim.o.tabstop        = 8  -- How many spaces does a <Tab> count for.
 
