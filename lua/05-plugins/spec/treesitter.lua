@@ -26,6 +26,7 @@ local file_types = {
   "powershell"
 }
 
+
 local function defer_treesitter()
   vim.api.nvim_create_autocmd("FileType", {
     pattern = file_types,
@@ -52,7 +53,7 @@ local ts_lazy_load_commands = {
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = "lukas-reineke/indent-blankline.nvim",
+    -- dependencies = "lukas-reineke/indent-blankline.nvim",
     lazy = true,
     init = defer_treesitter,
     cmd = ts_lazy_load_commands,
