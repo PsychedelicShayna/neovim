@@ -1,37 +1,38 @@
 -- Add cmp_nvim_lsp capabilities to the standard nvim client capabilities.
 -- Since clean nvim itself rightfully does not advertise these capabilities.
 
-local function extend_client_capabilities(capabilities)
-  local extended_capabilities = vim.deepcopy(capabilities)
+local function cmp_nvim_lsp_extend_caps(capabilities)
+    local imported_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+    local newcap = vim.deepcopy(capabilities)
 
-  -- When using nvim-cmp
-  -----------------------------------------------
-  local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+    Safe.import_then("cmp_nvim_lsp", function()
 
-  if cmp_nvim_lsp_ok then
-    -- Add cmp_nvim_lsp capabilities to the extended client capabilities.
-    extended_capabilities = vim.tbl_deep_extend(
-      'force',
-      extended_capabilities,
-      cmp_nvim_lsp.default_capabilities()
-    )
-  end
-  -----------------------------------------------
-  return extended_capabilities
+    end)
+
+    if imported_ok then
+        -- Add cmp_nvim_lsp capabilities to the extended client capabilities.
+        newcap = vim.tbl_deep_extend(
+            'force',
+            newcap,
+            cmp_nvim_lsp.default_capabilities()
+        )
+    end
+    -----------------------------------------------
+    return newcap
 end
 
 local function custom_on_attach(client, bufnr)
-  if not client then
-    vim.notify('Client attached to buffer ' .. bufnr .. ' but client was falsey')
-    return
-  end
+    if not client then
+        vim.notify('Client attached to buffer ' .. bufnr .. ' but client was falsey')
+        return
+    end
 
-  -- TODO:
-  -- local mapper_ok, mapper = pcall(require, 'keybindings.lsp_dynmic_keymaps')
-  --
-  -- if mapper_ok and type(mapper) == 'function' then
-  --   mapper(client, bufnr)
-  -- end
+    -- TODO:
+    -- local mapper_ok, mapper = pcall(require, 'keybindings.lsp_dynmic_keymaps')
+    --
+    -- if mapper_ok and type(mapper) == 'function' then
+    --   mapper(client, bufnr)
+    -- end
 end
 
 -- Attempts to find a lua module with the same name as the language server
@@ -40,136 +41,136 @@ end
 -- care of setting up the language server.
 
 local function try_custom_setup(ls_name, ls_entry, capabilities, on_attach)
-  local custom_setup_path = '06-lspconf.' .. ls_name
-  local return_value, setup_fn = pcall(require, custom_setup_path)
-  if return_value then return setup_fn(ls_entry, capabilities, on_attach) end
-  return return_value
+    local custom_setup_path = '06-lspconf.' .. ls_name
+    local return_value, setup_fn = pcall(require, custom_setup_path)
+    if return_value then return setup_fn(ls_entry, capabilities, on_attach) end
+    return return_value
 end
 
 return {
 
-  -- Optional plugins that enhance the LSP experience, or provide their own.
-  -------------------------------------------------------------------------------
-  {
-    "simrat39/rust-tools.nvim",     -- No longer maintained.
-    -- "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
-    version = '^3',                 -- Pin to version 3.x.x.
-    ft = { 'rust' },                -- Lazy load on Rust files.
-  },
-
-  -- {
-  --   "MrcJkb/haskell-tools.nvim",
-  --   version = '^3',
-  --   lazy = true,
-  --   ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
-  -- },
-
-  { "p00f/clangd_extensions.nvim", lazy = true, ft = 'cpp', config = true },
-  { "folke/neodev.nvim",           lazy = true, ft = 'lua', config = true },
-  -- { "manicmaniac/coconut.vim",     ft = { ".coco", ".co", ".coconut" } },
-  -- { "j-hui/fidget.nvim",           tag = "legacy",                     config = true, lazy = true },
-  -- { "udalov/kotlin-vim",           config = false,                     lazy = true, ft = 'kotlin' },
-
-
-  -- The meat of the LSP setup..
-  -------------------------------------------------------------------------------
-  {
-    'williamboman/mason.nvim',
-    lazy = true,
-    config = true
-  },
-
-  {
-    'williamboman/mason-lspconfig.nvim',
-    lazy = true,
-    dependencies = {
-      'williamboman/mason.nvim'
-    },
-    config = function()
-      require('mason-lspconfig').setup()
-    end
-  },
-
-
-  {
-    'neovim/nvim-lspconfig',
-    lazy = false,
-    dependencies = {
-      'williamboman/mason-lspconfig.nvim',
-      { "ms-jpq/coq_nvim",       branch = "coq" },
-      { "ms-jpq/coq.artifacts",  branch = "artifacts" },
-      { 'ms-jpq/coq.thirdparty', branch = "3p" },
+    -- Optional plugins that enhance the LSP experience, or provide their own.
+    -------------------------------------------------------------------------------
+    {
+        "simrat39/rust-tools.nvim", -- No longer maintained.
+        -- "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
+        version = '^3',         -- Pin to version 3.x.x.
+        ft = { 'rust' },        -- Lazy load on Rust files.
     },
 
-    event = 'FileType',
+    -- {
+    --   "MrcJkb/haskell-tools.nvim",
+    --   version = '^3',
+    --   lazy = true,
+    --   ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+    -- },
 
-    init = function()
-      vim.g.coq_settings = {
-        auto_start = true
-      }
-    end,
+    { "p00f/clangd_extensions.nvim", lazy = true, ft = 'cpp', config = true },
+    { "folke/neodev.nvim",           lazy = true, ft = 'lua', config = true },
+    -- { "manicmaniac/coconut.vim",     ft = { ".coco", ".co", ".coconut" } },
+    -- { "j-hui/fidget.nvim",           tag = "legacy",                     config = true, lazy = true },
+    -- { "udalov/kotlin-vim",           config = false,                     lazy = true, ft = 'kotlin' },
 
-    config = function()
-      local neodev_ok, neodev = pcall(require, 'neodev')
-      if not neodev_ok then
-        vim.notify('Failed to import neodev')
-      else
-        neodev.setup()
-      end
 
-      local lspconfig = require('lspconfig')
-      local mason_lspconfig = require('mason-lspconfig')
+    -- The meat of the LSP setup..
+    -------------------------------------------------------------------------------
+    {
+        'williamboman/mason.nvim',
+        lazy = true,
+        config = true
+    },
 
-      -- local using_coq = Safe.is_lib("coq")
-      -- Extend the default client capabilities.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = extend_client_capabilities(capabilities)
-
-      -- Get the installed language servers.
-      local installed_ls_names = mason_lspconfig.get_installed_servers()
-
-      if not Safe.t_is(_G.lspconf_overrides, 'table') then
-        _G.lspconf_overrides = {}
-      end
-
-      -- Setup all of the installed langauge servers.
-      for _, ls_name in ipairs(installed_ls_names) do
-        local ls_entry = lspconfig[ls_name]
-
-        -- Try setting the server up using the user-provided custom setup
-        -- function. These are stored under "lsp-custom-setup"
-        local custom_config_ok = try_custom_setup(
-          ls_name, ls_entry, capabilities, custom_on_attach
-        )
-
-        -- If that fails, then just use the default setup function.
-        if not custom_config_ok then
-          ls_entry.setup {
-            capabilities = capabilities,
-            on_attach = custom_on_attach
-          }
-        else
-          _G.lspconf_overrides[ls_name] = custom_config_ok
+    {
+        'williamboman/mason-lspconfig.nvim',
+        lazy = true,
+        dependencies = {
+            'williamboman/mason.nvim'
+        },
+        config = function()
+            require('mason-lspconfig').setup()
         end
+    },
 
-        Safe.import_then("coq", function(coq)
-          ls_entry.setup(coq.lsp_ensure_capabilities(capabilities))
-        end)
-      end
 
-      -- Regsiter a user command to view the loaded custom LSP config overrides.
-      vim.api.nvim_create_user_command("LspListLoadedSetups", function(opts)
-        Safe.try(function()
-          PrintDbg('Dumping successfully loaded custom LSP config overrides..',
-            LL_INFO, { _G.lspconf_overrides }
-          )
-        end)
-      end, {})
+    {
+        'neovim/nvim-lspconfig',
+        lazy = false,
+        dependencies = {
+            'williamboman/mason-lspconfig.nvim',
+            { "ms-jpq/coq_nvim",       branch = "coq" },
+            { "ms-jpq/coq.artifacts",  branch = "artifacts" },
+            { 'ms-jpq/coq.thirdparty', branch = "3p" },
+        },
 
-      Events.fire_event {
-        actor = "lspconfig",
-        event = "configured"
-      }
-    end
-  },
+        event = 'FileType',
+
+        init = function()
+            vim.g.coq_settings = {
+                auto_start = true
+            }
+        end,
+
+        config = function()
+            local neodev_ok, neodev = pcall(require, 'neodev')
+            if not neodev_ok then
+                vim.notify('Failed to import neodev')
+            else
+                neodev.setup()
+            end
+
+            local lspconfig = require('lspconfig')
+            local mason_lspconfig = require('mason-lspconfig')
+
+            -- local using_coq = Safe.is_lib("coq")
+            -- Extend the default client capabilities.
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = cmp_nvim_lsp_extend_caps(capabilities)
+
+            -- Get the installed language servers.
+            local installed_ls_names = mason_lspconfig.get_installed_servers()
+
+            if not Safe.t_is(_G.lspconf_overrides, 'table') then
+                _G.lspconf_overrides = {}
+            end
+
+            -- Setup all of the installed langauge servers.
+            for _, ls_name in ipairs(installed_ls_names) do
+                local ls_entry = lspconfig[ls_name]
+
+                -- Try setting the server up using the user-provided custom setup
+                -- function. These are stored under "lsp-custom-setup"
+                local custom_config_ok = try_custom_setup(
+                    ls_name, ls_entry, capabilities, custom_on_attach
+                )
+
+                -- If that fails, then just use the default setup function.
+                if not custom_config_ok then
+                    ls_entry.setup {
+                        capabilities = capabilities,
+                        on_attach = custom_on_attach
+                    }
+                else
+                    _G.lspconf_overrides[ls_name] = custom_config_ok
+                end
+
+                Safe.import_then("coq", function(coq)
+                    ls_entry.setup(coq.lsp_ensure_capabilities(capabilities))
+                end)
+            end
+
+            -- Regsiter a user command to view the loaded custom LSP config overrides.
+            vim.api.nvim_create_user_command("LspListLoadedSetups", function(opts)
+                Safe.try(function()
+                    PrintDbg('Dumping successfully loaded custom LSP config overrides..',
+                        LL_INFO, { _G.lspconf_overrides }
+                    )
+                end)
+            end, {})
+
+            Events.fire_event {
+                actor = "lspconfig",
+                event = "configured"
+            }
+        end
+    },
 }
