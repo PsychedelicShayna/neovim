@@ -19,7 +19,7 @@ end
 ---@param query string
 function M.get_completion_list(query)
     ---@type string
-    local command_template = "zoxide query --list --score --exclude %q %q"
+    local command_template = "zoxide query --list --exclude %q %q"
 
     ---@type string
     local command = string.format(command_template, vim.fn.getcwd(), query)
@@ -63,7 +63,6 @@ function M.zoxide_cd(opts)
 
     ---@type file*?, string?
     local handle = io.popen("zoxide query " .. path, "r")
-
     if handle ~= nil then
         zpath = handle:read("*a")
 
