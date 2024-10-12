@@ -2,9 +2,14 @@
 -- Neovim into thinking they've already been loaded.
 --
 
--- vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_matchparen  = 1
 vim.g.loaded_matchit  = 1
+vim.g.loaded_tidal = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_2html_plugin = 1
 
 -- g:loaded_2html_plugin
 -- g:loaded_clipboard_provider
@@ -19,6 +24,5 @@ vim.g.loaded_matchit  = 1
 -- g:loaded_shada_plugin
 -- g:loaded_spellfile_plugin
 -- g:loaded_tarPlugin
--- g:loaded_tidal
 -- g:loaded_tutor_mode_plugin
 -- g:loaded_zipPlugin
