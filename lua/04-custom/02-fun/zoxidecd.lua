@@ -93,6 +93,7 @@ function M.zoxide_cd(opts)
     end
 
     vim.cmd(string.format("cd %s", destination))
+    vim.cmd("pwd")
 
     return not bad_result
 end

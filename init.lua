@@ -1,4 +1,4 @@
-print(require("init"))
+require("init")
 
 
 
