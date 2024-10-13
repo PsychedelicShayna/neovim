@@ -49,7 +49,7 @@ function BackgroundStripper:set_state(newstate)
     end
 
     for _, higroup in ipairs(self.hibackup) do
-      Safe.try_catch(function()
+      Safe.try(function()
         vim.api.nvim_set_hl(0, higroup.name, higroup.values)
       end, function(e)
         PrintDbg("Cannot restore highlight group! Err: %s", LL_ERROR, { higroup }, e)
@@ -75,7 +75,7 @@ function BackgroundStripper:set_state(newstate)
 
       -- Store the original values for later restoration.
       table.insert(self.hibackup, { name = higroup, values = original })
-      Safe.try_catch(function()
+      Safe.try(function()
       end, function(e)
         PrintDbg("Cannot override highlight group! Err: %s", LL_ERROR, { higroup }, e)
       end)
@@ -131,3 +131,5 @@ vim.api.nvim_create_user_command("BgsDontPersist", function()
 end, {})
 
 return BackgroundStripper
+
+
