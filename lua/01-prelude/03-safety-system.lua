@@ -1,6 +1,5 @@
 Safe = {}
 
-
 -- A more ergonomic way to typecheck multtiple values or possible valid types.
 -- The first argument can be a table of multiple values, or a single value.
 --

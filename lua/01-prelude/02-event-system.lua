@@ -1,6 +1,6 @@
 local ok, valerr = pcall(require, 'global.valerr') -- Rusty error handling.
 
-local M = {
+Events = {
   database = {},
   awaiting = {},
 }
@@ -9,7 +9,7 @@ local M = {
 -- Since the ID derivation logic needs to remain cosnistent across all
 -- functions, it makes sense to separate it, even if it's just concat.
 
-function M.get_event_id(actor, event)
+function Events.get_event_id(actor, event)
   if not actor or not event then
     return nil
   end
@@ -25,7 +25,7 @@ end
 
 --- Options: 
 --- { actor:string, event:string, callback:function, retroactive:boolean=false, data:table? } 
-function M.await_event(opts)
+function Events.await_event(opts)
   if type(opts) ~= 'table' then
     vim.notify("Incorrect use of Events.await_event, expected table.", vim.log.levels.ERROR)
     return nil
@@ -53,7 +53,7 @@ function M.await_event(opts)
     return nil
   end
 
-  local id = M.get_event_id(opts.actor, opts.event)
+  local id = Events.get_event_id(opts.actor, opts.event)
 
   if not id then
     vim.notify('Could not derive the event ID from actor and event names!', vim.log.levels.ERROR)
@@ -69,22 +69,22 @@ function M.await_event(opts)
   ------------------------------------------------
 
   -- Table under this event's ID must be present.
-  local event_exists = type(M.database[id]) == 'table' or false
+  local event_exists = type(Events.database[id]) == 'table' or false
   -----------------------------------------
 
 
   local data_exists = (event_exists
-    and type(M.database[id]['data']) == 'table')
+    and type(Events.database[id]['data']) == 'table')
   ---------------------------------------------
   -- Does the event table have a data table? --
   ---------------------------------------------
 
 
-  local queue_exists = (type(M.awaiting) == 'table'
-    and type(M.awaiting[id]) == 'table')
+  local queue_exists = (type(Events.awaiting) == 'table'
+    and type(Events.awaiting[id]) == 'table')
   --                  ------------------------------------
   --
-  local others_awaiting = (queue_exists and #M.awaiting[id] > 0)
+  local others_awaiting = (queue_exists and #Events.awaiting[id] > 0)
   --                        --------------------------------------
   --                        -- Is there at least one calback in --
   --                        -- the awaiting queue?              --
@@ -94,7 +94,7 @@ function M.await_event(opts)
   local data = {}
 
   if data_exists then
-    data = M.database[id]['data']
+    data = Events.database[id]['data']
   end
 
   -- If true, don't schedule the event, just bypass and invoke the callback
@@ -108,15 +108,15 @@ function M.await_event(opts)
       (not event_exists)
 
       -- Table has been defined, but times_fired is 0.
-      or (type(M.database[id].times_fired) == 'number'
-        and M.database[id].times_fired == 0)
+      or (type(Events.database[id].times_fired) == 'number'
+        and Events.database[id].times_fired == 0)
     )
   ) or (
     opts['retroactive'] and (
     -- Table is defined, has a times_fired int, and fired at least once.
-      (type(M.database[id]) == 'table' and
-        type(M.database[id].times_fired) == 'number' and
-        M.database[id].times_fired >= 1)
+      (type(Events.database[id]) == 'table' and
+        type(Events.database[id].times_fired) == 'number' and
+        Events.database[id].times_fired >= 1)
     )
   )
 
@@ -125,14 +125,14 @@ function M.await_event(opts)
   end
 
   if not event_exists then
-    M.database[id] = { times_fired = 0, data = {} }
+    Events.database[id] = { times_fired = 0, data = {} }
   end
 
-  if type(M.awaiting[id]) ~= 'table' then
-    M.awaiting[id] = {}
+  if type(Events.awaiting[id]) ~= 'table' then
+    Events.awaiting[id] = {}
   end
 
-  table.insert(M.awaiting[id], opts['callback'])
+  table.insert(Events.awaiting[id], opts['callback'])
   return id
 end
 
@@ -167,11 +167,11 @@ end
 --
 --                    @     ||__________*__________||     .
 --       Transmitter        |-----------------------|        Ping
---  ~~~~~~~~~~~~~~~~~~~~~~~~||  Yes. Pong. Ping.   ||~~~~~~~~~~~~~~~~~~~~~~
---          Pong            ||                     ||       Receiver
+--  ~~~~~~~~~~~~~~~~~~~~~~~~||   Yes. Pong. Ping.  ||~~~~~~~~~~~~~~~~~~~~~~
+--          Pong            ||   Not. Ping. Pong.  ||       Receiver
+--
 --                                 See Below.
---
---
+--                                     
 --
 -------------------------------  Single Receiver  -----------------------------
 --
@@ -199,7 +199,7 @@ end
 --
 -------------------------------------------------------------------------------
 
-function M.fire_event(opts)
+function Events.fire_event(opts)
   if type(opts) ~= 'table' then
     vim.notify(
       'No event data supplied, event ignored. The table is of type ' .. type(opts) .. ', when it should be a table.',
@@ -207,7 +207,7 @@ function M.fire_event(opts)
     return nil
   end
 
-  local id = M.get_event_id(opts.actor, opts.event)
+  local id = Events.get_event_id(opts.actor, opts.event)
 
   if not id then
     vim.notify('Could not derive the event ID from actor and event names!', vim.log.levels.ERROR)
@@ -215,31 +215,31 @@ function M.fire_event(opts)
   end
 
   -- Update Data Pre-Callback Invocations ---------------------------
-  if type(M.database[id]) == "table" then
-    M.database[id].times_fired = M.database[id].times_fired + 1
+  if type(Events.database[id]) == "table" then
+    Events.database[id].times_fired = Events.database[id].times_fired + 1
 
     local set_data_t = type(opts['data'])
 
     if set_data_t == 'table' then
-      M.database[id].data = opts['data']
+      Events.database[id].data = opts['data']
     elseif set_data_t == 'function' then
-      local new_data = opts['data'](M.database[id].data)
-      if type(new_data) == 'table' then M.database[id] = new_data end
+      local new_data = opts['data'](Events.database[id].data)
+      if type(new_data) == 'table' then Events.database[id] = new_data end
     end
   else
-    M.database[id] = { times_fired = 1, data = opts['data'] }
+    Events.database[id] = { times_fired = 1, data = opts['data'] }
   end
 
   -- Zero Callbacks, Return Early ---------------------------------
-  if type(M.awaiting[id]) ~= 'table' then
+  if type(Events.awaiting[id]) ~= 'table' then
     return nil
   end
 
   local expired = {}
 
   -- Handle Callbacks --------------------------------------------
-  for i, fn in ipairs(M.awaiting[id]) do
-    local result = fn(M.database[id]['data'])
+  for i, fn in ipairs(Events.awaiting[id]) do
+    local result = fn(Events.database[id]['data'])
 
     -- Callback Wants Something ------------------------------------
     if type(result) == 'table' then
@@ -250,11 +250,11 @@ function M.fire_event(opts)
 
       -- To Set Data -----------------------------------------------
       if type(result['set_data']) == 'table' then
-        M.database[id]['data'] = result
+        Events.database[id]['data'] = result
       elseif type(result['set_data']) == 'function' then
-        local new_data = result['set_data'](M.database[id]['data'])
+        local new_data = result['set_data'](Events.database[id]['data'])
         if type(new_data) == 'table' then
-          M.database[id]['data'] = new_data
+          Events.database[id]['data'] = new_data
         end
       end
     end
@@ -262,10 +262,9 @@ function M.fire_event(opts)
 
   -- Removes Expired Callbacks -------------------------------------
   for _, index in ipairs(expired) do
-    table.remove(M.awaiting[id], index)
+    table.remove(Events.awaiting[id], index)
   end
 end
 
-Events = M
 
-return M
+return Events
