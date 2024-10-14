@@ -1,18 +1,22 @@
-local export = {}
+---@class Storage
+---@field ascii_art? table
 
-local modules = {
-  symbols = "02-storage.symbols",
-  banners = "02-storage.banners"
-}
+---@type Storage
+Storage = {}
 
-for name, path in pairs(modules) do
-  local module_ok, module = pcall(require, path)
+local imported = ImportModuleTree()
 
-  if module_ok then
-    export[name] = module
+if imported then
+  for k, v in pairs(imported) do
+    Safe.try(function()
+      local stripped = ModuleResolver.purename(k)
+      Storage[stripped] = v
+    end, function(err, msg)
+      print("Error importing module: " .. k)
+      print(err)
+      print(msg)
+    end)
   end
 end
 
-Data = export
-
-return export
+return Storage
