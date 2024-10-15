@@ -1,6 +1,3 @@
-local function switch_header_source()
-end
-
 vim.api.nvim_create_user_command("SwitchHeaderSource", function()
   local current_file = vim.api.nvim_buf_get_name(0)
 
