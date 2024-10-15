@@ -2,7 +2,58 @@ return {
   {
     "mfussenegger/nvim-dap",
     lazy = true,
-    cmd = "DapNew",
+    key = {
+      "<space>ds",
+      "<leader>dsr",
+      "<leader>dsc",
+      "<leader>dst",
+      "<leader>dsd",
+      "<leader>dr",
+      "<leader>dc",
+      "<leader>dC",
+      "<leader>di",
+      "<leader>do",
+      "<leader>dl",
+      "<leader>dh",
+      "<leader>d;",
+      "<leader>db",
+      "<leader>dbb",
+      "<leader>dbh",
+      "<leader>dbc",
+      "<leader>dbl",
+    },
+    init = function()
+      Safe.import_then('which-key', function(wk)
+        wk.add {
+          { "<space>d",    group = "[Debugging]" },
+
+          -- Session Management.
+          { "<space>ds",   group = "[Session]" },
+          { "<leader>dsr", "<cmd>lua require('dap').restart()<cr>",           desc = "Restart Debugging Session" },
+          { "<leader>dsc", "<cmd>lua require('dap').close()<cr>",             desc = "Close Debugging Session" },
+          { "<leader>dst", "<cmd>lua require('dap').terminate()<cr>",         desc = "Terminate Debugging Session" },
+          { "<leader>dsd", "<cmd>lua require('dap').disconnect()<cr>",        desc = "Request Debugger Disconnect" },
+
+          -- Control Flow
+          { "<leader>dr",  "<cmd>lua require('dap').run_last()<cr>",          desc = "Runs Last Debug Adapter Configuration" },
+          { "<leader>dc",  "<cmd>lua require('dap').continue()<cr>",          desc = "Continue Execution/Start Debugger" },
+          { "<leader>dC",  "<cmd>lua require('dap').reverse_continue()<cr>",  desc = "Continue Backwards (Reverse Debugging)" },
+          { "<leader>di",  "<cmd>lua require('dap').step_into()<cr>",         desc = "Step Into" },
+          { "<leader>do",  "<cmd>lua require('dap').step_out()<cr>",          desc = "Step Out" },
+          { "<leader>dl",  "<cmd>lua require('dap').step_over()<cr>",         desc = "Step Over" },
+          { "<leader>dh",  "<cmd>lua require('dap').step_back()<cr>",         desc = "Step Back" },
+          { "<leader>d;",  "<cmd>lua require('dap').repl.toggle()<cr>",       desc = "Toggle Debugger REPL" },
+
+          -- Breakpoints
+          { "<leader>db",  group = "[Breakpoints]" },
+          { "<leader>dbb", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "Toggle Breakpoint" },
+          { "<leader>dbh", "<cmd>lua require('dap').run_to_cursor()<cr>",     desc = "Break Here & Run" },
+          { "<leader>dbc", "<cmd>lua require('dap').clear_breakpoints()<cr>", desc = "Clear Breakpoints" },
+          { "<leader>dbl", "<cmd>lua require('dap').list_breakpoints()<cr>",  desc = "List Breakpoints (QF Window)" },
+        }
+      end)
+    end,
+
     config = function()
       Safe.import_then("dap", function(dap)
         dap.adapters.cppdbg = {
@@ -55,43 +106,6 @@ return {
 
         dap.configurations.c = dap.configurations.cpp
         dap.configurations.rust = dap.configurations.cpp
-
-        Events.await_event {
-          actor = "which-key",
-          event = "configured",
-          retroactive = true,
-          callback = function()
-            Safe.import_then('which-key', function(wk)
-              wk.add {
-                { "<space>d",    group = "[Debugging]" },
-
-                -- Session Management.
-                { "<space>ds",   group = "[Session]" },
-                { "<leader>dsr", "<cmd>lua require('dap').restart()<cr>",           desc = "Restart Debugging Session" },
-                { "<leader>dsc", "<cmd>lua require('dap').close()<cr>",             desc = "Close Debugging Session" },
-                { "<leader>dst", "<cmd>lua require('dap').terminate()<cr>",         desc = "Terminate Debugging Session" },
-                { "<leader>dsd", "<cmd>lua require('dap').disconnect()<cr>",        desc = "Request Debugger Disconnect" },
-
-                -- Control Flow
-                { "<leader>dr",  "<cmd>lua require('dap').run_last()<cr>",          desc = "Runs Last Debug Adapter Configuration" },
-                { "<leader>dc",  "<cmd>lua require('dap').continue()<cr>",          desc = "Continue Execution/Start Debugger" },
-                { "<leader>dC",  "<cmd>lua require('dap').reverse_continue()<cr>",  desc = "Continue Backwards (Reverse Debugging)" },
-                { "<leader>di",  "<cmd>lua require('dap').step_into()<cr>",         desc = "Step Into" },
-                { "<leader>do",  "<cmd>lua require('dap').step_out()<cr>",          desc = "Step Out" },
-                { "<leader>dl",  "<cmd>lua require('dap').step_over()<cr>",         desc = "Step Over" },
-                { "<leader>dh",  "<cmd>lua require('dap').step_back()<cr>",         desc = "Step Back" },
-                { "<leader>d;",  "<cmd>lua require('dap').repl.toggle()<cr>",       desc = "Toggle Debugger REPL" },
-
-                -- Breakpoints
-                { "<leader>db",  group = "[Breakpoints]" },
-                { "<leader>dbb", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "Toggle Breakpoint" },
-                { "<leader>dbh", "<cmd>lua require('dap').run_to_cursor()<cr>",     desc = "Break Here & Run" },
-                { "<leader>dbc", "<cmd>lua require('dap').clear_breakpoints()<cr>", desc = "Clear Breakpoints" },
-                { "<leader>dbl", "<cmd>lua require('dap').list_breakpoints()<cr>",  desc = "List Breakpoints (QF Window)" },
-              }
-            end)
-          end
-        }
       end)
 
       vim.cmd [[ hi debugPC guibg=#222222 guifg=#d4be98 ]]
@@ -111,7 +125,16 @@ return {
       "nvim-neotest/nvim-nio"
     },
     lazy = true,
-    ft = 'c',
+    init = function()
+      Events.await_event {
+        actor = "nvim-dap",
+        event = "configured",
+        retroactive = true,
+        callback = function()
+          require('dapui')
+        end
+      }
+    end,
     config = function()
       Safe.import_then("dapui", function(dapui)
         dapui.setup()
@@ -137,7 +160,17 @@ return {
     'theHamsta/nvim-dap-virtual-text',
     dependencies = { 'mfussenegger/nvim-dap' },
     lazy = true,
-    ft = 'c',
+    init = function()
+      Events.await_event {
+        actor = "nvim-dap",
+        event = "configured",
+        retroactive = true,
+        callback = function()
+          require('nvim-dap-virtual-text')
+        end
+      }
+    end,
+
     config = function()
       require("nvim-dap-virtual-text").setup()
 
