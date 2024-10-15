@@ -125,10 +125,17 @@ return {
 
     init = function()
       vim.g.coq_settings = {
+        ["xdg"] = false,
+        ["completion.always"] = true,
+        ["completion.replace_prefix_threshold"] = 3,
+        ["completion.replace_suffix_threshold"] = 2,
+        ["completion.smart"] = true,
         ["clients.lsp.always_on_top"] = {},
         ["clients.lsp.short_name"] = "LSP",
+        ["weights.edit_distance"] = 10,
+        -- ["limits.completion_auto_timeout"] = 1.0,
         -- ["clients.paths.path_seps"] = '/',
-        ["clients.lsp.resolve_timeout"] = 0.20,
+        -- ["clients.lsp.resolve_timeout"] = 1.50,
         ["clients.tags.enabled"] = false,
         ["clients.registers.enabled"] = false,
         ["clients.tree_sitter.enabled"] = false,
@@ -136,25 +143,21 @@ return {
         ["clients.tmux.enabled"] = false,
         ["clients.tabnine.enabled"] = false,
         display = {
+          ["pum.fast_close"] = false,
+          ["pum.x_max_len"] = 18,
+          ["pum.y_max_len"] = 12,
+          ["mark_applied_notify"] = false,
+          ["pum.source_context"] = {"", ""},
           statusline = { helo = false },
-
-          ghost_text = {
-            enabled = false
-          },
-
-          preview = {
-            border = 'single'
-          },
-
-          icons = {
-            mode = 'long' -- short or none
-          }
+          ghost_text = { enabled = false },
+          preview = { border = 'single' },
+          icons = { mode = 'none' }
         },
         auto_start = 'shut-up',
         keymap = {
           recommended = false,
           manual_complete = "<A-i>",
-          jump_to_mark = "",
+          jump_to_mark = "<A-L>",
         },
       }
     end,
