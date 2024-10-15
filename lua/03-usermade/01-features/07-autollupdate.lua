@@ -1,6 +1,7 @@
 local autocmd_id = nil
 
-
+-- Remind me to clean up this shit later.
+-- It's going into features for now.
 
 vim.api.nvim_create_user_command("ToggleAutoDiagLocList", function()
   if type(_G.autocmd_id_toggle_auto_diagnostic_llist) == "number" then
