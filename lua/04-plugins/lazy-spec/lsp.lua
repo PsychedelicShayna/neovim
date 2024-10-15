@@ -106,67 +106,14 @@ return {
     lazy = false,
     dependencies = {
       'williamboman/mason-lspconfig.nvim',
-      { "PsychedelicShayna/neocoq.nvim", branch = "coq",       enabled = true }, -- originally ms-jpg/coq_nvim
-      { "ms-jpq/coq.artifacts",          branch = "artifacts", enabled = true },
-      {
-        'ms-jpq/coq.thirdparty',
-        branch = "3p",
-        enabled = true,
-        config = function()
-          require('coq_3p') {
-            { src = "bc",      short_name = "MATH", precision = 6 },
-            { src = "nvimlua", short_name = "nLUA", conf_only = true },
-          }
-        end
-      },
     },
 
     event = 'FileType',
-
-    init = function()
-      vim.g.coq_settings = {
-        ["xdg"] = false,
-        ["completion.always"] = true,
-        ["completion.replace_prefix_threshold"] = 3,
-        ["completion.replace_suffix_threshold"] = 2,
-        ["completion.smart"] = true,
-        ["clients.lsp.always_on_top"] = {},
-        ["clients.lsp.short_name"] = "LSP",
-        ["weights.edit_distance"] = 10,
-        -- ["limits.completion_auto_timeout"] = 1.0,
-        -- ["clients.paths.path_seps"] = '/',
-        -- ["clients.lsp.resolve_timeout"] = 1.50,
-        ["clients.tags.enabled"] = false,
-        ["clients.registers.enabled"] = false,
-        ["clients.tree_sitter.enabled"] = false,
-        ["clients.buffers.match_syms"] = true,
-        ["clients.tmux.enabled"] = false,
-        ["clients.tabnine.enabled"] = false,
-        display = {
-          ["pum.fast_close"] = false,
-          ["pum.x_max_len"] = 18,
-          ["pum.y_max_len"] = 12,
-          ["mark_applied_notify"] = false,
-          ["pum.source_context"] = {"", ""},
-          statusline = { helo = false },
-          ghost_text = { enabled = false },
-          preview = { border = 'single' },
-          icons = { mode = 'none' }
-        },
-        auto_start = 'shut-up',
-        keymap = {
-          recommended = false,
-          manual_complete = "<A-i>",
-          jump_to_mark = "<A-L>",
-        },
-      }
-    end,
 
     config = function()
       local lspconfig = require('lspconfig')
       local mason_lspconfig = require('mason-lspconfig')
 
-      -- local using_coq = Safe.is_lib("coq")
       -- Extend the default client capabilities.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = cmp_nvim_lsp_extend_caps(capabilities)
@@ -179,13 +126,13 @@ return {
       end
 
       -- Setup all of the installed langauge servers.
-      for i, ls_name in ipairs(installed_ls_names) do
+      for _, ls_name in ipairs(installed_ls_names) do
         local filetypes = lspconfig[ls_name].config_def.default_config.filetypes
 
         vim.api.nvim_create_autocmd("FileType", {
           once = true,
           pattern = filetypes,
-          callback = function(data)
+          callback = function(_)
             local ls_entry = lspconfig[ls_name]
 
             -- Try setting the server up using the user-provided custom setup
@@ -203,16 +150,12 @@ return {
             else
               _G.lspconf_overrides[ls_name] = custom_config_ok
             end
-
-            Safe.import_then("coq", function(coq)
-              ls_entry.setup(coq.lsp_ensure_capabilities(capabilities))
-            end)
           end
         })
       end
 
       -- Regsiter a user command to view the loaded custom LSP config overrides.
-      vim.api.nvim_create_user_command("LspListLoadedSetups", function(opts)
+      vim.api.nvim_create_user_command("LspListLoadedSetups", function(_)
         Safe.try(function()
           PrintDbg('Dumping successfully loaded custom LSP config overrides..',
             LL_INFO, { _G.lspconf_overrides }

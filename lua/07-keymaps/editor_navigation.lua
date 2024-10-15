@@ -91,7 +91,7 @@ MapKey { key = '<A-U>', does = '<C-o>', modes = 'i' }
 
 -- Move around in insert mode with Alt-hjkl
 MapKey { key = '<A-h>', does = '<Left>', modes = 'i' }
--- l is under PUM bindings due binding conflicts.
+MapKey { key = '<A-l>', does = '<Right>', modes = 'i' }
 MapKey { key = '<A-k>', does = '<Up>', modes = 'i' }
 MapKey { key = '<A-j>', does = '<Down>', modes = 'i' }
 
@@ -114,9 +114,3 @@ MapKey { key = '<A-a>', does = '<esc>lciw', modes = 'i' }
 -- Run last @q macro.
 MapKey { key = '<A-q>', does = '<esc>Qi', modes = 'i' }
 
-
--------------------------------------------------------------------------------
--- PUM (Popup Menu Bindings)
--------------------------------------------------------------------------------
-vim.api.nvim_set_keymap('i', '<A-l>', [[pumvisible() ? "\<C-y>" : "\<C-e><Right>"]], { expr = true, silent = true })
-vim.api.nvim_set_keymap('i', '<cr>', [[pumvisible() ? "\<C-e><cr>" : "\<cr>"]], { expr = true, silent = true })
