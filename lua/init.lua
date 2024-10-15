@@ -48,9 +48,8 @@ vim.o.writebackup    = false
 -- anywhere from benign, to being stuck in a TTY with no window manager, so
 -- better to be safe(er) than sorry(er); it's a parachute, not a safety net.
 function FubarMode()
-  -- We want bakups, swapfiles, undofiles; who knows what went wrong.
-  vim.o.swapfile      = true
   vim.o.writebackup   = true
+  vim.o.backup        = true
   vim.o.undofile      = true
   vim.o.updatetime    = 100
 
@@ -79,103 +78,106 @@ function FubarMode()
   vim.notify("FubarMode options have been set.")
 end
 
--- Get Child Modules -----------------------------------------------------------
-function GetChildModules()
-  local reflect = debug.getinfo(2, "S")
-  local full_path = reflect.source
-
-  local module_path = full_path:match("@.*" .. LuaConfigHome .. '(.+)/[^/]+.lua$')
-
-end
-
 -------------------------------------------------------------------------------
-
----@class LoadOrder
----@field files table Sorted table of files prefixed by N-Filename, e.g. 05-thing.lua, or 105-thing.lua
----@field dirs table Sorted table of directories prefixed by N-Dirname, e.g. 05-stuff, or 105-stuff.lua
+---@alias ModuleType "f" | "d"
+---@class ModuleInfo
+---@field name string
+---@field type ModuleType
 
 ---@param path string The path to the directory containing files and or folders to sort.
----@return LoadOrder? -- A table with dirs and files subkeys, containing the sorted list N-Prefixed names. Nil on failure to read directory contents.
+---@return ModuleInfo[]?
 function GetLoadOrder(path)
-  local result = { dirs = {}, files = {} }
-  local iter = vim.loop.fs_opendir(path, nil, 100)
+  local handle = vim.loop.fs_opendir(path, nil, 100)
+  if not handle then return nil end
 
-  if not iter then
-    return nil
-  end
+  ---@type ModuleInfo[]
+  local results = {}
 
-  ---@type uv.fs_readdir.entry[]?
-  local entries = vim.loop.fs_readdir(iter)
+  local entry_iter = vim.loop.fs_readdir(handle)
 
-  while entries do
-    for _, entry in ipairs(entries) do
+  while entry_iter do
+    for _, entry in ipairs(entry_iter) do
       ---@type number?
       local prefix = tonumber(entry.name:match("^%d+"))
 
       if prefix then
         if entry.type == "directory" then
-          table.insert(result.dirs, entry.name)
-        elseif entry.type == "file" then
-
+          ---@type ModuleInfo
+          local module_info = { name = entry.name, type = "d" }
+          table.insert(results, module_info)
+        else
           -- Only match lua files, and remove the extension.
           local module_name = entry.name:match("(.+)%.lua$")
 
           if module_name then
-            table.insert(result.files, module_name)
+            ---@type ModuleInfo
+            local module_info = { name = module_name, type = "f" }
+            table.insert(results, module_info)
           end
         end
       end
     end
 
-    entries = vim.loop.fs_readdir(iter)
+    entry_iter = vim.loop.fs_readdir(handle)
   end
 
-  vim.loop.fs_closedir(iter)
+  vim.loop.fs_closedir(handle)
 
   local function sort_by_prefix(a, b)
-    return tonumber(a:match("^%d+")) < tonumber(b:match("^%d+"))
+    return tonumber(a.name:match("^%d+")) < tonumber(b.name:match("^%d+"))
   end
 
-  table.sort(result.dirs, sort_by_prefix)
-  table.sort(result.files, sort_by_prefix)
+  table.sort(results, sort_by_prefix)
 
-  return result
+  return results
 end
 
 -------------------------------------------------------------------------------
 
+--- Will import all other modules in the same directory as the module it was
+--- from, which have a numerical prefix, e.g. 01-prelude, or 00-debug.lua,
+--- Returns a table with two keys, `files` and `dirs`, both being tables that
+--- store the name and return value of each imported module respectively.
+--- Directories with a numerical prefix take precedence over files.
+---@class ModuleReturns
+---@field name string
+---@field returned any
+---@return ModuleReturns[]?
 function ImportModuleTree()
   local reflect = debug.getinfo(2, "S")
   local full_path = reflect.source
 
-  -- "04-custom/01-lib"
+  -- e.g. "04-custom/01-lib"
   local module_path = full_path:match("@.*" .. LuaConfigHome .. '(.+)/[^/]+.lua$')
 
-  -- "04-custom.01-lib"
+  -- e.g "04-custom.01-lib"
   local import_path = module_path:gsub('/', '.') or nil
 
   -- { dirs = {}, files = { "05-hello", "06-world" } }
   local load_order = GetLoadOrder(LuaConfigHome .. module_path)
 
   if not load_order then
+    vim.notify("Can't import module tree, GetLoadOrder returned nil for: " .. module)
     return nil
   end
 
-  for _, dir in ipairs(load_order.dirs) do
-    local ok, _ = pcall(require, string.format("%s.%s", import_path, dir))
+  local return_values = {}
+
+  for _, module_info in ipairs(load_order) do
+    local name = module_info.name
+
+    local ok, module = pcall(require, string.format("%s.%s", import_path, name))
 
     if not ok then
-      vim.notify("Failed to import module: " .. dir)
+      vim.notify("Failed to import module: " .. name)
+    else
+      return_values[name] = module
     end
   end
 
-  for _, file in ipairs(load_order.files) do
-    local ok, _ = require(string.format("%s.%s", import_path, file))
 
-    if not ok then
-      vim.notify("Failed to import module: " .. file)
-    end
-  end
+
+  return return_values
 end
 
 -------------------------------------------------------------------------------
@@ -184,18 +186,20 @@ end
 LuaConfigHome = os.getenv("HOME") .. "/.config/nvim/lua/"
 local load_order = GetLoadOrder(LuaConfigHome)
 
-if load_order == nil or load_order.dirs == nil then
+if load_order == nil then
   vim.notify(
     "Something has gone horribly wrong. GetLoadOrder failed; the Lua config might not even exist, we may not have permission, perhaps it's corrupt? Switching to FubarMode.",
     vim.log.levels.ERROR)
 
   FubarMode()
-elseif #load_order.dirs == 0 then
+elseif #load_order == 0 then
   vim.notify(
     "Something might be wrong. No modules were found in the Lua config!",
     vim.log.levels.WARN)
 else
-  for number, name in ipairs(load_order.dirs) do
+  for number, module_info in ipairs(load_order) do
+    local name = module_info.name
+
     if type(name) == "string" then
       local module_ok, _ = pcall(require, name)
 

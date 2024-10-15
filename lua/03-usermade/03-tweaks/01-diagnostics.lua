@@ -47,14 +47,14 @@ vim.lsp.handlers["textDocument/signatureHelp"] =
 -------------------------------------------------------------------------------
 -- Diagnostics Config
 -------------------------------------------------------------------------------
-
 vim.diagnostic.config {
-  virtual_text = { severity = "Error" },
+  virtual_text = false,
   signs = { active = diagnostic_signs },
   update_in_insert = false,
   underline = false,
   severity_sort = false, -- default: false
   float = {
+  virtual_text  = false,
     focusable = true,
     focus = true,
     style = float_style,
