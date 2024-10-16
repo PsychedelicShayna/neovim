@@ -19,10 +19,10 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
 -- Sign Definitions
 -------------------------------------------------------------------------------
 local diagnostic_signs = {
-  { name = 'DiagnosticSignError', text = ' X' }, -- ''
-  { name = 'DiagnosticSignWarn',  text = ' !' }, -- ''
-  { name = 'DiagnosticSignHint',  text = ' I' }, -- ''
-  { name = 'DiagnosticSignInfo',  text = ' ?' }, -- ''
+  { name = 'DiagnosticSignError', text = 'E' }, -- ''
+  { name = 'DiagnosticSignWarn', text =  'W' }, -- ''
+  { name = 'DiagnosticSignHint', text =  'H' }, -- ''
+  { name = 'DiagnosticSignInfo', text =  'I' }, -- ''
 }
 for _, sign in ipairs(diagnostic_signs) do
   vim.fn.sign_define(sign.name, {
@@ -52,15 +52,15 @@ vim.diagnostic.config {
   signs = { active = diagnostic_signs },
   update_in_insert = false,
   underline = false,
-  severity_sort = false, -- default: false
+  severity_sort = true, -- default: false
   float = {
-  virtual_text  = false,
-    focusable = true,
-    focus = true,
-    style = float_style,
-    border = float_border,
-    source = 'always',
-    header = '',
-    prefix = '',
+    virtual_text = false,
+    focusable    = true,
+    focus        = true,
+    style        = float_style,
+    border       = float_border,
+    source       = true,
+    header       = '',
+    prefix       = '',
   },
 }
