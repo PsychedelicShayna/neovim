@@ -18,24 +18,40 @@ end
 -------------------------------------------------------------------------------
 
 -- Lua
-MapKey { key = '<M-;><M-L>', does = ':luafile%<cr>', modes = 'n', desc = "Eval whole file as Lua" }
-MapKey { key = '<M-;><M-l>', does = '"+y:lua <C-r>+<cr>', modes = 'v', desc = "Eval as Lua (ml)" }
-MapKey { key = '<M-;><M-l>', does = 'V"+y:lua <C-r>+<cr>', modes = 'n', desc = "Eval line as Lua" }
+MapKey { key = '<M-;><M-L>', does = ':luafile%<cr>', modes = 'n', desc = "Lua File -> LuaJIT" }
+MapKey { key = '<M-;><M-l>', does = '"+y:lua <C-r>+<cr>', modes = 'v', desc = "Lua Expression -> LuaJIT" }
+MapKey { key = '<M-;><M-l>', does = 'V"+y:lua <C-r>+<cr>', modes = 'n', desc = "Lua Expression -> LuaJIT" }
 
 -- Ex
-MapKey { key = '<M-;><M-;>', does = '"my<esc>:<C-r>m<cr>', modes = 'v', desc = "Eval as :ex command" }
-MapKey { key = '<M-;><M-;>', does = 'V"my<esc>:<C-r>m<cr>', modes = 'n', desc = "Eval line as :ex command" }
+MapKey { key = '<M-;><M-;>', does = '"my<esc>:<C-r>m<cr>', modes = 'v', desc = "Command -> :" }
+MapKey { key = '<M-;><M-;>', does = 'V"my<esc>:<C-r>m<cr>', modes = 'n', desc = "Command -> :" }
 
 -- Fish
-MapKey { key = '<M-;><M-s>', does = '!fish <cr>', modes = 'v', desc = "Eval as Fish expression and substitute (ml)" }
-MapKey { key = '<M-;><M-s>', does = 'V!fish <cr>', modes = 'n', desc = "Eval as Fish expression and substitute" }
+MapKey { key = '<M-;><M-f>', does = '!fish <cr>', modes = 'v', desc = "Fish Expression -> Fish" }
+MapKey { key = '<M-;><M-f>', does = 'V!fish <cr>', modes = 'n', desc = "Fish Expression -> Fish" }
+
+-- Bash/Sh
+MapKey { key = '<M-;><M-s>', does = '!bash <cr>', modes = 'v', desc = "Bash Expr -> Bash" }
+MapKey { key = '<M-;><M-s>', does = 'V!bash <cr>', modes = 'n', desc = "Bash Expr -> Bash" }
 
 -- Python
-MapKey { key = '<M-;><M-Y>', does = '!python - <cr>', modes = 'v', desc = "Eval as Python (ml)" }
-MapKey { key = '<M-;><M-p>', does = 'V!python - <cr>', modes = 'n', desc = "Eval line as Python" }
-MapKey { key = '<M-;><M-y>', does = "y:'<,'>!qpe \'<C-r>+\'<cr>", modes = 'v', desc = "Eval as Python via QPE" }
-MapKey { key = '<M-;><M-q>', does = 'yyV:!qpe \'<C-r>+\'<cr>', modes = 'n', desc = "Eval line as Python via QPE" }
+MapKey { key = '<M-;><M-p>', does = '!python - <cr>', modes = 'v', desc = "Python Code -> Interpreter" }
+MapKey { key = '<M-;><M-p>', does = 'V!python - <cr>', modes = 'n', desc = "Python Code -> Interpreter" }
+MapKey { key = '<M-;><M-q>', does = "ymmpV:'<,'>!qpe \'<C-r>+\'<cr>`m", modes = 'v', desc = "Python Expression -> QPE" }
+MapKey { key = '<M-;><M-q>', does = 'mmyypV:!qpe \'<C-r>+\'<cr>`m', modes = 'n', desc = "Python Expression -> QPE" }
+MapKey { key = '<M-;><M-P>', does = ":!python % <cr>", modes = 'n', desc = "Python File -> Interpreter" }
 
+-- C++
+MapKey { key = '<M-;><M-c>', does = '!xargs -0 --replace={} root -l -q -e \'{}\' 2>/dev/null | /usr/bin/cat<cr>', modes = 'v', desc = "C++ -> Root" }
+MapKey { key = '<M-;><M-c>', does = 'V!xargs -0 --replace={} root -l -q -e \'{}\' 2>/dev/null | /usr/bin/cat<cr>', modes = 'n', desc = "C++ -> Root" }
+
+-- Haskell
+MapKey { key = '<M-;><M-g>', does = '!ghci -v0<cr>', modes = 'v', desc = "Haskell -> GHCi" }
+MapKey { key = '<M-;><M-g>', does = 'V!ghci -v0<cr>', modes = 'n', desc = "Haskell -> GHCi" }
+
+-- Rust
+MapKey { key = '<M-;><M-r>', does = '!irust<cr>', modes = 'v', desc = "Rust -> iRust" }
+MapKey { key = '<M-;><M-r>', does = 'V!irust<cr>', modes = 'n', desc = "Rust -> iRust" }
 
 -- Base64 ---------------------------------------------------------------------
 MapKey { key = '<M-;><M-b>', does = '!base64 <cr>', modes = 'v', desc = "Encode to base64 (ml)" }
