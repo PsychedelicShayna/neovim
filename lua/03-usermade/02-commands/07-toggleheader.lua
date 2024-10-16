@@ -1,82 +1,34 @@
 vim.api.nvim_create_user_command("SwitchHeaderSource", function()
-  local current_file = vim.api.nvim_buf_get_name(0)
+  local file_ext         = vim.fn.expand("%:e")
+  local file_name_nx     = vim.fn.expand("%:t:r")
 
-  local file_name = vim.fn.expand("%:t")
-  local file_extension = vim.fn.expand("%:e")
-
-  local file_name_without_extension = vim.fn.expand("%:t:r")
-
-  local header_extensions = { "h", "hpp", "hh", "hxx" }
-  local source_extensions = { "c", "cpp", "cc", "cxx" }
-
-  local conversion = {
-    h   = "c",
-    hh  = "cc",
-    hpp = "cpp",
-    hxx = "cxx",
-
-    c   = "h",
-    cc  = "hh",
-    cpp = "hpp",
-    cxx = "hxx",
+  local valid_extensions = {
+    "h", "hpp", "hh", "hxx",
+    "c", "cpp", "cc", "cxx"
   }
 
-  local new_extension = conversion[file_extension]
+  ---@type string?
+  local opposite_ext     = nil
 
-  if new_extension == nil then
-    vim.notify("Cannot find the opposite extension for: " .. file_extension)
-    return
-  end
-
-  local new_file_name = file_name_without_extension .. "." .. new_extension
-  local new_file_path = vim.fn.expand("%:p:h") .. "/" .. new_file_name
-  local new_file_exists = vim.fn.filereadable(new_file_path) == 1
-
-
-  for _, buffer in pairs(vim.api.nvim_list_bufs()) do
-    local buffer_name = vim.api.nvim_buf_get_name(buffer)
-
-    if buffer_name == new_file_name then
-      is_open = true
+  for idx, ext in ipairs(valid_extensions) do
+    if ext == file_ext then
+      opposite_ext = idx < 5 and valid_extensions[idx + 4] or valid_extensions[idx - 4]
       break
     end
   end
 
-
-  -- if new_file_exists then
-  --
-  -- else
-  --   vim.notify("Cannot find file: " .. new_file_name)
-  -- end
-  --
-end, {})
-
-
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-  pattern = { "*.cpp", "*.hpp", "*.c", "*.h", "*.cc", "*.hh", "*.cxx", "*.hxx" },
-  callback = function(opts)
-    local buffer = opts.buf
-    local file_name = opts.file
-
-    local full_path = vim.api.nvim_buf_get_name(buffer)
-
-    vim.api.nvim_buf_set_keymap(buffer, "n",
-      "<leader>ls", "<cmd>SwitchHeaderSource<cr>",
-      { noremap = true, silent = true }
-    )
-
-    Events.await_event {
-      actor = "which-key",
-      event = "configured",
-      retroactive = true,
-      callback = function()
-        Safe.import_then('which-key', function(which_key)
-          which_key.register(
-            { "Switch Header/Source" },
-            { prefix = "<leader>ls", mode = "n", buffer = buffer }
-          )
-        end)
-      end
-    }
+  if opposite_ext == nil then
+    print("Canot deterine the opposite extension for '" .. file_ext .. '"')
+    return
   end
-})
+
+  local opposite_file = string.format("%s.%s", file_name_nx, opposite_ext)
+  local opposite_path = string.format("%s/%s", vim.fn.expand("%:p:h"), opposite_file)
+
+  if vim.fn.filereadable(opposite_path) == 0 then
+    print("Cannot find the opposite file: " .. opposite_path)
+    return
+  end
+
+  vim.cmd("edit " .. opposite_path)
+end, {})
