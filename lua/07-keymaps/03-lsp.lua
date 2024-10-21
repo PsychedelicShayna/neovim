@@ -27,4 +27,6 @@ MapKey { key = "<leader>lD", does = "<cmd>lua vim.lsp.buf.declaration()<cr>", mo
 MapKey { key = "<leader>ld", does = "<cmd>Telescope lsp_definitions<cr>", modes = "n", desc = "Definitions" }
 
 -- Switch between header and source files for C/C++
-MapKey { key = "<leader>lH", does = ":SwitchHeaderSource<cr>", modes = "n" }
+MapKey { key = "<leader>lH", does = ":SwitchHeaderSource<cr>", modes = "n", desc = "Switch C/C++ Header"}
+
+MapKey { key = "<space>ll", does = "<cmd>lua vim.diagnostic.setloclist()<cr>", modes = "n", desc = "Location List" }

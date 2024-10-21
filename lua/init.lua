@@ -169,7 +169,8 @@ function ImportModuleTree()
     local ok, module = pcall(require, string.format("%s.%s", import_path, name))
 
     if not ok then
-      vim.notify("Failed to import module: " .. name)
+      local message = string.format("Failed to import module: %s - %s", name, vim.inspect(module))
+      vim.notify(message)
     else
       return_values[name] = module
     end
@@ -201,10 +202,11 @@ else
     local name = module_info.name
 
     if type(name) == "string" then
-      local module_ok, _ = pcall(require, name)
+      local module_ok, module = pcall(require, name)
 
       if not module_ok then
-        vim.notify(string.format("Failed to load module %i: %s", number, name), vim.log.levels.ERROR)
+        vim.notify(string.format("Failed to load module %i: %s - %s", number, name, vim.inspect(module)),
+          vim.log.levels.ERROR)
       end
     end
   end
