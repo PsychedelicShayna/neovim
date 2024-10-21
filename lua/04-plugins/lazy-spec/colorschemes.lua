@@ -66,14 +66,14 @@ local colorschemes = {
             vim.g.gruvbox_material_better_performance = 1
             --
             -- -- Enable italics keywords.
-            -- vim.g.gruvbox_material_enable_italic = 2
+            vim.g.gruvbox_material_enable_italic = 2
             --
             -- -- Enable italic comments.
-            vim.g.gruvbox_material_disable_italic_comment = 1
+            -- vim.g.gruvbox_material_disable_italic_comment = 0
             --
             -- Transparency: 0 = None, 1 = Some, 2 = More
 
-            vim.g.gruvbox_material_transparent_background = 0
+            -- vim.g.gruvbox_material_transparent_background = 0
 
 
 
@@ -87,7 +87,7 @@ local colorschemes = {
             -- vim.g.gruvbox_material_foreground = 'medium'
             --
             -- -- Can be low or high. Affects line numbers, indent lines, etc.
-            vim.g.gruvbox_material_ui_contrast = 'high'
+            -- vim.g.gruvbox_material_ui_contrast = 'high'
             --
             -- -- How to make floating windows stand out; can be 'bright' or 'dim'
             -- vim.g.gruvbox_material_float_style = 'dim'
