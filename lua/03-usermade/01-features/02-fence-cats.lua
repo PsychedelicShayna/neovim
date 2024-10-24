@@ -153,6 +153,9 @@ end
 vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
   callback = function()
+    local cmd_height = vim.o.cmdheight
+    vim.o.cmdheight = 0
+
     local main_win = vim.api.nvim_get_current_win()
     local main_buf = vim.api.nvim_win_get_buf(main_win)
 
@@ -218,6 +221,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
           if vim.api.nvim_win_is_valid(cat_win) then
             vim.api.nvim_win_close(cat_win, true)
+            vim.o.cmdheight = cmd_height
           end
         end
       })
