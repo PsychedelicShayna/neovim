@@ -1,8 +1,6 @@
 return {
   "folke/which-key.nvim",
-  -- event = "UIEnter",
-  -- key = "*",
-  keys = { "<leader>", "z", "=", '"', '`', 'g', ']', '[', 'v' },
+  event = "UIEnter",
 
   init = function()
     vim.o.timeout = true
