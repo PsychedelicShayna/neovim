@@ -155,6 +155,28 @@ return {
     lazy = true,
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
+      local ls = require("luasnip")
+
+      ls.config.set_config {
+        history = false,
+        updateevents = "TextChanged,TextChangedI"
+      }
+
+      local here = ModuleResolver.whereami()
+      local parent = ModuleResolver.ascend(here, 2)
+      local custom = vim.fs.joinpath(parent, "03-postplug/custom-snippets/")
+
+      for ename, etype in vim.fs.dir(custom) do
+        local lua_file = vim.fs.joinpath(custom, ename)
+        Safe.try(function()
+          loadfile(lua_file)()
+        end, function(v1, v2)
+          PrintDbg("Failed to load custom snippets file: " .. lua_file, LL_ERROR, { v1, v2 })
+        end)
+      end
+
+
+
 
       Events.fire_event {
         actor = "luasnip",
