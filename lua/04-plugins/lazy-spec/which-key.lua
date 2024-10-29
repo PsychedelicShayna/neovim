@@ -18,7 +18,7 @@ return {
     end
 
     wk.setup {
-      preset = 'helix',
+      preset = 'modern',
       win = {
         title = true,
         title_pos = "center",
