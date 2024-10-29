@@ -9,6 +9,7 @@ Safe.import_then("luasnip", function(ls)
     s("So", fmt("Some<{}>", { i(0) })),
     s("Ok", fmt("Ok<{}>", { i(0) })),
     s("pm", fmt("pub mod {};", { i(0) })),
-    s("pdb", fmt("eprintln!(\"{{:?}}\", {});", { i(0) }))
+    s("pdb", fmt("eprintln!(\"{{:?}}\", {});", { i(0) })),
+    s("ctkc", fmt("KeyCode::Char('{}')", { i(0) })),
   })
 end)
