@@ -47,7 +47,24 @@ vim.o.updatetime     = 300
 vim.o.wrap           = false
 vim.o.writebackup    = false
 vim.o.laststatus     = 3
-vim.o.winbar         = '%y %t %m > %L > %l:%c > %b @ 0x%O (%o) > %F'
+
+function global_cwd()
+  return vim.fn.getcwd(-1, -1)
+end
+
+function win_local_cwd()
+  return vim.fn.getcwd(vim.api.nvim_win_get_number(0))
+end
+
+vim.o.statusline  = "%{%v:lua.win_local_cwd()%}"
+
+local function win_local_cwd()
+  return vim.fn.getcwd(vim.api.nvim_win_get_number(0))
+end
+
+
+
+vim.o.winbar         = '%y %t %m > %L > %l:%c > %b  @ 0x%O (%o) > %F'
 vim.o.shortmess      = "ltToOFIrC"
 
 -- Set the leader key to space.
