@@ -162,6 +162,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
     if (#(vim.bo[main_buf].filetype) > 0 or
           #(vim.bo[main_buf].syntax) > 0 or
           vim.bo[main_buf].modified) then
+          vim.o.cmdheight = cmd_height
       return
     end
 
