@@ -1,31 +1,31 @@
 local icons = { --| Alternative Icons -------------------------------------|-------------------
-  Class              = "󱃸 ", --|
+  Class              = " ", --| 󱃸
   CmpItemKindCopilot = "󰟶 ", --|
   Color              = " ", --|
   Constant           = " ", --|   󰏿 󰐀 󰐀
   Constructor        = "󱊎 ", --| 
   Copilot            = "󰟶 ", --| 
-  Enum               = "󱄑 ", --| 
+  Enum               = " ", --|  󱄑
   EnumMember         = "󰥣 ", --| 
   Event              = " ", --| 
   Field              = "󱂡 ", --| 󰝨 󰥣 󱂡 󱂡 󰮐
   File               = " ", --|  
   Folder             = " ", --| 󰢰 󱉲
-  Function           = "󰘧 ", --| 󰊕 󰡱
+  Function           = "󰊕",  --| 󰊕 󰡱 󰘧
   Interface          = " ", --| 󱄑
-  Keyword            = "󱘖 ", --| 󰮐
-  Method             = "󰡱 ", --| .󰊕
+  Keyword            = "󰮐", --| 󰮐 󱘖
+  Method             = "󰡱 ", --|  󰡱
   Module             = " ", --|   󰏗  
   Operator           = " ", --| 󰆙
   Property           = " ", --| 󱃘
   Reference          = "󱃘 ", --|
-  Snippet            = " ", --|  󰢰
+  Snippet            = " ", --|  󰢰 
   Struct             = " ", --|  
-  Text               = "󰊄 ", --| 
+  Text               = "", --|  󰊄
   TypeParameter      = " ", --| 
   Unit               = "󰆙 ", --| 󰆙 󱂡
   Value              = "󱛠 ", --| 󰅪 󰝨 󰹻
-  Variable           = "󰀫 ", --|
+  Variable           = "󰀫", --|
 }
 
 local function cmp_buffer_size_check()
@@ -59,10 +59,10 @@ local function mappings(cmp)
     end,
 
     ["<A-l>"] = function(fallback)
-      if ls.expandable() then
-        return cmp.mapping(ls.expand())
-      elseif cmp.visible() then
+      if cmp.visible() then
         return cmp.mapping(cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert }))
+      elseif ls.expandable() then
+        return cmp.mapping(ls.expand())
       else
         fallback()
       end
@@ -74,20 +74,20 @@ local function mappings(cmp)
     end,
 
     ["<A-k>"] = function(fallback)
-      if ls.locally_jumpable(-1) then
-        return cmp.mapping(ls.jump(-1), { 'i', 's' })
-      elseif cmp.visible() then
+      if cmp.visible() then
         return cmp.mapping(cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select }))
+      elseif ls.locally_jumpable(-1) then
+        return cmp.mapping(ls.jump(-1), { 'i', 's' })
       else
         return fallback()
       end
     end,
 
     ["<A-j>"] = function(fallback)
-      if ls.locally_jumpable(1) then
-        return cmp.mapping(ls.jump(1), { 'i', 's' })
-      elseif cmp.visible() then
+      if cmp.visible() then
         return cmp.mapping(cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }))
+      elseif ls.locally_jumpable(1) then
+        return cmp.mapping(ls.jump(1), { 'i', 's' })
       else
         return fallback()
       end
@@ -231,9 +231,30 @@ return {
 
           performance = {
             -- fetching_timeout = 200,
-            max_view_entries = 15,
+            max_view_entries = 50,
             async_budget = 100,
             -- throttle = 125,
+          },
+
+          formatting = {
+            fields = { "kind", "abbr", "menu" },
+            format = function(entry, vim_item)
+              -- local icon = icons[vim_item.kind] or vim_item.kind
+              -- vim_item.kind = string.format("%s", icon)
+
+              vim_item.menu = ({
+                path = "[Path]",
+                copilot = "[AI]",
+                nvim_lua = "[NVL]",
+                nvim_lsp = "[LSP]",
+                null_ls = "[NLS]",
+                spell = "[Spell]",
+                buffer = "[Buffer]",
+                cmdline = "[Cmd]"
+              })[entry.source.name]
+
+              return vim_item
+            end,
           },
 
           sources = {
