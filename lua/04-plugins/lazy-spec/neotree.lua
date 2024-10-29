@@ -2,6 +2,12 @@ local function config()
   require("neo-tree").setup {
     use_default_mappings = false,
 
+    sources = {
+      "filesystem",
+      "document_symbols",
+      "buffers"
+    },
+
     default_component_configs = {
       git_status = {
         symbols = {
@@ -36,56 +42,92 @@ local function config()
       }
     },
 
+    buffers = {
+      bind_to_cwd = true,
+      follow_current_file = {
+        enabled = true,          -- This will find and focus the file in the active buffer every time
+        -- the current file is changed while the tree is open.
+        leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+      },
+
+      group_empty_dirs = true,   -- when true, empty directories will be grouped together
+
+      -- When working with sessions, for example, restored but unfocused buffers
+      -- are mark as "unloaded". Turn this on to view these unloaded buffer.
+      show_unloaded = true,
+
+      terminals_first = true, -- when true, terminals will be listed before file buffers
+
+      window = {
+        mappings = {
+          ["h"] = "navigate_up",
+          ["<A-h>"] = "set_root",
+          ["d"] = "buffer_delete",
+          ["i"] = "show_file_details",
+          ["?"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
+          ["sc"] = { "order_by_created", nowait = false },
+          ["sd"] = { "order_by_diagnostics", nowait = false },
+          ["sm"] = { "order_by_modified", nowait = false },
+          ["sn"] = { "order_by_name", nowait = false },
+          ["ss"] = { "order_by_size", nowait = false },
+          ["st"] = { "order_by_type", nowait = false },
+        },
+      },
+    },
+
     filesystem = {
-      hijack_netrw_behavior = "open_default",
+      hijack_netrw_behavior = "disabled",
+      use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
       follow_current_file = { enabled = true },
       window = {
         mappings = {
-          -- Navigation
-          ["l"] = "open",
-          ["K"] = "navigate_up",
-          ["t"] = "set_root",
-
-          -- Filtering
-          ["F"] = "clear_filter",
-          ["f"] = "filter_on_submit",
-          ["."] = "toggle_hidden",
-
-          -- UI
-          ["R"] = "refresh",
-          ["?"] = "show_help",
-          ["p"] = { "toggle_preview", config = { use_float = true } },
-
-          -- File Actions
+          -- Opening files different ways.
+          ["l"] = "open_with_window_picker",
+          ["e"] = "open",
           ["v"] = "vsplit_with_window_picker",
-          ["h"] = "split_with_window_picker",
-          ["W"] = "open_with_window_picker",
+          ["s"] = "split_with_window_picker",
 
+          --  IO Operations / cp, rm, mv, mkdir, touch
           ["a"] = { "add", config = { show_path = "relative" } },
           ["d"] = "delete",
           ["r"] = "rename",
-
-          -- Clipboard actions.
           ["c"] = "copy_to_clipboard",
           ["C"] = "copy",
           ["x"] = "cut_to_clipboard",
           ["X"] = "move",
-          ["P"] = "paste_from_clipboard",
+          ["p"] = "paste_from_clipboard",
+
+          -- UI / Navigation / Other Stuff
+          ["h"] = "navigate_up",
+          ["<A-h>"] = "set_root",
+          ["f"] = "filter_on_submit",
+          ["F"] = "clear_filter",
+          ["."] = "toggle_hidden",
+          ["R"] = "refresh",
+          ["?"] = "show_help",
+          ["P"] = { "toggle_preview", config = { use_float = true } },
         },
       }
     },
+
+    async_directory_scan = "always",
+
+    filtered_items = {
+      hide_dotfilees = false,
+      hide_hidden = false,
+    }
   }
 end
 
 local function which_key_mappings()
   require("which-key").add {
-    { "<leader>E", group = "[NeoTree]" },
-    { "<leader>Ef", "<cmd>Neotree focus<cr>", desc = "Focus" },
-    { "<leader>Ej", "<cmd>Neotree left<cr>", desc = "Left Mode" },
-    { "<leader>Ek", "<cmd>Neotree float<cr>", desc = "Center Mode" },
-    { "<leader>El", "<cmd>Neotree right<cr>", desc = "Right Mode" },
-    { "<leader>Et", "<cmd>Neotree top<cr>", desc = "Top Mode" },
-    { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle Neotree" },
+    { "<leader>E",  group = "[NeoTree]" },
+    { "<leader>Ef", "<cmd>Neotree focus<cr>",  desc = "Focus" },
+    { "<leader>Ej", "<cmd>Neotree left<cr>",   desc = "Left Mode" },
+    { "<leader>Ek", "<cmd>Neotree float<cr>",  desc = "Center Mode" },
+    { "<leader>El", "<cmd>Neotree right<cr>",  desc = "Right Mode" },
+    { "<leader>Et", "<cmd>Neotree top<cr>",    desc = "Top Mode" },
+    { "<leader>e",  "<cmd>Neotree toggle<cr>", desc = "Toggle Neotree" },
     --
     --
     -- ["e"] = {

@@ -3,9 +3,7 @@ return {
   'stevearc/oil.nvim',
   -- Disabled.
   lazy = true,
-  key = "<Leader>o",
-  ---@module 'oil'
-  ---@type oil.SetupOpts
+  events = { "UIEnter" },
   opts = {},
   -- Optional dependencies
   -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
@@ -67,9 +65,9 @@ return {
       -- Constrain the cursor to the editable parts of the oil buffer
       --
       -- Set to `false` to disable, or "name" to keep it on the file names
-      constrain_cursor = "editable",
+      constrain_cursor = "name",
       -- Set to true to watch the filesystem for changes and reload oil
-      watch_for_changes = false,
+      watch_for_changes = true,
       -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
       -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
       -- Additionally, if it is a string that matches "actions.<name>",
@@ -81,18 +79,17 @@ return {
         ["L"] = { "actions.select", desc = "Enter Directory" },
         ["H"] = { "actions.parent", desc = "Leave Directory" },
         ["p"] = { "open_preview", desc = "Toggle Preview" },
-        ["<A-H>"] = { "actions.cd", desc = "Set as CWD" },
-        ["<A-h>"] = { "actions.open_cwd", desc = "Jump to CWD" },
+        ["<A-h>"] = { "actions.cd", desc = "Set as CWD" },
+        ["%"] = { "actions.open_cwd", desc = "Jump to CWD" },
         ["<A-c>"] = { "actions.close", desc = "Close Buffer" },
-        ["<A-r>"] = { "actions.refresh", desc = "Refresh Directory" },
-        ["<A-o>"] = { "actions.open_external", desc = "Open Externally" },
+        ["R"] = { "actions.refresh", desc = "Refresh Directory" },
+        ["<A-o-e>"] = { "actions.open_external", desc = "Open Externally" },
         ["<A-.>"] = { "toggle_hidden", desc = "Toggle Hidden Files" },
         ["<A-s>"] = { "actions.change_sort", desc = "Sort Entries" },
-        ["<C-h>"] = { "actions.select", opts = { horizontal = true }, desc = "Open (Horizontal Split)" },
-        ["<C-v>"] = { "actions.select", opts = { vertical = true }, desc = "Open (Vertical Split)" },
-        ["<C-l>"] = { "actions.select", opts = { tab = true }, desc = "Open (New Tab)" },
-        ["<A-t>"] = { "actions.cd", opts = { scope = "tab" }, desc = ":tcd to the current oil directory" },
-        ["<A-T>"] = { "actions.toggle_trash", desc = "Toggle Trash View" },
+        ["<A-o-s>"] = { "actions.select", opts = { horizontal = true }, desc = "Open (Horizontal Split)" },
+        ["<A-o-v>"] = { "actions.select", opts = { vertical = true }, desc = "Open (Vertical Split)" },
+        ["<A-o-t>"] = { "actions.select", opts = { tab = true }, desc = "Open (New Tab)" },
+        ["<C-X>"] = { "actions.toggle_trash", desc = "Toggle Trash View" },
       },
       -- Set to false to disable all of the above keymaps
       -- use_default_keymaps = false,
