@@ -54,10 +54,10 @@ MapKey { key = '<A-L>', does = ':tabnext<cr>', modes = 'n', desc = "Switch to ne
 -- Indent selected lines left or right without dropping into normal mode.
 MapKey { key = '<', does = '<gv', modes = 'v', desc = "Unindent lines one level" }
 MapKey { key = '>', does = '>gv', modes = 'v', desc = "Indent lines one level" }
-
--- Move selected lines up or down while staying in visual mode.
-MapKey { key = 'K', does = ":move '<-2<cr>gv-gv", modes = 'v', desc = "Move lines up" }
-MapKey { key = 'J', does = ":move '>+1<cr>gv-gv", modes = 'v', desc = "Move lines down" }
+--
+-- -- Move selected lines up or down while staying in visual mode.
+-- MapKey { key = 'K', does = ":move '<-2<cr>gv-gv", modes = 'v', desc = "Move lines up" }
+-- MapKey { key = 'J', does = ":move '>+1<cr>gv-gv", modes = 'v', desc = "Move lines down" }
 
 
 -------------------------------------------------------------------------------
@@ -74,11 +74,11 @@ MapKey { key = '<A-r>', does = ':e!', modes = 'n', desc = "Reload file" }
 -- Hitting Alt-v in normal mode is the same as gv, making everything
 -- quick and nearby.
 MapKey { key = '<A-v>', does = 'gv', modes = 'n' }
-MapKey { key = '<A-v>', does = '<esc>gvvvgv', modes = 'v' }
-MapKey { key = '<A-b>', does = '<esc>`<<C-v>`>', modes = 'v' }
-MapKey { key = '<A-B>', does = '<C-v>', modes = 'v' }
-MapKey { key = '<A-l>', does = '<esc>`<V`>', modes = 'v' }
-MapKey { key = '<A-L>', does = 'V', modes = 'v' }
+-- MapKey { key = '<A-v>', does = '<esc>gvvvgv', modes = 'v' }
+-- MapKey { key = '<A-b>', does = '<esc>`<<C-v>`>', modes = 'v' }
+-- MapKey { key = '<A-B>', does = '<C-v>', modes = 'v' }
+-- MapKey { key = '<A-l>', does = '<esc>`<V`>', modes = 'v' }
+-- MapKey { key = '<A-L>', does = 'V', modes = 'v' }
 
 -------------------------------------------------------------------------------
 -- Insert Mode Convenience
