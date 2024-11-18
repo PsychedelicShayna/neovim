@@ -77,7 +77,7 @@ function ConstructStatusLine()
     diagnostics = diagnostics .. 'W' .. cd.warnings .. ' '
   end
 
-  status_line = '[ ' .. diagnostics .. '] << [' .. vim.fn.getcwd(-1, -1) .. '] <<GL>> [' .. vim.fn.getcwd(0) .. '] '
+  status_line = '[ ' .. diagnostics .. ']'
 
   return status_line
 end
