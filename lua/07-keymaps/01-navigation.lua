@@ -68,6 +68,22 @@ MapKey { key = '<A-W>', does = ':w!<cr>', modes = 'n', desc = "!Write File (:w!)
 MapKey { key = '<A-u>', does = '<C-r>', modes = 'n', desc = "Undo (<C-r>)" }
 MapKey { key = '<A-r>', does = ':e!', modes = 'n', desc = "Reload file" }
 
+-- MapKey { key = 'yu', does = '{', modes = 'n', desc = "Yank Paragraph (Return to Start)" }
+-- MapKey { key = 'yd', does = '}<C-o>', modes = 'n', desc = "Yank Paragraph (Return to Start)" }
+
+
+-- wk = require('which-key')
+-- wk.add {
+--   {  "yu", "y{", desc = "Yank { and Return" }
+--   -- { "<leader>lID", "<cmd>lua require('rust-tools').inlay_hints.dis
+--   -- { "<leader>lIe", "<cmd>lua require('rust-tools').inlay_hints.set
+--   -- { "<leader>lId", "<cmd>lua require('rust-tools').inlay_hints.uns
+--   -- { "<leader>lm",  "<cmd>lua require('rust-tools').expand_macro.ex
+--   -- { "<leader>lC",  "<cmd>lua require('rust-tools').open_cargo_toml
+--   -- { "<leader>lp",  "<cmd>lua require('rust-tools').parent_module.p
+-- }
+
+
 -- Allow Alt-vbl to cycle through visual, visual-line and visual-block
 -- without leaving visual mode when hitting it twice. Also, allow for
 -- the traditional convert to block/visual behavior by holidng shift.
