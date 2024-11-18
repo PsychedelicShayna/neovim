@@ -11,7 +11,7 @@ local icons = { --| Alternative Icons -------------------------------------|----
   Field              = "󱂡 ", --| 󰝨 󰥣 󱂡 󱂡 󰮐
   File               = " ", --|  
   Folder             = " ", --| 󰢰 󱉲
-  Function           = "󰊕",  --| 󰊕 󰡱 󰘧
+  Function           = "󰊕", --| 󰊕 󰡱 󰘧
   Interface          = " ", --| 󱄑
   Keyword            = "󰮐", --| 󰮐 󱘖
   Method             = "󰡱 ", --|  󰡱
@@ -116,43 +116,38 @@ return {
   {
     "hrsh7th/cmp-nvim-lua",
     lazy = true,
-    ft = 'lua'
+    event = 'TextChangedI'
   },
 
   {
     "hrsh7th/cmp-cmdline",
-    lazy = true,
-    event = "CmdlineEnter"
+    event = { "TextChangedI", "CmdlineEnter" }
   },
 
   {
     "hrsh7th/cmp-path",
-    lazy = true,
-    event = "CmdlineEnter"
+    event = { "TextChangedI", "CmdlineEnter" }
   },
 
   {
     "hrsh7th/cmp-nvim-lsp",
-    lazy = true,
-    event = { "Syntax" }
+    event = "TextChangedI"
   },
 
   {
     "hrsh7th/cmp-buffer",
-    lazy = true,
-    event = "BufEnter"
+    event = { "TextChangedI", "CmdlineEnter" }
   },
 
   {
     "saadparwaiz1/cmp_luasnip",
-    lazy = true,
-    event = "Syntax",
+    event = "TextChangedI",
   },
 
   {
     "L3MON4D3/LuaSnip",
     dependencies = { "rafamadriz/friendly-snippets", },
-    lazy = true,
+    event = "TextChangedI",
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
       local ls = require("luasnip")
@@ -162,21 +157,21 @@ return {
         updateevents = "TextChanged,TextChangedI"
       }
 
-      local here = ModuleResolver.whereami()
-      local parent = ModuleResolver.ascend(here, 2)
-      local custom = vim.fs.joinpath(parent, "03-postplug/custom-snippets/")
+      -- Defer the loading of custom snippets
+      vim.defer_fn(function()
+        local here = ModuleResolver.whereami()
+        local parent = ModuleResolver.ascend(here, 2)
+        local custom = vim.fs.joinpath(parent, "03-postplug/custom-snippets/")
 
-      for ename, etype in vim.fs.dir(custom) do
-        local lua_file = vim.fs.joinpath(custom, ename)
-        Safe.try(function()
-          loadfile(lua_file)()
-        end, function(v1, v2)
-          PrintDbg("Failed to load custom snippets file: " .. lua_file, LL_ERROR, { v1, v2 })
-        end)
-      end
-
-
-
+        for ename, _ in vim.fs.dir(custom) do
+          local lua_file = vim.fs.joinpath(custom, ename)
+          Safe.try(function()
+            loadfile(lua_file)()
+          end, function(v1, v2)
+            PrintDbg("Failed to load custom snippets file: " .. lua_file, LL_ERROR, { v1, v2 })
+          end)
+        end
+      end, 1000)
 
       Events.fire_event {
         actor = "luasnip",
@@ -204,7 +199,7 @@ return {
     -- "hrsh7th/nvim-cmp",
     "PsychedelicShayna/faster-nvim-cmp", -- Fork with faster performance.
     branch = "perf",
-    event = "BufEnter",
+    event = "TextChangedI",
     build = "make install_jsregexp",
     dependencies = { "L3MON4D3/LuaSnip" },
 
