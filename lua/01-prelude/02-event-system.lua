@@ -99,8 +99,6 @@ function Events.await_event(opts)
 
   -- If true, don't schedule the event, just bypass and invoke the callback
   -- immediatlely when this funciton is called.
-  --
-  --
 
   local dont_wait = (
     opts['must_exist'] and (
@@ -121,7 +119,8 @@ function Events.await_event(opts)
   )
 
   if dont_wait then
-    return opts['callback']()
+    local data = Events.database[id]['data']
+    return opts['callback'](data)
   end
 
   if not event_exists then
