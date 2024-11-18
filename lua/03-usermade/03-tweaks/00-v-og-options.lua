@@ -62,8 +62,6 @@ local function win_local_cwd()
   return vim.fn.getcwd(vim.api.nvim_win_get_number(0))
 end
 
-
-
 vim.o.winbar         = '%y %t %m > %L > %l:%c > %b  @ 0x%O (%o) > %F'
 vim.o.shortmess      = "ltToOFIrC"
 
