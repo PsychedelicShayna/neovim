@@ -1,9 +1,8 @@
-
 return {
   'stevearc/oil.nvim',
   -- Disabled.
-  lazy = true,
-  events = { "UIEnter" },
+  lazy = false,
+  events = "VimEnter",
   opts = {},
   -- Optional dependencies
   -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
