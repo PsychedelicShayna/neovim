@@ -1,6 +1,35 @@
 return function(rust_analyzer, caps, on_attach)
   local root_pattern = require("lspconfig.util").root_pattern
 
+
+  local use_rustaceanvim = true
+
+  if use_rustaceanvim then
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "rust",
+      callback = function()
+        local bufnr = vim.api.nvim_get_current_buf()
+
+        vim.g.rustaceanvim = {
+          tools = {
+            Opts = {
+              float_win_config = {
+                border = 'single',
+                auto_focus = true
+              }
+            }
+          }
+        }
+
+        MapKey { key = "<Leader>la", does = "<cmd>lua vim.cmd.RustLsp('codeAction')<cr>", modes = 'n', desc = "Code Actions (Rust)", opts = { buffer = bufnr, silent = true } }
+        MapKey { key = "<Leader>lh", does = "<cmd>lua vim.cmd.RustLsp({'hover', 'actions'})<cr>", modes = 'n', desc = "Hover (Rust)", opts = { buffer = bufnr, silent = true } }
+        MapKey { key = "<Leader>df", does = "<cmd>lua vim.cmd.RustLsp({'renderDiagnostic', 'cycle'})<cr>", modes = 'n', desc = "Expand Diagnostic Window (Rust)", opts = { buffer = bufnr, silent = true } }
+      end
+    })
+
+    return true
+  end
+
   local config = {
     on_attach = on_attach,
     capabilities = caps,
@@ -15,15 +44,14 @@ return function(rust_analyzer, caps, on_attach)
   local use_rust_tools = true
 
   if not use_rust_tools then
-      rust_analyzer.setup(config)
-      return true
+    rust_analyzer.setup(config)
+    return true
   end
 
   Safe.import_then("rust-tools", function(rt)
     local original = config.on_attach
 
     config.on_attach = function(client, bufnr)
-
       Events.await_event {
         actor = "which-key",
         event = "configured",
