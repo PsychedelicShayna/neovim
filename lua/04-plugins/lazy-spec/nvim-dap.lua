@@ -72,8 +72,19 @@ return {
   { -- Optional: DAP UI for a better debugging experience
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', "nvim-neotest/nvim-nio" },
-    lazy = true,
+    ft = { 'rust', 'c', 'cpp' },
     config = function()
+      Safe.import_then("dapui", function(dapui)
+        dapui.setup()
+
+        -- Automatically open DAP UI when debugging starts, and close when it ends
+        Safe.import_then("dap", function(dap)
+          dap.listeners.after.event_initialized["dapui_config"] = function()
+            dapui.open()
+          end
+        end)
+      end)
+
       Events.fire_event { actor = "dapui", event = "configured" }
     end
   },
