@@ -33,12 +33,12 @@ local function custom_on_attach(client, bufnr)
 end
 
 -- Attempts to find a lua module with the same name as the language server
--- under 06-lspconf/ and will try to import it, expecting it to return a
+-- under 06-lspsetup/ and will try to import it, expecting it to return a
 -- function. That function will then receive all of the context and take
 -- care of setting up the language server.
 
 local function try_custom_setup(ls_name, ls_entry, capabilities, on_attach)
-  local custom_setup_path = '06-lspconf.' .. ls_name
+  local custom_setup_path = '06-lspsetup.' .. ls_name
   local return_value, setup_fn = pcall(require, custom_setup_path)
   if return_value then return setup_fn(ls_entry, capabilities, on_attach) end
   return return_value
@@ -65,12 +65,6 @@ return {
     end,
   },
 
-  -- {
-  --   "MrcJkb/haskell-tools.nvim",
-  --   version = '^3',
-  --   lazy = true,
-  --   ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
-  -- },
   {
     "hylang/vim-hy",
     ft = { "hy" },
@@ -84,10 +78,16 @@ return {
     end
   },
 
-  { "p00f/clangd_extensions.nvim", lazy = true, ft = 'cpp', config = true },
-  -- { "manicmaniac/coconut.vim",     ft = { ".coco", ".co", ".coconut" } },
-  -- { "j-hui/fidget.nvim",           tag = "legacy",                     config = true, lazy = true },
-  -- { "udalov/kotlin-vim",           config = false,                     lazy = true, ft = 'kotlin' },
+  {
+    "MrcJkb/haskell-tools.nvim",
+    version = '^3',
+    ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+  },
+
+  { "p00f/clangd_extensions.nvim", enabled = true,  config = true,  ft = { 'cpp', 'c' }, },
+  { "manicmaniac/coconut.vim",     enabled = false, config = false, ft = "coconut" },
+  { "udalov/kotlin-vim",           enabled = false, config = false, ft = 'kotlin' },
+  { "j-hui/fidget.nvim",           enabled = false, config = true,  tag = "legacy" },
 
   {
     "folke/lazydev.nvim",
@@ -101,19 +101,19 @@ return {
     },
   },
 
-  { "Bilal2453/luvit-meta",        lazy = true }, -- optional `vim.uv` typings
+  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
 
   -- The meat of the LSP setup..
   -------------------------------------------------------------------------------
   {
     'williamboman/mason.nvim',
-    lazy = true,
+    -- lazy = true,
     config = true
   },
 
   {
     'williamboman/mason-lspconfig.nvim',
-    lazy = true,
+    -- lazy = true,
     dependencies = {
       'williamboman/mason.nvim'
     },
@@ -130,15 +130,24 @@ return {
       'williamboman/mason-lspconfig.nvim',
     },
 
-    event = 'FileType',
-
     config = function()
       local lspconfig = require('lspconfig')
       local mason_lspconfig = require('mason-lspconfig')
 
+      local lsp_configs = require("lspconfig.configs")
+
       -- Extend the default client capabilities.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = cmp_nvim_lsp_extend_caps(capabilities)
+
+      Events.fire_event {
+        actor = "lspconfig",
+        event = "custom",
+        data = {
+          capabilities = capabilities,
+          custom_on_attach = custom_on_attach
+        }
+      }
 
       -- Get the installed language servers.
       local installed_ls_names = mason_lspconfig.get_installed_servers()
@@ -175,6 +184,7 @@ return {
           end
         })
       end
+
 
       -- Regsiter a user command to view the loaded custom LSP config overrides.
       vim.api.nvim_create_user_command("LspListLoadedSetups", function(_)
