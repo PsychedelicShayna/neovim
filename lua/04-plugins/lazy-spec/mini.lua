@@ -19,7 +19,11 @@ return {
 
     -- Extends the behavior of 'f' to include multiple lines, and introduces
     -- a new binding 't' which until a character.
-    require("mini.jump").setup()
+    -- require("mini.jump").setup {
+    --   forward = 'f<Enter>',
+    --   forward_till = 'f<Enter>t',
+    --   repeat_jump = ';' 
+    -- }
     -- forward       f  forward_till    t
     -- backward      F  backward_till   T
     -- repeat_jump   ;
