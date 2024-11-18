@@ -47,10 +47,10 @@ local function config()
       follow_current_file = {
         enabled = true,          -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
-        leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+        leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
       },
 
-      group_empty_dirs = true,   -- when true, empty directories will be grouped together
+      group_empty_dirs = true, -- when true, empty directories will be grouped together
 
       -- When working with sessions, for example, restored but unfocused buffers
       -- are mark as "unloaded". Turn this on to view these unloaded buffer.
@@ -60,17 +60,41 @@ local function config()
 
       window = {
         mappings = {
-          ["h"] = "navigate_up",
-          ["<A-h>"] = "set_root",
-          ["d"] = "buffer_delete",
+          ["."] = "toggle_hidden",
+          ["<2-LeftMouse>"] = "open",
+          ["<esc>"] = "revert_preview",
+          ["?"] = "show_help",
+          ["C"] = "copy",
+          ["F"] = "clear_filter",
+          ["K"] = "navigate_up",
+          ["P"] = { "toggle_preview", config = { use_float = true } },
+          ["R"] = "refresh",
+          ["X"] = "move",
+          ["l"] = "open",
+          ["\\c"] = "close_all_nodes",
+          ["\\e"] = "expand_all_nodes",
+          ["\\s"] = "close_all_subnodes",
+          ["a"] = { "add", config = { show_path = "relative" } },
+          ["c"] = "copy_to_clipboard",
+          ["d"] = "delete",
+          ["w"] = "open_with_window_picker",
+          ["f"] = "filter_on_submit",
           ["i"] = "show_file_details",
-          ["?"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
-          ["sc"] = { "order_by_created", nowait = false },
-          ["sd"] = { "order_by_diagnostics", nowait = false },
-          ["sm"] = { "order_by_modified", nowait = false },
-          ["sn"] = { "order_by_name", nowait = false },
-          ["ss"] = { "order_by_size", nowait = false },
-          ["st"] = { "order_by_type", nowait = false },
+          ["e"] = "open",
+          ["m"] = "move",
+          ["oc"] = "order_by_created",
+          ["od"] = "order_by_diagnostics",
+          ["og"] = "order_by_git_status",
+          ["om"] = "order_by_modified",
+          ["on"] = "order_by_name",
+          ["os"] = "order_by_size",
+          ["ot"] = "order_by_type",
+          ["p"] = "paste_from_clipboard",
+          ["r"] = "rename",
+          ["t"] = "set_root",
+          ["s"] = "split_with_window_picker",
+          ["v"] = "vsplit_with_window_picker",
+          ["x"] = "cut_to_clipboard",
         },
       },
     },
@@ -81,31 +105,41 @@ local function config()
       follow_current_file = { enabled = true },
       window = {
         mappings = {
-          -- Opening files different ways.
-          ["l"] = "open_with_window_picker",
-          ["e"] = "open",
-          ["v"] = "vsplit_with_window_picker",
-          ["s"] = "split_with_window_picker",
-
-          --  IO Operations / cp, rm, mv, mkdir, touch
-          ["a"] = { "add", config = { show_path = "relative" } },
-          ["d"] = "delete",
-          ["r"] = "rename",
-          ["c"] = "copy_to_clipboard",
-          ["C"] = "copy",
-          ["x"] = "cut_to_clipboard",
-          ["X"] = "move",
-          ["p"] = "paste_from_clipboard",
-
-          -- UI / Navigation / Other Stuff
-          ["h"] = "navigate_up",
-          ["<A-h>"] = "set_root",
-          ["f"] = "filter_on_submit",
-          ["F"] = "clear_filter",
           ["."] = "toggle_hidden",
-          ["R"] = "refresh",
+          ["<2-LeftMouse>"] = "open",
+          ["<esc>"] = "revert_preview",
           ["?"] = "show_help",
+          ["C"] = "copy",
+          ["F"] = "clear_filter",
+          ["K"] = "navigate_up",
           ["P"] = { "toggle_preview", config = { use_float = true } },
+          ["R"] = "refresh",
+          ["X"] = "move",
+          ["l"] = "open",
+          ["\\c"] = "close_all_nodes",
+          ["\\e"] = "expand_all_nodes",
+          ["\\s"] = "close_all_subnodes",
+          ["a"] = { "add", config = { show_path = "relative" } },
+          ["c"] = "copy_to_clipboard",
+          ["d"] = "delete",
+          ["w"] = "open_with_window_picker",
+          ["f"] = "filter_on_submit",
+          ["i"] = "show_file_details",
+          ["e"] = "open",
+          ["m"] = "move",
+          ["oc"] = "order_by_created",
+          ["od"] = "order_by_diagnostics",
+          ["og"] = "order_by_git_status",
+          ["om"] = "order_by_modified",
+          ["on"] = "order_by_name",
+          ["os"] = "order_by_size",
+          ["ot"] = "order_by_type",
+          ["p"] = "paste_from_clipboard",
+          ["r"] = "rename",
+          ["t"] = "set_root",
+          ["s"] = "split_with_window_picker",
+          ["v"] = "vsplit_with_window_picker",
+          ["x"] = "cut_to_clipboard",
         },
       }
     },
