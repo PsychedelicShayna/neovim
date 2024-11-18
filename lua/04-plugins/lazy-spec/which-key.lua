@@ -1,6 +1,6 @@
 return {
   "folke/which-key.nvim",
-  event = "UIEnter",
+  event = "VimEnter",
 
   init = function()
     vim.o.timeout = true
@@ -18,7 +18,7 @@ return {
     end
 
     wk.setup {
-      preset = 'modern',
+      preset = 'helix',
       win = {
         title = true,
         title_pos = "center",
