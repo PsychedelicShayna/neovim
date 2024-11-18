@@ -71,6 +71,18 @@ return {
   --   lazy = true,
   --   ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
   -- },
+  {
+    "hylang/vim-hy",
+    ft = { "hy" },
+    init = function()
+      -- Visualize keywords as unicode, e.g.
+      -- sum        ->  ∑
+      -- lambda     ->  λ
+      -- math.sqrt  ->  √
+      -- etc...
+      vim.g.hy_enable_conceal = 1
+    end
+  },
 
   { "p00f/clangd_extensions.nvim", lazy = true, ft = 'cpp', config = true },
   -- { "manicmaniac/coconut.vim",     ft = { ".coco", ".co", ".coconut" } },
