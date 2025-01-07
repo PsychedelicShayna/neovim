@@ -81,9 +81,14 @@ return {
   },
   --
   {
-    "MrcJkb/haskell-tools.nvim",
-    version = '^3',
-    ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+    'mrcjkb/haskell-tools.nvim',
+    version = '^4',
+    -- ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+    lazy = false,
+    -- init = function()
+    --   -- vim.g['haskell-tools'].repl.Backend = "cabal"
+    -- end
+
   },
 
   { "p00f/clangd_extensions.nvim", enabled = true,  config = true,  ft = { 'cpp', 'c' }, },
