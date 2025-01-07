@@ -46,10 +46,12 @@ end
 
 return {
 
+  { "simrat39/rust-tools.nvim", -- No longer maintained.
+    disabled = true
+  },
   -- Optional plugins that enhance the LSP experience, or provide their own.
   -------------------------------------------------------------------------------
   {
-    -- "simrat39/rust-tools.nvim", -- No longer maintained.
 
     "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
     version = '^5',        -- Pin to version 5.x.x. to avoid breaking changes.
@@ -77,7 +79,7 @@ return {
       vim.g.hy_enable_conceal = 1
     end
   },
-
+  --
   {
     "MrcJkb/haskell-tools.nvim",
     version = '^3',
