@@ -10,15 +10,32 @@ local colorschemes = {
   { "Shatur/neovim-ayu",          lazy = true },
   { "andersevenrud/nordic.nvim",  lazy = true },
   { "bluz71/vim-nightfly-colors", lazy = true },
-  { "catppuccin/nvim",            lazy = true },
-  { "doki-theme/doki-theme-vim",  lazy = true },
+  {
+    "catppuccin/nvim",
+    lazy = true,
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false
+        },
+      }
+
+      require("catppuccin").setup {
+        compile_path = vim.fn.stdpath("cache") .. "/catppuccin"
+      }
+
+      vim.cmd('color catppuccin-latte')
+    end
+  },
+  { "doki-theme/doki-theme-vim",        lazy = true },
   {
     "scottmckendry/cyberdream.nvim",
     lazy = false,
     config = function()
       require("cyberdream").setup({
         -- Enable transparent background
-        transparent = true,
+        transparent = false,
 
         -- Enable italics comments
         italic_comments = true,
@@ -37,7 +54,7 @@ local colorschemes = {
 
         theme = {
           variant = "default", -- use "light" for the light variant. Also accepts "auto" to set dark or light colors based on the current value of `vim.o.background`
-          saturation = 1,    -- accepts a value between 0 and 1. 0 will be fully desaturated (greyscale) and 1 will be the full color (default)
+          saturation = 1,      -- accepts a value between 0 and 1. 0 will be fully desaturated (greyscale) and 1 will be the full color (default)
           highlights = {
             -- Highlight groups to override, adding new groups is also possible
             -- See `:h highlight-groups` for a list of highlight groups or run `:hi` to see all groups and their current values
@@ -139,7 +156,7 @@ local colorschemes = {
       --
       -- Transparency: 0 = None, 1 = Some, 2 = More
 
-      -- vim.g.gruvbox_material_transparent_background = 0
+      vim.g.gruvbox_material_transparent_background = 2
 
 
 
