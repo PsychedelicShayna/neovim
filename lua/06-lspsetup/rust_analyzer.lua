@@ -48,52 +48,47 @@ return function(rust_analyzer, caps, on_attach)
     return true
   end
 
-  Safe.import_then("rust-tools", function(rt)
-    local original = config.on_attach
+  local ok, rust_tools = pcall(require, "rust-tools")
 
-    config.on_attach = function(client, bufnr)
-      Events.await_event {
-        actor = "which-key",
-        event = "configured",
-        retroactive = true,
-        callback = function()
-          Safe.import_then('which-key', function(wk)
-            wk.add {
-              { "<leader>lI",  group = "[Inlay Hints]" },
-              { "<leader>lIE", "<cmd>lua require('rust-tools').inlay_hints.enable()<cr>",              desc = "Enable Globally",    buffer = bufnr },
-              { "<leader>lID", "<cmd>lua require('rust-tools').inlay_hints.disable()<cr>",             desc = "Disable Globally",   buffer = bufnr },
-              { "<leader>lIe", "<cmd>lua require('rust-tools').inlay_hints.set()<cr>",                 desc = "Enable for Buffer",  buffer = bufnr },
-              { "<leader>lId", "<cmd>lua require('rust-tools').inlay_hints.unset()<cr>",               desc = "Disable for Buffer", buffer = bufnr },
-              { "<leader>lm",  "<cmd>lua require('rust-tools').expand_macro.expand_macro()<cr>",       desc = "Expand Macro",       buffer = bufnr },
-              { "<leader>lC",  "<cmd>lua require('rust-tools').open_cargo_toml.open_cargo_toml()<cr>", desc = "Open Cargo.toml",    buffer = bufnr },
-              { "<leader>lp",  "<cmd>lua require('rust-tools').parent_module.parent_module()<cr>",     desc = "Parent Module",      buffer = bufnr },
-            }
-          end) -- Import Then
-        end,   -- Callback
-      }
+  if not ok then
+    PrintDbg("Cannot import RustTools", LL_ERROR)
+    return false
+  end
 
-      original(client, bufnr)
-    end -- on_attach
+  local original = config.on_attach
 
 
-    rt.setup({
-      server = config,
-      tools = {
-        inlay_hints = {
-          auto = true,
-          show_parameter_hints = true,
-          only_current_line = true,
-          highlight = "comment",
-        },
-      }
-    })
+  config.on_attach = function(client, bufnr)
+    Events.await_event {
+      actor = "which-key",
+      event = "configured",
+      callback = function()
+        local wk = require("which-key")
+        wk.add { { "<leader>lI", group = "[Inlay Hints]" } }
+      end
+    }
 
-    -- import_then
-  end, {
-    trace = false,
-    handle = function()
-      rust_analyzer.setup(config)
-    end -- handle
+    MapKey { key = "<leader>lIE", does = "<cmd>lua require('rust-tools').inlay_hints.enable()<cr>", modes = "n", opts = { desc = "Enable Globally", buffer = bufnr } }
+    MapKey { key = "<leader>lID", does = "<cmd>lua require('rust-tools').inlay_hints.disable()<cr>", modes = "n", opts = { desc = "Disable Globally", buffer = bufnr } }
+    MapKey { key = "<leader>lIe", does = "<cmd>lua require('rust-tools').inlay_hints.set()<cr>", modes = "n", opts = { desc = "Enable for Buffer", buffer = bufnr } }
+    MapKey { key = "<leader>lId", does = "<cmd>lua require('rust-tools').inlay_hints.unset()<cr>", modes = "n", opts = { desc = "Disable for Buffer", buffer = bufnr } }
+    MapKey { key = "<leader>lm", does = "<cmd>lua require('rust-tools').expand_macro.expand_macro()<cr>", modes = "n", opts = { desc = "Expand Macro", buffer = bufnr } }
+    MapKey { key = "<leader>lC", does = "<cmd>lua require('rust-tools').open_cargo_toml.open_cargo_toml()<cr>", modes = "n", opts = { desc = "Open Cargo.toml", buffer = bufnr } }
+    MapKey { key = "<leader>lp", does = "<cmd>lua require('rust-tools').parent_module.parent_module()<cr>", modes = "n", opts = { desc = "Parent Module", buffer = bufnr } }
+
+    original(client, bufnr)
+  end -- on_attach
+
+  rust_tools.setup({
+    server = config,
+    tools = {
+      inlay_hints = {
+        auto = true,
+        show_parameter_hints = true,
+        only_current_line = true,
+        highlight = "comment",
+      },
+    }
   })
 
   return true
