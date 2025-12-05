@@ -68,13 +68,13 @@ return function(rust_analyzer, caps, on_attach)
       end
     }
 
-    MapKey { key = "<leader>lIE", does = "<cmd>lua require('rust-tools').inlay_hints.enable()<cr>", modes = "n", opts = { desc = "Enable Globally", buffer = bufnr } }
-    MapKey { key = "<leader>lID", does = "<cmd>lua require('rust-tools').inlay_hints.disable()<cr>", modes = "n", opts = { desc = "Disable Globally", buffer = bufnr } }
-    MapKey { key = "<leader>lIe", does = "<cmd>lua require('rust-tools').inlay_hints.set()<cr>", modes = "n", opts = { desc = "Enable for Buffer", buffer = bufnr } }
-    MapKey { key = "<leader>lId", does = "<cmd>lua require('rust-tools').inlay_hints.unset()<cr>", modes = "n", opts = { desc = "Disable for Buffer", buffer = bufnr } }
-    MapKey { key = "<leader>lm", does = "<cmd>lua require('rust-tools').expand_macro.expand_macro()<cr>", modes = "n", opts = { desc = "Expand Macro", buffer = bufnr } }
-    MapKey { key = "<leader>lC", does = "<cmd>lua require('rust-tools').open_cargo_toml.open_cargo_toml()<cr>", modes = "n", opts = { desc = "Open Cargo.toml", buffer = bufnr } }
-    MapKey { key = "<leader>lp", does = "<cmd>lua require('rust-tools').parent_module.parent_module()<cr>", modes = "n", opts = { desc = "Parent Module", buffer = bufnr } }
+    -- MapKey { key = "<leader>lIE", does = "<cmd>lua require('rust-tools').inlay_hints.enable()<cr>", modes = "n", opts = { desc = "Enable Globally", buffer = bufnr } }
+    -- MapKey { key = "<leader>lID", does = "<cmd>lua require('rust-tools').inlay_hints.disable()<cr>", modes = "n", opts = { desc = "Disable Globally", buffer = bufnr } }
+    -- MapKey { key = "<leader>lIe", does = "<cmd>lua require('rust-tools').inlay_hints.set()<cr>", modes = "n", opts = { desc = "Enable for Buffer", buffer = bufnr } }
+    -- MapKey { key = "<leader>lId", does = "<cmd>lua require('rust-tools').inlay_hints.unset()<cr>", modes = "n", opts = { desc = "Disable for Buffer", buffer = bufnr } }
+    -- MapKey { key = "<leader>lm", does = "<cmd>lua require('rust-tools').expand_macro.expand_macro()<cr>", modes = "n", opts = { desc = "Expand Macro", buffer = bufnr } }
+    -- MapKey { key = "<leader>lC", does = "<cmd>lua require('rust-tools').open_cargo_toml.open_cargo_toml()<cr>", modes = "n", opts = { desc = "Open Cargo.toml", buffer = bufnr } }
+    -- MapKey { key = "<leader>lp", does = "<cmd>lua require('rust-tools').parent_module.parent_module()<cr>", modes = "n", opts = { desc = "Parent Module", buffer = bufnr } }
 
     original(client, bufnr)
   end -- on_attach

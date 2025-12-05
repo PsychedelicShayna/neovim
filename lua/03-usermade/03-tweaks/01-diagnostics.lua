@@ -1,9 +1,5 @@
 -------------------------------------------------------------------------------
--- Floating Window Style
 -------------------------------------------------------------------------------
-local float_border = "single"
-local float_style  = "minimal"
-
 vim.api.nvim_create_autocmd({ "ColorScheme" }, {
   callback = function()
     vim.defer_fn(function()
@@ -13,54 +9,60 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
   end
 })
 
-
-
 -------------------------------------------------------------------------------
 -- Sign Definitions
 -------------------------------------------------------------------------------
-local diagnostic_signs = {
-  { name = 'DiagnosticSignError', text = 'E' }, -- ''
-  { name = 'DiagnosticSignWarn', text =  'W' }, -- ''
-  { name = 'DiagnosticSignHint', text =  'H' }, -- ''
-  { name = 'DiagnosticSignInfo', text =  'I' }, -- ''
-}
-for _, sign in ipairs(diagnostic_signs) do
-  vim.fn.sign_define(sign.name, {
-    texthl = sign.name,
-    text = sign.text,
-    numhl = ''
-  })
-end
+-- vim.diagnostic.config().signs.text = {
+--   [vim.diagnostic.severity.ERROR] = 'E',
+--   [vim.diagnostic.severity.WARN] = 'W',
+--   [vim.diagnostic.severity.HINT] = 'H',
+--   [vim.diagnostic.severity.INFO] = 'I',
+-- }
 
+--
 -------------------------------------------------------------------------------
 -- LSP Floating Window Settings
 -------------------------------------------------------------------------------
 
-vim.lsp.handlers["textDocument/hover"] =
-    vim.lsp.with(vim.lsp.handlers.hover, { border = float_border })
+-- local float_border = {
+--   { "╭", "FloatBorder" },
+--   { "─", "FloatBorder" },
+--   { "╮", "FloatBorder" },
+--   { "│", "FloatBorder" },
+--   { "╯", "FloatBorder" },
+--   { "─", "FloatBorder" },
+--   { "╰", "FloatBorder" },
+--   { "│", "FloatBorder" },
+-- }
 
-
-vim.lsp.handlers["textDocument/signatureHelp"] =
-    vim.lsp.with(vim.lsp.handlers.signature_help, { border = float_border })
-
+-- Apply default LSP floating window options
+vim.lsp.util.open_floating_preview = (function(orig)
+  return function(contents, syntax, opts, ...)
+    opts = opts or {}
+    opts.border = float_border or 'single'
+    return orig(contents, syntax, opts, ...)
+  end
+end)(vim.lsp.util.open_floating_preview)
 
 -------------------------------------------------------------------------------
 -- Diagnostics Config
 -------------------------------------------------------------------------------
 vim.diagnostic.config {
+
+
   virtual_text = false,
   signs = { active = diagnostic_signs },
   update_in_insert = false,
   underline = false,
   severity_sort = true, -- default: false
   float = {
-    virtual_text = false,
+    virtual_text = true,
     focusable    = true,
     focus        = true,
-    style        = float_style,
-    border       = float_border,
-    source       = true,
-    header       = '',
+    style        = "minimal",
+    border       = "single",
+    kjsource     = true,
+    header       = '_',
     prefix       = '',
   },
 }

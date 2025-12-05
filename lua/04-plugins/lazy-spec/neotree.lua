@@ -43,9 +43,9 @@ local function config()
     },
 
     buffers = {
-      bind_to_cwd = true,
+      bind_to_cwd = false,
       follow_current_file = {
-        enabled = true,          -- This will find and focus the file in the active buffer every time
+        enabled = true,         -- This will find and focus the file in the active buffer every time
         -- the current file is changed while the tree is open.
         leave_dirs_open = true, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
       },
@@ -109,6 +109,7 @@ local function config()
           ["<2-LeftMouse>"] = "open",
           ["<esc>"] = "revert_preview",
           ["?"] = "show_help",
+          ["z"] = "fuzzy_finder",
           ["C"] = "copy",
           ["F"] = "clear_filter",
           ["K"] = "navigate_up",
@@ -116,6 +117,28 @@ local function config()
           ["R"] = "refresh",
           ["X"] = "move",
           ["l"] = "open",
+          ["e"] = {
+            function(state)
+              local node = state.tree:get_node()
+
+              if node.type == 'file' then
+                require("neo-tree").config.filesystem.commands.open(state)
+              end
+
+              if node.type == 'directory' then
+                local oil_ok, oil = pcall(require, 'oil')
+
+                if oil_ok and node.type == 'directory' then
+                  oil.open(node.path)
+                  return
+                end
+
+                node.expand()
+              end
+            end,
+            desc = "Print Node",
+            nowait = true
+          },
           ["\\c"] = "close_all_nodes",
           ["\\e"] = "expand_all_nodes",
           ["\\s"] = "close_all_subnodes",
@@ -125,7 +148,6 @@ local function config()
           ["w"] = "open_with_window_picker",
           ["f"] = "filter_on_submit",
           ["i"] = "show_file_details",
-          ["e"] = "open",
           ["m"] = "move",
           ["oc"] = "order_by_created",
           ["od"] = "order_by_diagnostics",

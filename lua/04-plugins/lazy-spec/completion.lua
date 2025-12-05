@@ -258,6 +258,7 @@ return {
             { name = "luasnip",  option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             { name = "buffer",   option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             { name = "path",     option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
+            { name = "neorg",    option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             -- { name = "null_ls",  option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
             -- { name = "copilot",  option = { get_bufnrs = cmp_buffer_size_check }, lazy = true },
           },

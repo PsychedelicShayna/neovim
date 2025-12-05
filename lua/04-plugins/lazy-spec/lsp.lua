@@ -129,7 +129,6 @@ return {
     end
   },
 
-
   {
     'neovim/nvim-lspconfig',
     lazy = false,
@@ -141,7 +140,8 @@ return {
       local lspconfig = require('lspconfig')
       local mason_lspconfig = require('mason-lspconfig')
 
-      local lsp_configs = require("lspconfig.configs")
+      -- local lsp_configs = require("lspconfig.configs")
+      -- local lsp_configs = vim.lsp.config()
 
       -- Extend the default client capabilities.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -156,51 +156,51 @@ return {
         }
       }
 
-      -- Get the installed language servers.
-      local installed_ls_names = mason_lspconfig.get_installed_servers()
+      -- -- Get the installed language servers.
+      -- local installed_ls_names = mason_lspconfig.get_installed_servers()
+      --
+      -- if not Safe.t_is(_G.lspconf_overrides, 'table') then
+      --   _G.lspconf_overrides = {}
+      -- end
 
-      if not Safe.t_is(_G.lspconf_overrides, 'table') then
-        _G.lspconf_overrides = {}
-      end
-
-      -- Setup all of the installed langauge servers.
-      for _, ls_name in ipairs(installed_ls_names) do
-        local filetypes = lspconfig[ls_name].config_def.default_config.filetypes
-
-        vim.api.nvim_create_autocmd("FileType", {
-          once = true,
-          pattern = filetypes,
-          callback = function(_)
-            local ls_entry = lspconfig[ls_name]
-
-            -- Try setting the server up using the user-provided custom setup
-            -- function. These are stored under "lsp-custom-setup"
-            local custom_config_ok = try_custom_setup(
-              ls_name, ls_entry, capabilities, custom_on_attach
-            )
-
-            -- If that fails, then just use the default setup function.
-            if not custom_config_ok then
-              ls_entry.setup {
-                capabilities = capabilities,
-                on_attach = custom_on_attach
-              }
-            else
-              _G.lspconf_overrides[ls_name] = custom_config_ok
-            end
-          end
-        })
-      end
+      -- -- Setup all of the installed langauge servers.
+      -- for _, ls_name in ipairs(installed_ls_names) do
+      --   local filetypes = vim.lsp.config[ls_name].filetypes
+      --
+      --   vim.api.nvim_create_autocmd("FileType", {
+      --     once = true,
+      --     pattern = filetypes,
+      --     callback = function(_)
+      --       local ls_entry = vim.lsp.config[ls_name]
+      --
+      --       -- Try setting the server up using the user-provided custom setup
+      --       -- function. These are stored under "lsp-custom-setup"
+      --       local custom_config_ok = try_custom_setup(
+      --         ls_name, ls_entry, capabilities, custom_on_attach
+      --       )
+      --
+      --       -- If that fails, then just use the default setup function.
+      --       if not custom_config_ok then
+      --         ls_entry.setup {
+      --           capabilities = capabilities,
+      --           on_attach = custom_on_attach
+      --         }
+      --       else
+      --         _G.lspconf_overrides[ls_name] = custom_config_ok
+      --       end
+      --     end
+      --   })
+      -- end
 
 
-      -- Regsiter a user command to view the loaded custom LSP config overrides.
-      vim.api.nvim_create_user_command("LspListLoadedSetups", function(_)
-        Safe.try(function()
-          PrintDbg('Dumping successfully loaded custom LSP config overrides..',
-            LL_INFO, { _G.lspconf_overrides }
-          )
-        end)
-      end, {})
+      -- -- Regsiter a user command to view the loaded custom LSP config overrides.
+      -- vim.api.nvim_create_user_command("LspListLoadedSetups", function(_)
+      --   Safe.try(function()
+      --     PrintDbg('Dumping successfully loaded custom LSP config overrides..',
+      --       LL_INFO, { _G.lspconf_overrides }
+      --     )
+      --   end)
+      -- end, {})
 
       Events.fire_event {
         actor = "lspconfig",

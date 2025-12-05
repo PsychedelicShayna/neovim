@@ -1,0 +1,56 @@
+-- -- callsite_signature.lua
+-- local M = {}
+--
+-- local function has_signature_help()
+--   local params = vim.lsp.util.make_position_params()
+--   local resp = vim.lsp.buf_request_sync(0, "textDocument/signatureHelp", params, 1000)
+--   for _, v in pairs(resp or {}) do
+--     if v and v.result and v.result.signatures and #v.result.signatures > 0 then
+--       return true
+--     end
+--   end
+--   return false
+-- end
+--
+-- local function jump_to_relevant_paren()
+--   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+--   local buf = 0
+--   local before = vim.api.nvim_buf_get_text(buf, row, col, row, col+100, {}) or {}
+--   before = table.concat(before, "\n")
+--
+--   local open_count = select(2, before:gsub("%(", ""))
+--   local close_count = select(2, before:gsub("%)", ""))
+--
+--   if open_count == close_count + 1 then
+--     -- we’re probably inside a call, so jump to the matching ')'
+--     vim.cmd("normal! %")
+--   else
+--     vim.fn.search("(", "W")
+--   end
+-- end
+--
+-- local function smart_signature()
+--   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+--
+--   -- local c = vim.api.nvim_buf_get_text(0, row-1, col, row-1, col+1, {}) or {}
+--   -- vim.notify(vim.inspect(c))
+--
+--   -- send to insert mode
+--   if has_signature_help() then
+--     vim.cmd({cmd = 'normal', args = {"a"}} )
+--   end
+--
+--
+--   -- jump_to_relevant_paren()
+--
+--   -- if not has_signature_help() then
+--   --   vim.api.nvim_win_set_cursor(0, old) -- restore if pointless
+--   --   return
+--   -- end
+--
+--   -- vim.lsp.buf.signature_help()
+-- end
+--
+-- -- vim.keymap.set("n", "<A-s>", smart_signature, { desc = "Show signature help or jump to callsite" })
+--
+-- return M

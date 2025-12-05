@@ -54,9 +54,9 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     -- dependencies = "lukas-reineke/indent-blankline.nvim",
-    lazy = true,
-    init = defer_treesitter,
-    cmd = ts_lazy_load_commands,
+    lazy = false,
+    -- init = defer_treesitter,
+    -- cmd = ts_lazy_load_commands,
     config = function()
       -- require("nvim-treesitter.install").compilers = { "clang" }
 
@@ -64,7 +64,7 @@ return {
         ensure_installed      = {},
         sync_install          = false,
         highlight             = {
-          enable = false,
+          enable = true,
           -- disable = function(lang, bufnr)
           --   -- local large_buffers = require("global.control.large_buffers")
           --   -- local check = large_buffers.is_large(bufnr)

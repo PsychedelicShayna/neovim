@@ -8,8 +8,9 @@ return {
   -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
   dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 
+
   init = function()
-    MapKey { key = "<Leader>o", does = ":lua require('oil').toggle_float()<cr>", modes = "n", desc = "Toggle Oil Float" }
+    MapKey { key = "<A-o>", does = ":Oil<cr>", modes = "n", desc = "Oil Buffer" }
   end,
 
   config = function()
@@ -20,10 +21,7 @@ return {
       -- Id is automatically added at the beginning, and name at the end
       -- See :help oil-columns
       columns = {
-        "icon",
         "permissions",
-        "size",
-        "mtime",
       },
       -- Buffer-local options to use for oil buffers
       buf_options = {
@@ -48,13 +46,13 @@ return {
       -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
       -- (:help prompt_save_on_select_new_entry)
       prompt_save_on_select_new_entry = true,
-      -- Oil will automatically delete hidden buffers after this delay
+      -- Oil will automatically delete hidden buffers after this delay     
       -- You can set the delay to false to disable cleanup entirely
       -- Note that the cleanup process only starts when none of the oil buffers are currently displayed
       cleanup_delay_ms = 2000,
       lsp_file_methods = {
         -- Enable or disable LSP file operations
-        enabled = true,
+        enabled = false,
         -- Time to wait for LSP file operations to complete before skipping
         timeout_ms = 1000,
         -- Set to true to autosave buffers that are updated with LSP willRenameFiles
@@ -64,7 +62,7 @@ return {
       -- Constrain the cursor to the editable parts of the oil buffer
       --
       -- Set to `false` to disable, or "name" to keep it on the file names
-      constrain_cursor = "name",
+      constrain_cursor = false,
       -- Set to true to watch the filesystem for changes and reload oil
       watch_for_changes = true,
       -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
@@ -75,9 +73,9 @@ return {
       -- See :help oil-actions for a list of all available actions
       keymaps = {
         ["<A-C-h>"] = { "actions.show_help", desc = "Show Keybind Help" },
-        ["L"] = { "actions.select", desc = "Enter Directory" },
-        ["H"] = { "actions.parent", desc = "Leave Directory" },
-        ["p"] = { "open_preview", desc = "Toggle Preview" },
+        ["Space"] = { "actions.select", desc = "Enter Directory" },
+        ["<BS>"] = { "actions.parent", desc = "Leave Directory" },
+        ["P"] = { "open_preview", desc = "Toggle Preview" },
         ["<A-h>"] = { "actions.cd", desc = "Set as CWD" },
         ["%"] = { "actions.open_cwd", desc = "Jump to CWD" },
         ["<A-c>"] = { "actions.close", desc = "Close Buffer" },
@@ -130,17 +128,17 @@ return {
         padding = 2,
         max_width = 0,
         max_height = 0,
-        border = "rounded",
+        border = "single",
         win_options = {
           winblend = 0,
         },
         -- preview_split: Split direction: "auto", "left", "right", "above", "below".
-        preview_split = "auto",
+        preview_split = "below",
         -- This is the config that will be passed to nvim_open_win.
         -- Change values here to customize the layout
-        override = function(conf)
-          return conf
-        end,
+        -- override = function(conf)
+        --   return conf
+        -- end,
       },
       -- Configuration for the actions floating preview window
       preview = {
@@ -159,8 +157,8 @@ return {
         -- min_height = {5, 0.1} means "the greater of 5 columns or 10% of total"
         min_height = { 5, 0.1 },
         -- optionally define an integer/float for the exact height of the preview window
-        height = nil,
-        border = "rounded",
+        -- height = nil,
+        border = "single",
         win_options = {
           winblend = 0,
         },
@@ -171,11 +169,11 @@ return {
       progress = {
         max_width = 0.9,
         min_width = { 40, 0.4 },
-        width = nil,
+        -- width = nil,
         max_height = { 10, 0.9 },
         min_height = { 5, 0.1 },
-        height = nil,
-        border = "rounded",
+        -- height = nil,
+        border = "single",
         minimized_border = "none",
         win_options = {
           winblend = 0,
@@ -187,7 +185,7 @@ return {
       },
       -- Configuration for the floating keymaps help window
       keymaps_help = {
-        border = "signle",
+        border = "single",
       },
     })
   end

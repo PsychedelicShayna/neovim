@@ -27,23 +27,25 @@ return {
 
     copilot.setup {
       auto_refresh = false,
-
-      keymap = {
-        jump_prev = "[[",
-        jump_next = "]]",
-        accept = "<C-M-Enter>",
-        refresh = "gr",
-        open = "<C-M-CR>"
-      },
-
-      layout = {
-        position = "top",
-        ratio = 0.3
+      panel = {
+        keymap = {
+          jump_prev = "[[",
+          jump_next = "]]",
+          accept = "<C-M-Enter>",
+          refresh = "gr",
+          open = "<C-M-CR>"
+        },
+        layout = {
+          position = "top",
+          ratio = 0.3
+        }
       },
 
       suggestion = {
         enable = false,
         auto_trigger = false,
+        hide_during_completion = true,
+        trigger_on_accept = true,
         debounce = 75,
         keymap = {
           accept = "<A-L>",
@@ -54,23 +56,12 @@ return {
       },
 
       filetypes = {
-        yaml = false,
-        markdown = false,
-        help = false,
-        gitcommit = false,
-        gitrebase = false,
-        hgcommit = false,
-        svn = false,
-        cvs = false,
-        ["."] = false,
-        json = false,
-        krypt = false,
         gpg = false,
         pgp = false,
+        markdown = true,
         cert = false,
         crt = false,
         pem = false,
-        txt = false
       },
     }
   end,

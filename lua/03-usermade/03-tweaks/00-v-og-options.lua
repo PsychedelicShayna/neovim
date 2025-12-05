@@ -1,17 +1,20 @@
 -- vim.o.completeopt    = { 'menuone', 'noselect' }
 vim.o.cindent        = true
-vim.o.clipboard      = 'unnamedplus'
+vim.o.clipboard      = 'unnamed'
 vim.o.cmdheight      = 2
 -- vim.o.colorcolumn    = "80,120"
-vim.o.conceallevel   = 0
+vim.o.conceallevel   = 2
+vim.o.concealcursor  = "nvc"
 vim.o.hlsearch       = true
 -- vim.o.nobuflisted    = true
+vim.o.list           = true
+vim.o.listchars      = 'tab:> ,trail:-,nbsp:+'
 vim.o.number         = true
 vim.o.numberwidth    = 4
 vim.o.pumheight      = 12
 vim.o.relativenumber = true
 vim.o.virtualedit    = "none"
-vim.o.scrolloff      = 8
+vim.o.scrolloff      = 2
 vim.o.showtabline    = 1
 vim.o.sidescrolloff  = 8
 vim.o.signcolumn     = "yes"
@@ -56,7 +59,7 @@ function win_local_cwd()
   return vim.fn.getcwd(vim.api.nvim_win_get_number(0))
 end
 
-vim.o.statusline  = "%{%v:lua.win_local_cwd()%}"
+vim.o.statusline = "%{%v:lua.win_local_cwd()%}"
 
 local function win_local_cwd()
   return vim.fn.getcwd(vim.api.nvim_win_get_number(0))
@@ -71,10 +74,10 @@ vim.g.maplocalleader = ' '
 
 -- Don't draw color columns unless a file type has been set.
 vim.api.nvim_create_autocmd("FileType", {
-    once = true,
-    callback = function()
-        vim.o.colorcolumn = "80,120"
-    end
+  once = true,
+  callback = function()
+    vim.o.colorcolumn = "80,120"
+  end
 })
 
 -- local function get_win_with_buf(bufnr)
@@ -93,7 +96,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --      autocmd_ids = {},
 
 --      enable_whitespace = function(bufnr)
---              
+--
 --      end
 
 --      disable_whitespace = function(bufnr)
@@ -103,7 +106,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- local function show_whitespace(bool)
 --      if bool then
---              
+--
 --      end
 -- end
 

@@ -104,7 +104,6 @@ MapKey { key = '<A-v>', does = 'gv', modes = 'n' }
 MapKey { key = '<A-u>', does = '<C-o>u', modes = 'i' }
 MapKey { key = '<A-U>', does = '<C-o>', modes = 'i' }
 
-
 -- Move around in insert mode with Alt-hjkl
 MapKey { key = '<A-h>', does = '<Left>', modes = 'i' }
 MapKey { key = '<A-l>', does = '<Right>', modes = 'i' }

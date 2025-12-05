@@ -10,12 +10,19 @@ return {
         base = {
           -- Base keymaps defined under 07-keymaps/navimark.lua
           ------------------------------------------------------
-          mark_toggle      = nil,
-          mark_add         = nil,
-          mark_remove      = nil,
-          goto_next_mark   = nil,
-          goto_prev_mark   = nil,
-          open_mark_picker = nil,
+          ---
+          -- MapKey { key = "<leader>ms",  does = "<cmd>lua require('navimark.stack').mark_toggle()<cr>", modes = "n", desc = "Toggle NaviMark" }
+          -- MapKey { key = "<leader>ma",  does = "<cmd>lua require('navimark.stack').mark_add()<cr>", modes = "n", desc = "Add NaviMark" }
+          -- MapKey { key = "<leader>md",  does = "<cmd>lua require('navimark.stack').mark_remove()<cr>", modes = "n", desc = "Delete NaviMark" }
+          -- MapKey { key = "gmn", does = "<cmd>lua require('navimark.stack').goto_next_mark()<cr>", modes = "n", desc = "Next NaviMark" }
+          -- MapKey { key = "gmp", does = "<cmd>lua require('navimark.stack').goto_prev_mark()<cr>", modes = "n", desc = "Prev NaviMark" }
+          -- MapKey { key = "<leader>mf",  does = "<cmd>lua require('navimark.tele').open_bookmark_picker()<cr>", modes = "n", desc = "Find NaviMark" }
+          mark_toggle      = "<leader>mm",
+          mark_add         = "<leader>ma",
+          mark_remove      = "<leader>md",
+          goto_next_mark   = "gmn",
+          goto_prev_mark   = "gmp",
+          open_mark_picker = "<leader>fm",
         },
 
         -- telescope = {
@@ -31,7 +38,7 @@ return {
         -- },
       },
       sign = {
-        text = " ", --        
+        text = " ", --        
         color = "#bab6aa",
       },
       persist = true,

@@ -1,8 +1,9 @@
 -- View Signature
-MapKey { key = "<leader>lS", does = "<cmd>lua vim.lsp.buf.signature_help()<cr>", modes = "n", desc = "Signatures" }
+MapKey { key = "<leader>ls", does = "<cmd>lua vim.lsp.buf.signature_help()<cr>", modes = "n", desc = "View Function Signature Help" }
+-- MapKey { key = "<A-s>", does = "<cmd>lua vim.lsp.buf.signature_help()<cr>", modes = "i", desc = "View Current Function Signature" }
 
 -- Search for Symbols/Identifiers
-MapKey { key = "<leader>ls", does = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", modes = "n", desc = "Identifier" }
+MapKey { key = "<leader>lS", does = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", modes = "n", desc = "Identifier" }
 
 -- Toggle Format on Save
 MapKey { key = "<leader>lF", does = "<cmd>:ToggleAutoFormat<cr>", modes = "n", desc = "Toggle AutoFormat" }
@@ -21,6 +22,7 @@ MapKey { key = "<leader>lr", does = "<cmd>lua vim.lsp.buf.rename()<cr>", modes =
 
 -- Hover
 MapKey { key = "<leader>lh", does = "<cmd>lua vim.lsp.buf.hover()<cr>", modes = "n", desc = "Hover" }
+MapKey { key = "<A-H>", does = "<cmd>lua vim.lsp.buf.hover()<cr>", modes = "i", desc = "Hover in Insert Mode" }
 
 -- Find Declaration & Definition
 MapKey { key = "<leader>lD", does = "<cmd>lua vim.lsp.buf.declaration()<cr>", modes = "n", desc = "Declarations" }
@@ -30,3 +32,7 @@ MapKey { key = "<leader>ld", does = "<cmd>Telescope lsp_definitions<cr>", modes 
 MapKey { key = "<leader>lH", does = ":SwitchHeaderSource<cr>", modes = "n", desc = "Switch C/C++ Header"}
 
 MapKey { key = "<space>ll", does = "<cmd>lua vim.diagnostic.setloclist()<cr>", modes = "n", desc = "Location List" }
+
+MapKey { key = "<leader>li", does = "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<cr>", modes = "n",   desc = "Toggle Inlay Hints" }
+MapKey { key = "<leader>lv", does = "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text })<cr>", modes = "n",  desc = "Toggle Virtual Text" }
+
