@@ -4,14 +4,12 @@ return {
   config = function()
     -- -- -- -- Adds Operators -- -- -- --
     --
-    --    g=    Eval text and replace
     --    gx    Excchange text regions
+    --    g=    Eval text and replace
     --    gm    Duplicate text
     --    gs    Replace with register
-    --
-    -- require("mini.operators").setup {
-    --   mappings = replace
-    -- }
+    require("mini.operators").setup()
+
     -- -- -- -- -- -- -- -- -- -- -- -- --
 
     -- Enhances text objects and adds new text objects to be used with motions

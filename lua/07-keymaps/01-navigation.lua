@@ -27,7 +27,9 @@ MapKey { key = '<A-c>', does = ':close!<cr>' }
 -------------------------------------------------------------------------------
 
 -- Creates a buffer and switches to it in the current pane.
+MapKey { key = '<A-t>', does = ':Temp r <cr>', desc = "Create new buffer" }
 MapKey { key = '<A-n>', does = ':ene<cr>', desc = "Create new buffer" }
+
 
 -- Deletes the current buffer without closing the pane (vim-bbye plugin)
 -- Reminder: look at the source code of bbye, and implement it yourself.
@@ -55,9 +57,9 @@ MapKey { key = '<A-L>', does = ':tabnext<cr>', modes = 'n', desc = "Switch to ne
 MapKey { key = '<', does = '<gv', modes = 'v', desc = "Unindent lines one level" }
 MapKey { key = '>', does = '>gv', modes = 'v', desc = "Indent lines one level" }
 --
--- -- Move selected lines up or down while staying in visual mode.
--- MapKey { key = 'K', does = ":move '<-2<cr>gv-gv", modes = 'v', desc = "Move lines up" }
--- MapKey { key = 'J', does = ":move '>+1<cr>gv-gv", modes = 'v', desc = "Move lines down" }
+-- Move selected lines up or down while staying in visual mode.
+MapKey { key = 'K', does = ":move '<-2<cr>gv-gv", modes = 'v', desc = "Move lines up" }
+MapKey { key = 'J', does = ":move '>+1<cr>gv-gv", modes = 'v', desc = "Move lines down" }
 
 
 -------------------------------------------------------------------------------
@@ -89,7 +91,7 @@ MapKey { key = '<A-r>', does = ':e!', modes = 'n', desc = "Reload file" }
 -- the traditional convert to block/visual behavior by holidng shift.
 -- Hitting Alt-v in normal mode is the same as gv, making everything
 -- quick and nearby.
-MapKey { key = '<A-v>', does = 'gv', modes = 'n' }
+-- MapKey { key = '<A-v>', does = 'gv', modes = 'n' }
 -- MapKey { key = '<A-v>', does = '<esc>gvvvgv', modes = 'v' }
 -- MapKey { key = '<A-b>', does = '<esc>`<<C-v>`>', modes = 'v' }
 -- MapKey { key = '<A-B>', does = '<C-v>', modes = 'v' }
@@ -99,10 +101,10 @@ MapKey { key = '<A-v>', does = 'gv', modes = 'n' }
 -------------------------------------------------------------------------------
 -- Insert Mode Convenience
 -------------------------------------------------------------------------------
-
+---
 -- Undo and redo in insert mode.
-MapKey { key = '<A-u>', does = '<C-o>u', modes = 'i' }
-MapKey { key = '<A-U>', does = '<C-o>', modes = 'i' }
+-- MapKey { key = '<A-u>', does = '<C-o>u', modes = 'i' }
+-- MapKey { key = '<A-U>', does = '<C-o>', modes = 'i' }
 
 -- Move around in insert mode with Alt-hjkl
 MapKey { key = '<A-h>', does = '<Left>', modes = 'i' }
@@ -111,21 +113,21 @@ MapKey { key = '<A-k>', does = '<Up>', modes = 'i' }
 MapKey { key = '<A-j>', does = '<Down>', modes = 'i' }
 
 -- Next/previous match.
-MapKey { key = '<A-n>', does = '<C-o>n', modes = 'i' }
-MapKey { key = '<A-N>', does = '<C-o>N', modes = 'i' }
+-- MapKey { key = '<A-n>', does = '<C-o>n', modes = 'i' }
+-- MapKey { key = '<A-N>', does = '<C-o>N', modes = 'i' }
 
 -- Jump words, back words, end of word.
-MapKey { key = '<A-w>', does = '<esc>lwi', modes = 'i' }
-MapKey { key = '<A-e>', does = '<esc>llea', modes = 'i' }
-MapKey { key = '<A-b>', does = '<esc>lbi', modes = 'i' }
+-- MapKey { key = '<A-w>', does = '<esc>lwi', modes = 'i' }
+-- MapKey { key = '<A-e>', does = '<esc>llea', modes = 'i' }
+-- MapKey { key = '<A-b>', does = '<esc>lbi', modes = 'i' }
 
--- Change wod in front or behind
-MapKey { key = '<A-W>', does = '<esc>lcW', modes = 'i' }
-MapKey { key = '<A-B>', does = '<esc>lcB', modes = 'i' }
+-- Change word in front or behind
+-- MapKey { key = '<A-W>', does = '<esc>lcW', modes = 'i' }
+-- MapKey { key = '<A-B>', does = '<esc>lcB', modes = 'i' }
 
 -- Change inner word.
-MapKey { key = '<A-a>', does = '<esc>lciw', modes = 'i' }
+-- MapKey { key = '<A-a>', does = '<esc>lciw', modes = 'i' }
 
 -- Run last @q macro.
-MapKey { key = '<A-q>', does = '<esc>Qi', modes = 'i' }
+-- MapKey { key = '<A-q>', does = '<esc>Qi', modes = 'i' }
 
