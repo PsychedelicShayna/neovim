@@ -115,8 +115,9 @@ end, {
 -------------------------------------------------------------------------------
 -- Expression Evaluation
 -------------------------------------------------------------------------------
--- Meta Evaluator
-
+-- Meta Evaluator - this keybind uses the currently selected evaluator
+-- because I was running out of keys for every language that still felt
+-- convenient to hit rapidly ^^'
 MapKey { key = '<M-e>', does = function()
   local lang = vim.g.eval_with_language or "qpe"
   local mode = vim.fn.mode()
