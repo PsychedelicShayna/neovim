@@ -1,4 +1,3 @@
--- Will later be passed onto which-key to assign names to key sequeces/chords
 -- that can go in several different directions.
 local wk_chord_grouping = { for_wk = {} }
 
@@ -13,9 +12,131 @@ function wk_chord_grouping:add(group)
   table.insert(self.for_wk, group)
 end
 
+local evaluators = {
+  lua = {
+    v = '!lua<cr>',
+    n = '!!lua<cr>'
+  },
+  fish = {
+    v = '!fish<cr>',
+    n = '!!fish<cr>',
+  },
+  bash = {
+    v = '!bash<cr>',
+    n = '!!bash<cr>',
+  },
+  python = {
+    v = '!python -<cr>',
+    n = '!!python -<cr>',
+  },
+  cpp = {
+    v = '!xargs -0 --replace={} root -l -q -e \'{}\' 2>/dev/null | /usr/bin/cat<cr>',
+    n = '!!xargs -0 --replace={} root -l -q -e \'{}\' 2>/dev/null | /usr/bin/cat<cr>'
+  },
+  rust = {
+    v = '!irust<cr>',
+    n = '!!irust<cr>',
+  },
+  go = {
+    v = "!yaegi<cr>",
+    n = "!!yaegi<cr>"
+  },
+  qpe = {
+    v = "ymmkp!`mqpe -<cr>",
+    n = "yykp!!qpe -<cr>"
+  },
+  hy = {
+    v = '!hy<cr>',
+    n = '!!hy<cr>',
+  },
+  clisp = {
+    v = '!clisp -q<cr>',
+    n = '!!clisp -q<cr>'
+  },
+  haskell = {
+    v = '!ghci -v0<cr>',
+    n = '!!ghci -v0<cr>',
+  },
+  perl = {
+    v = '!perl<cr>',
+    n = '!!perl<cr>'
+  },
+  ruby = {
+    v = '!ruby<cr>',
+    n = '!!ruby<cr>',
+  },
+  ocaml = {
+    v = '!ocaml -noprompt -no-version<cr>',
+    n = '!!ocaml -noprompt -no-version<cr>',
+  },
+  node = {
+    v = '!node -p<cr>',
+    n = '!!node -p<cr>',
+  },
+  elixir = {
+    v = '!elixir -e<cr>',
+    n = '!!elixir -e<cr>',
+  },
+  pwsh = {
+    v = '!pwsh -NonInteractive -NoProfile -NoProfileLoadTime -OutputFormat Text -InputFormat Text -Command -<cr>',
+    n = '!!pwsh -NonInteractive -NoProfile -NoProfileLoadTime -OutputFormat Text -InputFormat Text -Command -<cr>'
+  }
+}
+
+-- This user command takes a language identifier, which changes what the
+-- language/evaluator is used when the keybind Alt+e is pressed to evaluate
+-- the selected text or the current line. The command can be used in
+-- combination with visual mode or normal mode, as well as insert mode.
+-- This simply changes the configured evaluator for the keybind, to any of
+-- the ones defined below.
+vim.api.nvim_create_user_command("EvalWith", function(opts)
+  local lang = opts.args
+  if lang == "" then
+    print("EvalWith: Please provide a language identifier.")
+    return
+  end
+  vim.g.eval_with_language = lang
+  print("EvalWith: Set evaluator to '" .. lang .. "'.")
+end, {
+  nargs = 1,
+  complete = function(ArgLead, CmdLine, CursorPos)
+   
+
+    local matches = {}
+    for lang, _ in pairs(evaluators) do
+      if lang:sub(1, #ArgLead) == ArgLead then
+        table.insert(matches, lang)
+      end
+    end
+    return matches
+  end
+})
+
 -------------------------------------------------------------------------------
 -- Expression Evaluation
 -------------------------------------------------------------------------------
+-- Meta Evaluator
+
+MapKey { key = '<M-e>', does = function()
+  local lang = vim.g.eval_with_language or "qpe"
+  local mode = vim.fn.mode()
+
+  local send_keys_to_cmd = function(keys)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', false)
+  end
+  local visual = mode == 'v' or mode == 'V' or mode == '\22'
+
+  local keys = evaluators[lang]
+
+  if not keys then
+    vim.notify("EvalWith: No evaluator configured for language '" .. lang .. "'.")
+    return
+  end
+
+  local cmd = visual and keys.v or keys.n
+  send_keys_to_cmd(cmd)
+end, modes = { 'n', 'v' }, desc = "Evaluate with selected language" }
+
 
 -- Lua
 MapKey { key = '<M-;><M-L>', does = ':luafile%<cr>', modes = 'n', desc = "Lua File -> LuaJIT" }
@@ -31,19 +152,28 @@ MapKey { key = '<M-;><M-f>', does = '!fish <cr>', modes = 'v', desc = "Fish Expr
 MapKey { key = '<M-;><M-f>', does = 'V!fish <cr>', modes = 'n', desc = "Fish Expression -> Fish" }
 
 -- Bash/Sh
-MapKey { key = '<M-;><M-s>', does = '!bash <cr>', modes = 'v', desc = "Bash Expr -> Bash" }
-MapKey { key = '<M-;><M-s>', does = 'V!bash <cr>', modes = 'n', desc = "Bash Expr -> Bash" }
+MapKey { key = '<M-;><M-b>', does = '!bash <cr>', modes = 'v', desc = "Bash Expr -> Bash" }
+MapKey { key = '<M-;><M-b>', does = 'V!bash <cr>', modes = 'n', desc = "Bash Expr -> Bash" }
 
 -- Python
 MapKey { key = '<M-;><M-p>', does = '!python - <cr>', modes = 'v', desc = "Python Code -> Interpreter" }
 MapKey { key = '<M-;><M-p>', does = 'V!python - <cr>', modes = 'n', desc = "Python Code -> Interpreter" }
-MapKey { key = '<M-;><M-q>', does = "ymmpV:'<,'>!qpe \'<C-r>+\'<cr>`m", modes = 'v', desc = "Python Expression -> QPE" }
-MapKey { key = '<M-;><M-q>', does = 'mmyypV:!qpe \'<C-r>+\'<cr>`m', modes = 'n', desc = "Python Expression -> QPE" }
+-- MapKey { key = '<M-;><M-q>', does = "ymmV:'<,'>!qpe -<cr>p`m", modes = 'v', desc = "Python Expression -> QPE" }
+-- MapKey { key = '<M-;><M-q>', does = 'mmyyV:!qpe -<cr>p`m', modes = 'n', desc = "Python Expression -> QPE" }
+
+-- Python (Hy Lisp)
+MapKey { key = '<M-;><M-p>', does = '!python - <cr>', modes = 'v', desc = "Python Code -> Interpreter" }
+MapKey { key = '<M-;><M-p>', does = 'V!python - <cr>', modes = 'n', desc = "Python Code -> Interpreter" }
+
+MapKey { key = '<M-;><M-q>', does = "ymmkp!`mqpe -<cr>", modes = 'v', desc = "Python Expression -> QPE" }
+MapKey { key = '<M-;><M-q>', does = 'yykp!!qpe -<cr>', modes = 'n', desc = "Python Expression -> QPE" }
+
 MapKey { key = '<M-;><M-P>', does = ":!python % <cr>", modes = 'n', desc = "Python File -> Interpreter" }
 
 -- C++
 MapKey { key = '<M-;><M-c>', does = '!xargs -0 --replace={} root -l -q -e \'{}\' 2>/dev/null | /usr/bin/cat<cr>', modes = 'v', desc = "C++ -> Root" }
 MapKey { key = '<M-;><M-c>', does = 'V!xargs -0 --replace={} root -l -q -e \'{}\' 2>/dev/null | /usr/bin/cat<cr>', modes = 'n', desc = "C++ -> Root" }
+
 
 -- Haskell
 MapKey { key = '<M-;><M-g>', does = '!ghci -v0<cr>', modes = 'v', desc = "Haskell -> GHCi" }
@@ -54,10 +184,10 @@ MapKey { key = '<M-;><M-r>', does = '!irust<cr>', modes = 'v', desc = "Rust -> i
 MapKey { key = '<M-;><M-r>', does = 'V!irust<cr>', modes = 'n', desc = "Rust -> iRust" }
 
 -- Base64 ---------------------------------------------------------------------
-MapKey { key = '<M-;><M-b>', does = '!base64 <cr>', modes = 'v', desc = "Encode to base64 (ml)" }
-MapKey { key = '<M-;><M-B>', does = '!base64 -d 2>&1<cr>', modes = 'v', desc = "Decode from base64 (ml)" }
-MapKey { key = '<M-;><M-b>', does = 'V!base64 <cr>', modes = 'n', desc = "Encode to base64" }
-MapKey { key = '<M-;><M-B>', does = 'V!base64 -d 2>&1<cr>', modes = 'n', desc = "Decode from base64" }
+MapKey { key = '<M-;><M-6>', does = '!base64 <cr>', modes = 'v', desc = "Encode to base64 (ml)" }
+MapKey { key = '<M-;><M-^>', does = '!base64 -d 2>&1<cr>', modes = 'v', desc = "Decode from base64 (ml)" }
+MapKey { key = '<M-;><M-6>', does = 'V!base64 <cr>', modes = 'n', desc = "Encode to base64" }
+MapKey { key = '<M-;><M-^>', does = 'V!base64 -d 2>&1<cr>', modes = 'n', desc = "Decode from base64" }
 
 -- Working with binary data through xxd and other tools
 -------------------------------------------------------------------------------

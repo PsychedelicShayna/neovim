@@ -1,12 +1,19 @@
 local colorschemes = {
-  { "EdenEast/nightfox.nvim",     lazy = true },
-  { "FrenzyExists/aquarium-vim",  lazy = true },
-  { "LunarVim/Colorschemes",      lazy = true },
-  { "LunarVim/horizon.nvim",      lazy = true },
-  { "LunarVim/onedarker.nvim",    lazy = true },
-  { "LunarVim/synthwave84.nvim",  lazy = true },
-  { "Mofiqul/dracula.nvim",       lazy = true },
-  { "RRethy/nvim-base16",         lazy = true },
+  { "EdenEast/nightfox.nvim",    lazy = true },
+  { "FrenzyExists/aquarium-vim", lazy = true },
+  { "LunarVim/Colorschemes",     lazy = true },
+  { "LunarVim/horizon.nvim",     lazy = true },
+  { "LunarVim/onedarker.nvim",   lazy = true },
+  { "LunarVim/synthwave84.nvim", lazy = true },
+  { "Mofiqul/dracula.nvim",      lazy = true },
+  { "RRethy/nvim-base16",        lazy = true },
+  {
+    "p00f/alabaster.nvim",
+    lazy = true,
+    config = function()
+      vim.cmd("color alabaster")
+    end
+  },
   { "Shatur/neovim-ayu",          lazy = true },
   { "andersevenrud/nordic.nvim",  lazy = true },
   { "bluz71/vim-nightfly-colors", lazy = true },
@@ -128,18 +135,18 @@ local colorschemes = {
       }
       -- end, 1)
 
-      vim.cmd("colorscheme rose-pine")
+      -- vim.cmd("colorscheme rose-pine")
     end
   },
-  { "fenetikm/falcon",           lazy = true },
+  { "fenetikm/falcon",           lazy = false },
   {
     "folke/tokyonight.nvim",
     lazy = true,
     config = function()
       require('tokyonight').setup {
-        style = "storm",      -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
-        light_style = "day",  -- The theme is used when the background is set to light
-        transparent = true,   -- Enable this to disable setting the background color
+        style = "storm",        -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
+        light_style = "day",    -- The theme is used when the background is set to light
+        transparent = true,     -- Enable this to disable setting the background color
         terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
         styles = {
           -- Style to be applied to different syntax groups
@@ -149,8 +156,8 @@ local colorschemes = {
           -- functions = {},
           -- variables = {},
           -- Background styles. Can be "dark", "transparent" or "normal"
-          sidebars = "dark", -- style for sidebars, see below
-          floats = "dark",  -- style for floating windows
+          sidebars = "dark",  -- style for sidebars, see below
+          floats = "dark",    -- style for floating windows
         },
         day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
         dim_inactive = false, -- dims inactive windows
@@ -210,15 +217,12 @@ local colorschemes = {
       --
       -- Transparency: 0 = None, 1 = Some, 2 = More
 
-      vim.g.gruvbox_material_transparent_background = 0
-
-
+      -- vim.g.gruvbox_material_transparent_background = 0
 
       -- if UsrLib.proclib.pgrep("picom", { exact = true }) ~= nil then
       --     vim.g.gruvbox_material_transparent_background = 1
       -- end
 
-      --
       -- -- Palette to use, can be soft, medium, or hard.
       -- vim.g.gruvbox_material_background = 'medium'
       -- vim.g.gruvbox_material_foreground = 'medium'
@@ -227,23 +231,29 @@ local colorschemes = {
       -- vim.g.gruvbox_material_ui_contrast = 'high'
       --
       -- -- How to make floating windows stand out; can be 'bright' or 'dim'
-      -- vim.g.gruvbox_material_float_style = 'dim'
+      -- vim.g.gruvbox_material_float_style = 'bright'
+
+      -- vim.cmd("colorscheme gruvbox-material")
+
+      local adapt = false
+
+      if adapt then
+        vim.defer_fn(function()
+          local h = io.popen("pgrep --exact picom", "r")
+
+          if h then
+            local r = h:read()
+            h:close()
+
+            if r ~= nil then
+              vim.g.gruvbox_material_transparent_background = 1
+              vim.cmd("colorscheme gruvbox-material")
+            end
+          end
+        end, 1)
+      end
 
       vim.cmd("colorscheme gruvbox-material")
-
-      vim.defer_fn(function()
-        local h = io.popen("pgrep --exact picom", "r")
-
-        if h then
-          local r = h:read()
-          h:close()
-
-          if r ~= nil then
-            vim.g.gruvbox_material_transparent_background = 1
-            vim.cmd("colorscheme gruvbox-material")
-          end
-        end
-      end, 1000)
     end
   },
   { "srcery-colors/srcery-vim", lazy = true },
@@ -252,6 +262,7 @@ local colorschemes = {
   { "yazeed1s/minimal.nvim",    lazy = true },
   { "neanias/everforest-nvim",  lazy = true },
 }
+
 
 ColorschemeNames = vim.tbl_map(function(colorscheme)
   if not colorscheme or type(colorscheme[1]) ~= "string" then

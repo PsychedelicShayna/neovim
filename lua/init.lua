@@ -2,6 +2,11 @@
 -- First and foremost, before anything has the chance to crash, crashproof
 -- defaults should be set. Actual code execution should come later.
 -- ----------------------------------------------------------------------------
+
+
+
+
+
 vim.g.mapleader      = ' '
 vim.g.maplocalleader = ' '
 vim.o.cindent        = true
