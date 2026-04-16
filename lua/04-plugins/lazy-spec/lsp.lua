@@ -45,27 +45,28 @@ local function try_custom_setup(ls_name, ls_entry, capabilities, on_attach)
 end
 
 return {
-
-  { "simrat39/rust-tools.nvim", -- No longer maintained.
-    disabled = true
-  },
+  -- {
+  --   "simrat39/rust-tools.nvim",     -- No longer maintained.
+  --   disabled = true
+  -- },
   -- Optional plugins that enhance the LSP experience, or provide their own.
   -------------------------------------------------------------------------------
-  {
-
-    "mrcjkb/rustaceanvim", -- Fork of rust-tools.nvim; spiritual successor.
-    version = '^5',        -- Pin to version 5.x.x. to avoid breaking changes.
-    lazy = false,          -- Does its own lazy loading, leave it alone.
-    config = function()
-      vim.g.rustaceanvim = {
-        tools = {
-          float_win_config = {
-            border = 'rounded'
-          }
-        },
-      }
-    end,
-  },
+  -- {
+  --
+  --   "mrcjkb/rustaceanvim",     -- Fork of rust-tools.nvim; spiritual successor.
+  --   version = '^5',            -- Pin to version 5.x.x. to avoid breaking changes.
+  --   lazy = true,              -- Does its own lazy loading, leave it alone.
+  --   disabled = true,
+  --   config = function()
+  --     vim.g.rustaceanvim = {
+  --       tools = {
+  --         float_win_config = {
+  --           border = 'rounded'
+  --         }
+  --       },
+  --     }
+  --   end,
+  -- },
 
   {
     "hylang/vim-hy",
@@ -104,11 +105,13 @@ return {
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
         { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        { path = vim.env.VIMRUNTIME,   words = { "vim%." } },
       },
     },
   },
 
-  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
+  { "Bilal2453/luvit-meta", ft = "lua" }, -- optional `vim.uv` typings
 
   -- The meat of the LSP setup..
   -------------------------------------------------------------------------------
@@ -146,6 +149,13 @@ return {
       -- Extend the default client capabilities.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = cmp_nvim_lsp_extend_caps(capabilities)
+
+      vim.lsp.config.lua_ls.settings.Lua.runtime  = { version = "LuaJIT" }
+      vim.lsp.config.lua_ls.settings.Lua.diagnostic = { globals = { "vim" } }
+      vim.lsp.config.lua_ls.settings.Lua.workspace = {
+         library = { vim.env.VIMRUNTIME },
+        checkThirdParty = false,
+      }
 
       Events.fire_event {
         actor = "lspconfig",
