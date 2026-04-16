@@ -5,7 +5,7 @@ Events.await_event {
   callback = function()
     Safe.import_then("which-key", function(wk)
       wk.add {
-        { "<space>b",   group = "[Buffer]" },
+        -- { "<space>b",   group = "[Buffer]" },
         { "<space>c",   group = "[Configure]" },
         { "<space>d",   group = "[DAP]" },
         { "<space>f",   group = "[Find]" },
