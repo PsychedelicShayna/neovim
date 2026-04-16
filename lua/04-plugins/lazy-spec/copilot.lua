@@ -41,6 +41,9 @@ return {
         }
       },
 
+
+
+
       suggestion = {
         enable = false,
         auto_trigger = false,
@@ -48,20 +51,20 @@ return {
         trigger_on_accept = true,
         debounce = 75,
         keymap = {
-          accept = "<A-L>",
-          next = "<A-K>",
-          prev = "<A-J>",
-          dismiss = "<A-H>"
+          accept = "<C-S-Right>",
+          next = "<C-S-Down>",
+          prev = "<C-S-Up>",
+          dismiss = "<C-S-Left>"
         }
       },
 
       filetypes = {
         gpg = false,
         pgp = false,
-        markdown = true,
         cert = false,
         crt = false,
         pem = false,
+        text = false
       },
     }
   end,
