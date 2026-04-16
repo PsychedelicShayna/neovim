@@ -45,9 +45,13 @@ local evaluators = {
     v = "ymmkp!`mqpe -<cr>",
     n = "yykp!!qpe -<cr>"
   },
+  --  \v((^(\(|\s+\()|^:hy$)([^\(\)\[\]\S]+) ([\(\[^\s\]\)]*[^\)\]]).+)(\n(^\s*.*[\)\]]$|((.+\n|^$\n)*^\s*[\]\)])))*
+
   hy = {
     v = '!hy<cr>',
-    n = '!!hy<cr>',
+    n = "mm?```hy<cr>jV/```<cr>k:copy '>+1<cr>V?```<cr>j`m:'<,'>!bash -c \"(hy || true)\"<cr>:noh<cr>`m",
+    -- '\\v((^(\\(|\\s+\\()|^:hy$)([^\\(\\)\\[\\]\\S]+) ([\\(\\[^\\s\\]\\)]*[^\\)\\]]).+)(\\n(^\\s*.*[\\)\\]]$|((.+\\n|^$\\n)*^\\s*[\\]\\)])))*',
+    -- n = '0f(v%!hy<cr>',
   },
   clisp = {
     v = '!clisp -q<cr>',
@@ -100,8 +104,6 @@ vim.api.nvim_create_user_command("EvalWith", function(opts)
 end, {
   nargs = 1,
   complete = function(ArgLead, CmdLine, CursorPos)
-   
-
     local matches = {}
     for lang, _ in pairs(evaluators) do
       if lang:sub(1, #ArgLead) == ArgLead then
@@ -121,6 +123,9 @@ end, {
 MapKey { key = '<M-e>', does = function()
   local lang = vim.g.eval_with_language or "qpe"
   local mode = vim.fn.mode()
+
+
+
 
   local send_keys_to_cmd = function(keys)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', false)
