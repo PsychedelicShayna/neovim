@@ -17,12 +17,12 @@ return {
           -- MapKey { key = "gmn", does = "<cmd>lua require('navimark.stack').goto_next_mark()<cr>", modes = "n", desc = "Next NaviMark" }
           -- MapKey { key = "gmp", does = "<cmd>lua require('navimark.stack').goto_prev_mark()<cr>", modes = "n", desc = "Prev NaviMark" }
           -- MapKey { key = "<leader>mf",  does = "<cmd>lua require('navimark.tele').open_bookmark_picker()<cr>", modes = "n", desc = "Find NaviMark" }
-          mark_toggle      = "<leader>mm",
+          mark_toggle      = "M",
           mark_add         = "<leader>ma",
           mark_remove      = "<leader>md",
-          goto_next_mark   = "gmn",
-          goto_prev_mark   = "gmp",
-          open_mark_picker = "<leader>fm",
+          goto_next_mark   = "<leader>`j",
+          goto_prev_mark   = "<leader>`k",
+          open_mark_picker = "<leader>mf",
         },
 
         -- telescope = {
