@@ -2,6 +2,7 @@ return {
   {
     "jbyuki/venn.nvim",
     lazy = false,
+    enabled = true,
     config = function()
       -- venn.nvim: enable or disable keymappings
       function _G.Toggle_venn()

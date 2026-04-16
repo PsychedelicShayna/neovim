@@ -2,6 +2,8 @@ return {
   'nvim-orgmode/orgmode',
   event = 'VeryLazy',
   ft = { 'org' },
+  enabled = false,
+  -- enabled = false,
   config = function()
     -- Setup orgmode
     require('orgmode').setup({
