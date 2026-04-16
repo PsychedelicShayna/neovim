@@ -66,6 +66,8 @@ MapKey { key = 'J', does = ":move '>+1<cr>gv-gv", modes = 'v', desc = "Move line
 -- Normal Mode Convenience
 
 MapKey { key = '<A-w>', does = ':w<cr>', modes = 'n', desc = "Write File (:w)" }
+MapKey { key = '<A-q>', does = ':q<cr>', modes = 'n', desc = "Exit Nvim (:q) No Unsaved Changes" }
+MapKey { key = '<A-v>', does = ':wq<cr>', modes = { 'n', 'i' }, desc = "Write Quit (return to zsh/fish from Alt-V)" }
 MapKey { key = '<A-W>', does = ':w!<cr>', modes = 'n', desc = "!Write File (:w!)" }
 MapKey { key = '<A-u>', does = '<C-r>', modes = 'n', desc = "Undo (<C-r>)" }
 MapKey { key = '<A-r>', does = ':e!', modes = 'n', desc = "Reload file" }
@@ -120,7 +122,7 @@ MapKey { key = '<A-j>', does = '<Down>', modes = 'i' }
 -- MapKey { key = '<A-w>', does = '<esc>lwi', modes = 'i' }
 -- MapKey { key = '<A-e>', does = '<esc>llea', modes = 'i' }
 -- MapKey { key = '<A-b>', does = '<esc>lbi', modes = 'i' }
-
+--
 -- Change word in front or behind
 -- MapKey { key = '<A-W>', does = '<esc>lcW', modes = 'i' }
 -- MapKey { key = '<A-B>', does = '<esc>lcB', modes = 'i' }
