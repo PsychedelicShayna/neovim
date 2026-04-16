@@ -60,8 +60,8 @@ local colorschemes = {
         cache = false,
 
         theme = {
-          variant = "default", -- use "light" for the light variant. Also accepts "auto" to set dark or light colors based on the current value of `vim.o.background`
-          saturation = 1,      -- accepts a value between 0 and 1. 0 will be fully desaturated (greyscale) and 1 will be the full color (default)
+          variant = "default",           -- use "light" for the light variant. Also accepts "auto" to set dark or light colors based on the current value of `vim.o.background`
+          saturation = 1,                -- accepts a value between 0 and 1. 0 will be fully desaturated (greyscale) and 1 will be the full color (default)
           highlights = {
             -- Highlight groups to override, adding new groups is also possible
             -- See `:h highlight-groups` for a list of highlight groups or run `:hi` to see all groups and their current values
@@ -138,16 +138,16 @@ local colorschemes = {
       -- vim.cmd("colorscheme rose-pine")
     end
   },
-  { "fenetikm/falcon",           lazy = false },
+  { "fenetikm/falcon",           lazy = true },
   {
     "folke/tokyonight.nvim",
     lazy = true,
     config = function()
       require('tokyonight').setup {
-        style = "storm",        -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
-        light_style = "day",    -- The theme is used when the background is set to light
-        transparent = true,     -- Enable this to disable setting the background color
-        terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+        style = "storm",                -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
+        light_style = "day",            -- The theme is used when the background is set to light
+        -- transparent = true, -- Enable this to disable setting the background color
+        terminal_colors = true,         -- Configure the colors used when opening a `:terminal` in Neovim
         styles = {
           -- Style to be applied to different syntax groups
           -- Value is any valid attr-list value for `:help nvim_set_hl`
@@ -156,11 +156,11 @@ local colorschemes = {
           -- functions = {},
           -- variables = {},
           -- Background styles. Can be "dark", "transparent" or "normal"
-          sidebars = "dark",  -- style for sidebars, see below
-          floats = "dark",    -- style for floating windows
+          sidebars = "dark",           -- style for sidebars, see below
+          floats = "dark",             -- style for floating windows
         },
-        day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
-        dim_inactive = false, -- dims inactive windows
+        day_brightness = 0.3,          -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+        dim_inactive = false,          -- dims inactive windows
         -- lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
 
         --   --- You can override specific color groups to use other groups or a hex color
@@ -174,7 +174,7 @@ local colorschemes = {
         --   ---@param colors ColorScheme
         --   on_highlights = function(highlights, colors) end,
 
-        cache = true, -- When set to true, the theme will be cached for better performance
+        cache = true,         -- When set to true, the theme will be cached for better performance
 
         ---@type table<string, boolean|{enabled:boolean}>
         plugins = {
@@ -246,13 +246,14 @@ local colorschemes = {
             h:close()
 
             if r ~= nil then
-              vim.g.gruvbox_material_transparent_background = 1
+              -- vim.g.gruvbox_material_transparent_background = 1
               vim.cmd("colorscheme gruvbox-material")
             end
           end
         end, 1)
       end
 
+      vim.g.gruvbox_material_transparent_background = 1
       vim.cmd("colorscheme gruvbox-material")
     end
   },
