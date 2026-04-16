@@ -1,7 +1,7 @@
 -- vim.o.completeopt    = { 'menuone', 'noselect' }
 vim.o.cindent        = true
 vim.o.clipboard      = 'unnamed'
-vim.o.cmdheight      = 2
+vim.o.cmdheight      = 1
 -- vim.o.colorcolumn    = "80,120"
 vim.o.conceallevel   = 2
 vim.o.concealcursor  = "nvc"
