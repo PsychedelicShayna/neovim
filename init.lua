@@ -2,25 +2,24 @@
 -- not going to make it compatible. I'm not *just* doing a bit of trolling,
 -- there are legitimate reasons. This config can and will crash often if it
 -- will run at all on Windows.
---
 
 if vim.fn.has("win32") == 1 then
   -- 12x68
   local we_do_a_little_trolling = {
 
-    [[                                                             Windows                                   ]],
-    [[                                                                                                       ]],
-    [[                                   An error has occurred. To continue:                                 ]],
-    [[                                                                                                       ]],
-    [[                                   Press Enter to return to Windows, or                                ]],
-    [[                                                                                                       ]],
-    [[                                   Press CTRL+ALT+DEL to restart your computer. If you do this,        ]],
-    [[                                   you may select a bootable Linux install USB upon entering the,      ]],
-    [[                                   BIOS, and use the time to contemplate your poor life decisions.     ]],
-    [[                                                                                                       ]],
-    [[                                   Error: 2L : IQ4U : 2US3L1NUX                                        ]],
-    [[                                                                                                       ]],
-    [[                                                         Press any key to continue _                   ]]
+    [[                                            Windows                                   ]],
+    [[                                                                                      ]],
+    [[                  An error has occurred. To continue:                                 ]],
+    [[                                                                                      ]],
+    [[                  Press Enter to return to Windows, or                                ]],
+    [[                                                                                      ]],
+    [[                  Press CTRL+ALT+DEL to restart your computer. If you do this,        ]],
+    [[                  you may select a bootable Linux install USB upon entering the,      ]],
+    [[                  BIOS, and use the time to contemplate your poor life decisions.     ]],
+    [[                                                                                      ]],
+    [[                  Error: 2L : IQ4U : 2US3L1NUX                                        ]],
+    [[                                                                                      ]],
+    [[                                        Press any key to continue _                   ]]
   }
   vim.cmd("color blue")
 
@@ -44,7 +43,7 @@ if vim.fn.has("win32") == 1 then
   local win = vim.api.nvim_open_win(buf, false, {
     relative = "editor",
     width = win_width*2,
-    height = win_height,
+    height = win_height+1,
     col = win_width, -- 63 technicalllly
     row = win_height, -- 12 technically
     border = "none"
@@ -87,7 +86,7 @@ if vim.fn.has("win32") == 1 then
         vim.api.nvim_win_set_config(win, {
           relative = "editor",
           width = new_win_width,
-          height = new_win_height,
+          height = new_win_height + 1,
           col = win_relative_center,
           row = new_win_height,
         })
