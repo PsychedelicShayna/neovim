@@ -131,9 +131,7 @@
 --     cmp.show_documentation()
 --   end
 -- end
---
---
---
+
 -- Hybrid scrolling function that handles both ghost text when visible and
 -- scrollig the docuentation when the menu is visible.
 ---@param direction_docs string `"up"` or `"down"`
@@ -249,6 +247,9 @@ local function fn_cycle_if_open(method, direction)
         vim.log.levels.ERROR)
       return false
     end
+
+    fn()
+    return true
   end
 end
 
@@ -298,15 +299,18 @@ return {
         ["<C-Down>"]  = { fn_c_hybrid_special_cycle('down', 'next') },
         -- ['<Tab>']     = { fn_tab_insert_preselection('next') },
         -- ['<S-Tab>']   = { 'insert_prev' },
-        ['<Down>']    = { fn_cycle_if_open('insert', 'next'), 'fallback' },
-        ['<Up>']      = { fn_cycle_if_open('insert', 'prev'), 'fallback' },
+        ['<Down>']    = { fn_cycle_if_open('select', 'next'), 'fallback' },
+        ['<Up>']      = { fn_cycle_if_open('select', 'prev'), 'fallback' },
         -- Methods of accepting completion with different bindings.
-        ["<S-Up>"]    = { "accept", "fallback" },
+        ["<S-Up>"]    = { "accept" },
+        ["<S-Down>"]  = { "show", "hide" },
         ['<C-Enter>'] = { 'accept', 'fallback' },
         ['<A-l>']     = { 'accept', 'fallback' }, -- muscle memory
+        -- Show menu manually
+        ['<A-i>']     = { 'show', 'fallback' },   -- muscle memory
         -- Neovim default keys
         ['<C-y>']     = { 'select_and_accept', 'fallback' },
-        ['<C-e>']     = { 'cancel', 'fallback' },
+        ['<C-e>']     = { 'cancel', 'show', 'fallback' },
         -- Methods for navigating snippets
 
 
@@ -575,7 +579,9 @@ return {
           menu = {
             -- height = 10,
             auto_show = function(ctx)
-              if true then return true end -- short circuit for now
+              if true then return true end
+
+              -- short circuit for now
               -- Later on I want to make this a bit more specific, so that
               -- it depends on the source of the selection more than just
               -- where it was invoked. I don't want path completion unless
@@ -586,8 +592,6 @@ return {
               local cmdtype = vim.fn.getcmdtype()
               local cmdline = vim.fn.getcmdline()
               local cmptype = vim.fn.getcmdcompltype()
-              ---@type blink.cmp.CmdlineAutoShowContext
-              local ctx = ctx
 
               if vim.list_contains({ "shellcmd", "option", "lua", "help" }, cmptype)
               then
@@ -636,8 +640,29 @@ return {
           -- Neovim default keys
           ['<C-y>']     = { 'select_and_accept', 'fallback' },
           ['<C-e>']     = { 'cancel', 'fallback' },
+
+          -- These keys should do the default vim behavior of moving the cursor
+          -- left and right in the command line, even when the menu is open,
+          -- because that is very useful and intuitive when editing the command
+          -- line. I don't want to have to hold down alt or something to do
+          -- that, and I also don't want it to interfere with the completion
+          -- menu navigation when the menu is open, so it should only trigger
+          -- when the menu is not visible. Not sure if fallback with a cmdline
+          -- preset is enough. How would I even 'trigger normal behavir' if I
+          -- were to make a function for this? vim.api.nvim_feedkeys with the right keys and 'n' for normal mode? I
+          --
+          ['<Left>']    = { function(ctx)
+            vim.api.nvim_feedkeys(
+              vim.api.nvim_replace_termcodes("<Left>", true, false, true), 'n', false)
+          end, 'fallback' },
+
+          ['<Right>']   = { function(ctx)
+            vim.api.nvim_feedkeys(
+              vim.api.nvim_replace_termcodes("<Right>", true, false, true), 'n', false)
+          end, 'fallback' }
         },
       },
+
 
       -- (Default) Only show the documentation popup when manually triggered
 
